@@ -2,16 +2,26 @@ package web.example.realestate.domain.people;
 
 import web.example.realestate.domain.building.FacilityObject;
 
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.Set;
 
+@Entity
+@Table(name = "real_estate_agents")
 public class RealEstateAgent extends Person {
 
     private BigInteger salary;
     private LocalDate hiredDate;
     private LocalDate quitDate;
+
+    @OneToMany(mappedBy = "agent")
     private Set<FacilityObject> facilityObjects;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "clients_agents",
+            joinColumns = @JoinColumn(name = "agent_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id"))
     private Set<Client> clients;
 
     public RealEstateAgent() {}

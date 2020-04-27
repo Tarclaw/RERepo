@@ -2,24 +2,39 @@ package web.example.realestate.domain.building;
 
 import web.example.realestate.domain.people.Client;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name = "facilities")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Facility implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private Long id;
     private Integer numberOfRooms;
     private Integer totalArea;
     private String description;
     private LocalDateTime publishedDateTime;
     private LocalDateTime closedDateTime;
+    @Lob
     private List<Byte[]> photos;
+    @Lob
     private List<Byte[]> videos;
+
+    @OneToOne(mappedBy = "facility", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Address address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private FacilityObject facilityObject;
+
+    @ManyToMany(mappedBy = "facilities")
     private Set<Client> clients;
 
     public Facility() {}

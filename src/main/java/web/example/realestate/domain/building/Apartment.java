@@ -1,8 +1,12 @@
 package web.example.realestate.domain.building;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
+@Table(name = "apartments")
 public class Apartment extends Facility {
 
     private Integer apartmentNumber;

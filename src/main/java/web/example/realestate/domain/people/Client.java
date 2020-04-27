@@ -2,15 +2,25 @@ package web.example.realestate.domain.people;
 
 import web.example.realestate.domain.building.Facility;
 
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@Table(name = "clients")
 public class Client extends Person {
 
     private boolean isSeller;
     private boolean isBuyer;
     private boolean isRenter;
     private boolean isLeaser;
+
+    @ManyToMany(mappedBy = "clients")
     private Set<RealEstateAgent> realEstateAgents;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "clients_facilities",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "facility_id"))
     private Set<Facility> facilities;
 
     public Client() {}

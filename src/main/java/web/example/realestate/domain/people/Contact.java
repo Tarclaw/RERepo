@@ -1,5 +1,8 @@
 package web.example.realestate.domain.people;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Contact {
 
     private String email;

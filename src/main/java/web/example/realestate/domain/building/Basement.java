@@ -1,8 +1,12 @@
 package web.example.realestate.domain.building;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
+@Table(name = "basements")
 public class Basement extends Facility {
 
     private boolean itCommercial;

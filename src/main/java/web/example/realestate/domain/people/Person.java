@@ -1,15 +1,24 @@
 package web.example.realestate.domain.people;
 
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@MappedSuperclass
 public class Person implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private Long id;
     private String firstName;
     private String lastName;
+    @NaturalId
     private String login;
     private String password;
+    @Embedded
     private Contact contact;
 
     public Person() {}

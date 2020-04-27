@@ -1,16 +1,23 @@
 package web.example.realestate.domain.building;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name = "addresses")
 public class Address implements Serializable {
 
+    @Id
     private Long id;
     private Integer postcode;
     private Integer facilityNumber;
     private String city;
     private String district;
     private String street;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private Facility facility;
 
     public Address() {

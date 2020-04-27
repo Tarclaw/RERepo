@@ -3,19 +3,29 @@ package web.example.realestate.domain.building;
 import web.example.realestate.domain.people.RealEstateAgent;
 import web.example.realestate.domain.enums.Status;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Set;
 import java.util.Objects;
 
+@Entity
+@Table(name = "facility_objects")
 public class FacilityObject implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false, updatable = false)
     private Long id;
     private Status status;
     private BigInteger monthRent;
     private BigInteger price;
     private BigInteger commissionAmount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private RealEstateAgent agent;
+
+    @OneToMany(mappedBy = "facilityObject", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Facility> facilities;
 
     public FacilityObject() {}
