@@ -17,10 +17,13 @@ public class FacilityObject implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private Long id;
-    private Status status;
+
     private BigInteger monthRent;
     private BigInteger price;
     private BigInteger commissionAmount;
+
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private RealEstateAgent agent;
