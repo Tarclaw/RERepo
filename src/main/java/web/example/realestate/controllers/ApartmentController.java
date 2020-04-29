@@ -24,6 +24,6 @@ public class ApartmentController {
     @RequestMapping("/apartments")
     public String getAllApartments(Model model) {
         model.addAttribute("apartments", service.getApartments());
-        return "apartments";
+        return "apartment";
     }
 }

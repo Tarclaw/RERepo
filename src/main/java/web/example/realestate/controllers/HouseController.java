@@ -24,6 +24,6 @@ public class HouseController {
     @RequestMapping("/houses")
     public String getAllHouses(Model model) {
         model.addAttribute("houses", service.getHouses());
-        return "houses";
+        return "house";
     }
 }

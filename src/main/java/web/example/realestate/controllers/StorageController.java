@@ -24,6 +24,6 @@ public class StorageController {
     @RequestMapping("/storages")
     public String getAllStorages(Model model) {
         model.addAttribute("storages", service.getStorages());
-        return "storages";
+        return "storage";
     }
 }

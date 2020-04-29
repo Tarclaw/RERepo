@@ -24,6 +24,6 @@ public class FacilityObjectController {
     @RequestMapping("/facilityObjects")
     public String getAllFacilityObjects(Model model) {
         model.addAttribute("facilityObjects", service.getFacilityObjects());
-        return "facilityObjects";
+        return "facilityObject";
     }
 }

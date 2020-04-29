@@ -24,6 +24,6 @@ public class ClientController {
     @RequestMapping("/clients")
     public String getAllClients(Model model) {
         model.addAttribute("clients", service.getClients());
-        return "clients";
+        return "client";
     }
 }

@@ -24,6 +24,6 @@ public class RealEstateAgentController {
     @RequestMapping("/realEstateAgents")
     public String getAllRealEstateAgents(Model model) {
         model.addAttribute("realEstateAgents", service.getRealEstateAgents());
-        return "realEstateAgents";
+        return "realEstateAgent";
     }
 }

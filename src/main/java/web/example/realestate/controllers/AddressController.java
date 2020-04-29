@@ -24,6 +24,6 @@ public class AddressController {
     @RequestMapping("/addresses")
     public String getAddresses(Model model) {
         model.addAttribute("addresses", service.getAddresses());
-        return "addresses";
+        return "address";
     }
 }

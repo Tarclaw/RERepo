@@ -15,15 +15,15 @@ public class BasementController {
         this.service = service;
     }
 
-    @RequestMapping("/besements/show/{id}")
+    @RequestMapping("/basements/show/{id}")
     public String getBasementById(@PathVariable String id, Model model) {
         model.addAttribute("basement", service.getById(Long.valueOf(id)));
         return "basements/show";
     }
 
-    @RequestMapping("/besements")
+    @RequestMapping("/basements")
     public String getAllBasements(Model model) {
         model.addAttribute("basements", service.getBasements());
-        return "basements";
+        return "basement";
     }
 }
