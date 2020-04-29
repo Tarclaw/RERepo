@@ -21,7 +21,7 @@ public class GarageController {
         return "garages/show";
     }
 
-    @RequestMapping("/gareges")
+    @RequestMapping("/garages")
     public String getAllGarages(Model model) {
         model.addAttribute("garages", service.getGarages());
         return "garages";

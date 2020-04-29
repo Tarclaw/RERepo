@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</head>
+</head>
+<body>
+
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">Clients List</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-inverse">
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Skype</th>
+                                <th>Login</th>
+                                <th>Password</th>
+                                <th>Buyer</th>
+                                <th>Leaser</th>
+                                <th>Renter</th>
+                                <th>Seller</th>
+                            </tr>
+                            </thead>
+                            <tr th:each="client : ${clients}">
+                                <td th:text="${client.getId()}">ID</td>
+                                <td th:text="${client.getFirstName()}">Joe</td>
+                                <td th:text="${client.getLastName()}">Doe</td>
+                                <td th:text="${client.getContact().getMobileNumber()}">2-06-77</td>
+                                <td th:text="${client.getContact().getEmail()}">email@host.com</td>
+                                <td th:text="${client.getContact().getSkype()}">skype</td>
+                                <td th:text="${client.getLogin()}">doe</td>
+                                <td th:text="${client.getPassword()}">123</td>
+                                <td th:text="${client.isBuyer()}">true</td>
+                                <td th:text="${client.isLeaser()}">true</td>
+                                <td th:text="${client.isRenter()}">true</td>
+                                <td th:text="${client.isSeller()}">true</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
