@@ -10,8 +10,11 @@ INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, a
 INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(3, 20000.00, 6000.00, 2000000.00, 'FOR_SALE', 1);
 INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(4, 1500.00, 3000.00, 700000.00, 'FOR_RENT', 1);
 INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(5, 12000.00, 5000.00, 1200000.00, 'FOR_SALE', 2);
+INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(6, 33000.00, 9000.00, 3300000.00, 'SOLD', 2);
 
 INSERT INTO apartments(id, description, number_of_rooms, published_date_time, total_area, facility_object_id, apartment_number, floor) VALUES(1, 'top rated xata', 5, '2020-04-27 19:53:26.298205', 150, 1, 788, 25);
+
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(6, 'generic description', 5, '2020-04-27 19:53:26.298205', 150, 6);
 
 INSERT INTO basements(id, description, number_of_rooms, published_date_time, total_area, facility_object_id, it_commercial) VALUES(2, 'barbershop, ready business model', 3, '2020-04-27 19:53:26.298205', 200, 2, true);
 
