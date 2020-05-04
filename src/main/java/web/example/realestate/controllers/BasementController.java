@@ -2,8 +2,9 @@ package web.example.realestate.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.domain.building.Basement;
 import web.example.realestate.services.BasementService;
 
 @Controller
@@ -15,15 +16,39 @@ public class BasementController {
         this.service = service;
     }
 
-    @RequestMapping("/basements/show/{id}")
+    @GetMapping("/basements/{id}/show")
     public String getBasementById(@PathVariable String id, Model model) {
         model.addAttribute("basement", service.getById(Long.valueOf(id)));
         return "basements/show";
     }
 
-    @RequestMapping("/basements")
+    @GetMapping("/basements")
     public String getAllBasements(Model model) {
         model.addAttribute("basements", service.getBasements());
         return "basement";
+    }
+
+    @GetMapping("/basement/new")
+    public String newBasement(Model model) {
+        model.addAttribute("basement", new BasementCommand());
+        return "basement/basementForm";
+    }
+
+    @GetMapping("/basement/{id}/update")
+    public String updateBasement(@PathVariable String id, Model model) {
+        model.addAttribute("basement", service.findCommandById(Long.valueOf(id)));
+        return "basement/basementForm";
+    }
+
+    @PostMapping("/basement")
+    public String saveOrUpdate(@ModelAttribute BasementCommand command) {
+        BasementCommand savedCommand = service.saveBasementCommand(command);
+        return "redirect:/basement/" + savedCommand.getId() + "/show";
+    }
+
+    @GetMapping("/basement/{id}/delete")
+    public String deleteById(@PathVariable String id) {
+        service.deleteById(Long.valueOf(id));
+        return "redirect:/";
     }
 }

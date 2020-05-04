@@ -1,6 +1,9 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
+import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.converters.BasementCommandToBasement;
+import web.example.realestate.converters.BasementToBasementCommand;
 import web.example.realestate.domain.building.Basement;
 import web.example.realestate.repositories.BasementRepository;
 import web.example.realestate.services.BasementService;
@@ -12,9 +15,15 @@ import java.util.Set;
 public class BasementServiceImpl implements BasementService {
 
     private final BasementRepository repository;
+    private final BasementCommandToBasement toBasement;
+    private final BasementToBasementCommand toBasementCommand;
 
-    public BasementServiceImpl(BasementRepository repository) {
+    public BasementServiceImpl(BasementRepository repository,
+                               BasementCommandToBasement toBasement,
+                               BasementToBasementCommand toBasementCommand) {
         this.repository = repository;
+        this.toBasement = toBasement;
+        this.toBasementCommand = toBasementCommand;
     }
 
     @Override
@@ -30,5 +39,23 @@ public class BasementServiceImpl implements BasementService {
         Set<Basement> basements = new HashSet<>();
         repository.findAll().iterator().forEachRemaining(basements :: add);
         return basements;
+    }
+
+    @Override
+    public BasementCommand findCommandById(Long id) {
+        return toBasementCommand.convert(getById(id));
+    }
+
+    @Override
+    public BasementCommand saveBasementCommand(BasementCommand command) {
+        Basement detachetBasement = toBasement.convert(command);
+        Basement savedBasement = repository.save(detachetBasement);
+        System.out.println("Saved Basement with id=" + savedBasement.getId());
+        return toBasementCommand.convert(savedBasement);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }
