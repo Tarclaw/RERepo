@@ -15,29 +15,25 @@ public class AddressController {
         this.service = service;
     }
 
-    @GetMapping
-    @RequestMapping("/addresses/{id}/show")
+    @GetMapping("/addresses/{id}/show")
     public String getAddressById(@PathVariable String id, Model model) {
         model.addAttribute("address", service.getById(Long.valueOf(id)));
         return "addresses/show";
     }
 
-    @GetMapping
-    @RequestMapping("/addresses")
+    @GetMapping("/addresses")
     public String getAddresses(Model model) {
         model.addAttribute("addresses", service.getAddresses());
         return "address";
     }
 
-    @GetMapping
-    @RequestMapping("/address/new")
+    @GetMapping("/address/new")
     public String newAddress(Model model) {
         model.addAttribute("address", new AddressCommand());
         return "address/addressForm";
     }
 
-    @GetMapping
-    @RequestMapping("/address/{id}/update")
+    @GetMapping("/address/{id}/update")
     public String updateAddress(@PathVariable String id, Model model) {
         model.addAttribute("address", service.findCommandById(Long.valueOf(id)));
         return "address/addressForm";
@@ -49,8 +45,7 @@ public class AddressController {
         return "redirect:/address/" + savedCommand.getId() + "/show";
     }
 
-    @GetMapping
-    @RequestMapping("/address/{id}/delete")
+    @GetMapping("/address/{id}/delete")
     public String deleteById(@PathVariable String id) {
         service.deleteById(Long.valueOf(id));
         return "redirect:/";
