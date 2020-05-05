@@ -1,6 +1,9 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
+import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.converters.StorageCommandToStorage;
+import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
 import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
@@ -12,9 +15,15 @@ import java.util.Set;
 public class StorageServiceImpl implements StorageService {
 
     private final StorageRepository repository;
+    private final StorageCommandToStorage toStorage;
+    private final StorageToStorageCommand toStorageCommand;
 
-    public StorageServiceImpl(StorageRepository repository) {
+    public StorageServiceImpl(StorageRepository repository,
+                              StorageCommandToStorage toStorage,
+                              StorageToStorageCommand toStorageCommand) {
         this.repository = repository;
+        this.toStorage = toStorage;
+        this.toStorageCommand = toStorageCommand;
     }
 
     @Override
@@ -30,5 +39,23 @@ public class StorageServiceImpl implements StorageService {
         Set<Storage> storages = new HashSet<>();
         repository.findAll().iterator().forEachRemaining(storages :: add);
         return storages;
+    }
+
+    @Override
+    public StorageCommand findCommandById(Long id) {
+        return toStorageCommand.convert(getById(id));
+    }
+
+    @Override
+    public StorageCommand saveStorageCommand(StorageCommand command) {
+        Storage detachedStorage = toStorage.convert(command);
+        Storage savedStorage = repository.save(detachedStorage);
+        System.out.println("Save Storage with id=" + savedStorage.getId());
+        return toStorageCommand.convert(savedStorage);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }
