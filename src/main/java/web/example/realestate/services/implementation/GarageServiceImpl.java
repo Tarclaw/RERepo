@@ -1,6 +1,9 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
+import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.converters.GarageCommandToGarage;
+import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
 import web.example.realestate.repositories.GarageRepository;
 import web.example.realestate.services.GarageService;
@@ -12,9 +15,15 @@ import java.util.Set;
 public class GarageServiceImpl implements GarageService {
 
     private final GarageRepository repository;
+    private final GarageCommandToGarage toGarage;
+    private final GarageToGarageCommand toGarageCommand;
 
-    public GarageServiceImpl(GarageRepository repository) {
+    public GarageServiceImpl(GarageRepository repository,
+                             GarageCommandToGarage toGarage,
+                             GarageToGarageCommand toGarageCommand) {
         this.repository = repository;
+        this.toGarage = toGarage;
+        this.toGarageCommand = toGarageCommand;
     }
 
     @Override
@@ -30,5 +39,23 @@ public class GarageServiceImpl implements GarageService {
         Set<Garage> garages = new HashSet<>();
         repository.findAll().iterator().forEachRemaining(garages :: add);
         return garages;
+    }
+
+    @Override
+    public GarageCommand findCommandById(Long id) {
+        return toGarageCommand.convert(getById(id));
+    }
+
+    @Override
+    public GarageCommand saveGarageCommand(GarageCommand command) {
+        Garage detachedGarage = toGarage.convert(command);
+        Garage savedGarage = repository.save(detachedGarage);
+        System.out.println("Save Garage with id=" + savedGarage.getId());
+        return toGarageCommand.convert(savedGarage);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }
