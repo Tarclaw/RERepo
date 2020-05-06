@@ -8,7 +8,7 @@ import web.example.realestate.domain.building.House;
 @Component
 public class HouseCommandToHouse implements Converter<HouseCommand, House> {
 
-    private AddressCommandToAddress toAddress;
+    private final AddressCommandToAddress toAddress;
 
     public HouseCommandToHouse(AddressCommandToAddress toAddress) {
         this.toAddress = toAddress;
