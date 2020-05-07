@@ -1,6 +1,9 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
+import web.example.realestate.commands.RealEstateAgentCommand;
+import web.example.realestate.converters.RealEstateAgentCommandToRealEstateAgent;
+import web.example.realestate.converters.RealEstateAgentToRealEstateAgentCommand;
 import web.example.realestate.domain.people.RealEstateAgent;
 import web.example.realestate.repositories.RealEstateAgentRepository;
 import web.example.realestate.services.RealEstateAgentService;
@@ -12,9 +15,15 @@ import java.util.Set;
 public class RealEstateAgentServiceImpl implements RealEstateAgentService {
 
     private final RealEstateAgentRepository repository;
+    private final RealEstateAgentCommandToRealEstateAgent toAgent;
+    private final RealEstateAgentToRealEstateAgentCommand toAgentCommand;
 
-    public RealEstateAgentServiceImpl(RealEstateAgentRepository repository) {
+    public RealEstateAgentServiceImpl(RealEstateAgentRepository repository,
+                                      RealEstateAgentCommandToRealEstateAgent toAgent,
+                                      RealEstateAgentToRealEstateAgentCommand toAgentCommand) {
         this.repository = repository;
+        this.toAgent = toAgent;
+        this.toAgentCommand = toAgentCommand;
     }
 
     @Override
@@ -30,5 +39,23 @@ public class RealEstateAgentServiceImpl implements RealEstateAgentService {
         Set<RealEstateAgent> agents = new HashSet<>();
         repository.findAll().iterator().forEachRemaining(agents :: add);
         return agents;
+    }
+
+    @Override
+    public RealEstateAgentCommand findCommandById(Long id) {
+        return toAgentCommand.convert(getById(id));
+    }
+
+    @Override
+    public RealEstateAgentCommand saveRealEstateAgentCommand(RealEstateAgentCommand command) {
+        RealEstateAgent detachedAgent = toAgent.convert(command);
+        RealEstateAgent savedAgent = repository.save(detachedAgent);
+        System.out.println("Save agent with id=" + savedAgent.getId());
+        return toAgentCommand.convert(savedAgent);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }
