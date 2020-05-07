@@ -8,6 +8,7 @@ import web.example.realestate.domain.people.RealEstateAgent;
 import web.example.realestate.repositories.RealEstateAgentRepository;
 import web.example.realestate.services.RealEstateAgentService;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,11 +43,13 @@ public class RealEstateAgentServiceImpl implements RealEstateAgentService {
     }
 
     @Override
+    @Transactional
     public RealEstateAgentCommand findCommandById(Long id) {
         return toAgentCommand.convert(getById(id));
     }
 
     @Override
+    @Transactional
     public RealEstateAgentCommand saveRealEstateAgentCommand(RealEstateAgentCommand command) {
         RealEstateAgent detachedAgent = toAgent.convert(command);
         RealEstateAgent savedAgent = repository.save(detachedAgent);

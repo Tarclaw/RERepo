@@ -3,7 +3,6 @@ package web.example.realestate.converters;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.ClientCommand;
-import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.commands.RealEstateAgentCommand;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.Contact;
