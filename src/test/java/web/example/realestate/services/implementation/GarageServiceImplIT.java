@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import web.example.realestate.commands.GarageCommand;
 import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
@@ -32,6 +33,7 @@ public class GarageServiceImplIT {
     private GarageToGarageCommand toGarageCommand;
 
     @Test
+    @Transactional
     public void saveGarageCommand() {
         //given
         Garage garage = repository.findGaragesByHasEquipment(OLD_HAS_EQUIPMENT).orElseThrow();

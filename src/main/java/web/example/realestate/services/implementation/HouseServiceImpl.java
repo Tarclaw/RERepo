@@ -8,6 +8,7 @@ import web.example.realestate.domain.building.House;
 import web.example.realestate.repositories.HouseRepository;
 import web.example.realestate.services.HouseService;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,11 +43,13 @@ public class HouseServiceImpl implements HouseService {
     }
 
     @Override
+    @Transactional
     public HouseCommand findCommandById(Long id) {
         return toHouseCommand.convert(getById(id));
     }
 
     @Override
+    @Transactional
     public HouseCommand saveHouseCommand(HouseCommand command) {
         House detachedHouse = toHouse.convert(command);
         House savedHouse = repository.save(detachedHouse);

@@ -8,6 +8,7 @@ import web.example.realestate.domain.building.Garage;
 import web.example.realestate.repositories.GarageRepository;
 import web.example.realestate.services.GarageService;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,11 +43,13 @@ public class GarageServiceImpl implements GarageService {
     }
 
     @Override
+    @Transactional
     public GarageCommand findCommandById(Long id) {
         return toGarageCommand.convert(getById(id));
     }
 
     @Override
+    @Transactional
     public GarageCommand saveGarageCommand(GarageCommand command) {
         Garage detachedGarage = toGarage.convert(command);
         Garage savedGarage = repository.save(detachedGarage);

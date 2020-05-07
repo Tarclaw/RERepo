@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import web.example.realestate.commands.StorageCommand;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
@@ -32,6 +33,7 @@ public class StorageServiceImplIT {
     private StorageToStorageCommand toStorageCommand;
 
     @Test
+    @Transactional
     public void saveStorageCommand() {
         //given
         Storage storage = repository

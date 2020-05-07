@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.FacilityToFacilityCommand;
 import web.example.realestate.domain.building.Facility;
@@ -31,6 +32,7 @@ public class FacilityServiceImplIT {
     private FacilityToFacilityCommand toFacilityCommand;
 
     @Test
+    @Transactional
     public void saveFacilityCommand() {
         //given
         Facility facility = repository.findFacilitiesByDescription(OLD_DESCRIPTION)

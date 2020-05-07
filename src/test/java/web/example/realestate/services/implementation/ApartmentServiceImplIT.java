@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import web.example.realestate.commands.ApartmentCommand;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
 import web.example.realestate.domain.building.Apartment;
@@ -32,6 +33,7 @@ public class ApartmentServiceImplIT {
     private ApartmentToApartmentCommand toApartmentCommand;
 
     @Test
+    @Transactional
     public void saveApartmentCommand() {
         //given
         Apartment apartment = repository.findApartmentsByTotalArea(OLD_TOTAL_AREA).orElseThrow();

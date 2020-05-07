@@ -8,6 +8,7 @@ import web.example.realestate.domain.building.Basement;
 import web.example.realestate.repositories.BasementRepository;
 import web.example.realestate.services.BasementService;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,11 +43,13 @@ public class BasementServiceImpl implements BasementService {
     }
 
     @Override
+    @Transactional
     public BasementCommand findCommandById(Long id) {
         return toBasementCommand.convert(getById(id));
     }
 
     @Override
+    @Transactional
     public BasementCommand saveBasementCommand(BasementCommand command) {
         Basement detachetBasement = toBasement.convert(command);
         Basement savedBasement = repository.save(detachetBasement);

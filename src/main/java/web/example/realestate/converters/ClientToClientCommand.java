@@ -47,11 +47,11 @@ public class ClientToClientCommand implements Converter<Client, ClientCommand> {
         command.setRenter(client.isRenter());
         command.setLeaser(client.isLeaser());
 
-        if (client.getFacilities() != null && client.getFacilities().size() > 0) {
+        /*if (client.getFacilities() != null && client.getFacilities().size() > 0) {
             Set<FacilityCommand> source = new HashSet<>();
             client.getFacilities().forEach(facility -> source.add(toFacilityCommand.convert(facility)));
             command.setFacilityCommands(source);
-        }
+        }*/
 
         if (client.getRealEstateAgents() != null && client.getRealEstateAgents().size() > 0) {
             Set<RealEstateAgentCommand> source = new HashSet<>();

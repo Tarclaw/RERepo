@@ -49,6 +49,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     @Override
+    @Transactional
     public ApartmentCommand saveApartmentCommand(ApartmentCommand command) {
         Apartment detachedApartment = toApartment.convert(command);
         Apartment savedApartment = repository.save(detachedApartment);

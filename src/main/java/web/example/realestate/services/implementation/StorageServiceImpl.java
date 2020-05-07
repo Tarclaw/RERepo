@@ -8,6 +8,7 @@ import web.example.realestate.domain.building.Storage;
 import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,11 +43,13 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
+    @Transactional
     public StorageCommand findCommandById(Long id) {
         return toStorageCommand.convert(getById(id));
     }
 
     @Override
+    @Transactional
     public StorageCommand saveStorageCommand(StorageCommand command) {
         Storage detachedStorage = toStorage.convert(command);
         Storage savedStorage = repository.save(detachedStorage);
