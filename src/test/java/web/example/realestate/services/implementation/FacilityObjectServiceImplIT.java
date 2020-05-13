@@ -43,7 +43,7 @@ public class FacilityObjectServiceImplIT {
         //given
         FacilityObject facilityObject = repository
                 .findFacilityObjectsByPriceIsLessThan(OLD_PRICE)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException());
         facilityObject.setPrice(NEW_PRICE);
 
         //when

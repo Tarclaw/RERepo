@@ -68,6 +68,6 @@ class ApartmentToApartmentCommandTest {
         assertEquals(DESCRIPTION, command.getDescription());
         assertEquals(PUBLISHED_DATE_TIME, command.getPublishedDateTime());
         assertEquals(CLOSED_DATE_TIME, command.getClosedDateTime());
-        assertEquals(ADDRESS_ID, command.getAddressCommand().getId());
+        assertEquals(ADDRESS_ID, command.getAddress().getId());
     }
 }

@@ -9,6 +9,7 @@ import java.util.Objects;
 public class Address implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer postcode;
     private Integer facilityNumber;

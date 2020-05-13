@@ -36,7 +36,7 @@ public class ApartmentServiceImplIT {
     @Transactional
     public void saveApartmentCommand() {
         //given
-        Apartment apartment = repository.findApartmentsByTotalArea(OLD_TOTAL_AREA).orElseThrow();
+        Apartment apartment = repository.findApartmentsByTotalArea(OLD_TOTAL_AREA).orElseThrow(() -> new RuntimeException());
         apartment.setTotalArea(NEW_TOTAL_AREA);
 
         //when

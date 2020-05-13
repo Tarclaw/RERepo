@@ -11,20 +11,21 @@ import java.util.Set;
 
 @Entity
 @Table(name = "facilities")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Facility implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer numberOfRooms;
     private Integer totalArea;
     private String description;
     private LocalDateTime publishedDateTime;
     private LocalDateTime closedDateTime;
+
     @Lob
     private List<Byte[]> photos;
+
     @Lob
     private List<Byte[]> videos;
 
@@ -34,7 +35,10 @@ public class Facility implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private FacilityObject facilityObject;
 
-    @ManyToMany(mappedBy = "facilities")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "clients_facilities",
+            joinColumns = @JoinColumn(name = "facility_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id"))
     private Set<Client> clients;
 
     public Facility() {}

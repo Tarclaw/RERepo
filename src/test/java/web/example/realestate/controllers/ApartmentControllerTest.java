@@ -59,13 +59,13 @@ class ApartmentControllerTest {
         String viewName = controller.getApartmentById("1", model);
 
         //then
-        assertEquals("apartments/show", viewName);
+        assertEquals("apartment/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("apartment"), argumentCaptor.capture());
 
-        mockMvc.perform(get("/apartments/1/show"))
+        mockMvc.perform(get("/apartment/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("apartments/show"))
+                .andExpect(view().name("apartment/show"))
                 .andExpect(model().attributeExists("apartment"));
     }
 
@@ -82,15 +82,15 @@ class ApartmentControllerTest {
         String viewName = controller.getAllApartments(model);
 
         //then
-        assertEquals("apartment", viewName);
+        assertEquals("apartments", viewName);
         verify(service, times(1)).getApartments();
         verify(model, times(1)).addAttribute(eq("apartments"), argumentCaptor.capture());
         Set<Apartment> setInController = argumentCaptor.getValue();
         assertEquals(1, setInController.size());
 
-        mockMvc.perform(get("/apartments"))
+        mockMvc.perform(get("/apartment"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("apartment"))
+                .andExpect(view().name("apartments"))
                 .andExpect(model().attributeExists("apartments"));
     }
 
@@ -152,7 +152,7 @@ class ApartmentControllerTest {
         assertEquals("redirect:/", viewName);
         verify(service, times(1)).deleteById(anyLong());
 
-        mockMvc.perform(get("/apartments/1/delete"))
+        mockMvc.perform(get("/apartment/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
     }

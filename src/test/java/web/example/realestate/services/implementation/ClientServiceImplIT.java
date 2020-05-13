@@ -45,7 +45,7 @@ public class ClientServiceImplIT {
     @Transactional
     public void saveClientCommand() {
         //given
-        Client client = repository.findClientsByLastName(OLD_SURNAME).orElseThrow();
+        Client client = repository.findClientsByLastName(OLD_SURNAME).orElseThrow(() -> new RuntimeException());
         client.setLastName(NEW_SURNAME);
 
         //when

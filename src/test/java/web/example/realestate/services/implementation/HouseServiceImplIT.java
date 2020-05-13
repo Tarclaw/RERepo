@@ -36,7 +36,7 @@ public class HouseServiceImplIT {
     @Transactional
     public void saveHouseCommand() {
         //given
-        House house = repository.findHousesByHasGarden(OLD_HAS_GARDEN).orElseThrow();
+        House house = repository.findHousesByHasGarden(OLD_HAS_GARDEN).orElseThrow(() -> new RuntimeException());
         house.setHasGarden(NEW_HAS_GARDEN);
 
         //when

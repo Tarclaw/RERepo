@@ -15,16 +15,16 @@ public class ApartmentController {
         this.service = service;
     }
 
-    @GetMapping("/apartments/{id}/show")
+    @GetMapping("/apartment/{id}/show")
     public String getApartmentById(@PathVariable String id, Model model) {
         model.addAttribute("apartment", service.getById(Long.valueOf(id)));
-        return "apartments/show";
+        return "apartment/show";
     }
 
-    @GetMapping("/apartments")
+    @GetMapping("/apartment")
     public String getAllApartments(Model model) {
         model.addAttribute("apartments", service.getApartments());
-        return "apartment";
+        return "apartments";
     }
 
     @GetMapping("/apartment/new")
@@ -45,7 +45,7 @@ public class ApartmentController {
         return "redirect:/apartment/" + savedCommand.getId() + "/show";
     }
 
-    @GetMapping("/apartments/{id}/delete")
+    @GetMapping("/apartment/{id}/delete")
     public String deleteById(@PathVariable String id) {
         service.deleteById(Long.valueOf(id));
         return "redirect:/";

@@ -36,7 +36,7 @@ public class GarageServiceImplIT {
     @Transactional
     public void saveGarageCommand() {
         //given
-        Garage garage = repository.findGaragesByHasEquipment(OLD_HAS_EQUIPMENT).orElseThrow();
+        Garage garage = repository.findGaragesByHasEquipment(OLD_HAS_EQUIPMENT).orElseThrow(() -> new RuntimeException());
         garage.setHasEquipment(NEW_HAS_EQUIPMENT);
 
         //when

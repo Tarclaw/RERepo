@@ -11,7 +11,7 @@ public class ApartmentCommand {
     private String description;
     private LocalDateTime publishedDateTime;
     private LocalDateTime closedDateTime;
-    private AddressCommand addressCommand;
+    private AddressCommand address;
 
     public ApartmentCommand() {
     }
@@ -80,11 +80,11 @@ public class ApartmentCommand {
         this.closedDateTime = closedDateTime;
     }
 
-    public AddressCommand getAddressCommand() {
-        return addressCommand;
+    public AddressCommand getAddress() {
+        return address;
     }
 
-    public void setAddressCommand(AddressCommand addressCommand) {
-        this.addressCommand = addressCommand;
+    public void setAddress(AddressCommand address) {
+        this.address = address;
     }
 }

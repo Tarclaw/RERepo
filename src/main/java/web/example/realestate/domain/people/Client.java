@@ -17,10 +17,7 @@ public class Client extends Person {
     @ManyToMany(mappedBy = "clients")
     private Set<RealEstateAgent> realEstateAgents;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "clients_facilities",
-            joinColumns = @JoinColumn(name = "client_id"),
-            inverseJoinColumns = @JoinColumn(name = "facility_id"))
+    @ManyToMany(mappedBy = "clients")
     private Set<Facility> facilities;
 
     public Client() {}

@@ -36,7 +36,7 @@ public class BasementServiceImplIT {
     @Transactional
     public void saveBasementCommand() {
         //given
-        Basement basement = repository.findBasementsByItCommercial(OLD_VALUE).orElseThrow();
+        Basement basement = repository.findBasementsByItCommercial(OLD_VALUE).orElseThrow(() -> new RuntimeException());
         basement.setItCommercial(NEW_VALUE);
 
         //when

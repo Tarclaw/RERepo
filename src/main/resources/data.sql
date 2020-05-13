@@ -12,23 +12,28 @@ INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, a
 INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(5, 12000.00, 5000.00, 1200000.00, 'FOR_SALE', 2);
 INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(6, 33000.00, 9000.00, 3300000.00, 'SOLD', 2);
 
-INSERT INTO apartments(id, description, number_of_rooms, published_date_time, total_area, facility_object_id, apartment_number, floor) VALUES(1, 'top rated xata', 5, '2020-04-27 19:53:26.298205', 150, 1, 788, 25);
-
 INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(6, 'generic description', 5, '2020-04-27 19:53:26.298205', 150, 6);
 
-INSERT INTO basements(id, description, number_of_rooms, published_date_time, total_area, facility_object_id, it_commercial) VALUES(2, 'barbershop, ready business model', 3, '2020-04-27 19:53:26.298205', 200, 2, true);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(1, 'top rated xata', 5, '2020-04-27 19:53:26.298205', 150, 1);
+INSERT INTO apartments(id, apartment_number, floor) VALUES(1, 788, 25);
 
-INSERT INTO garages(id, description, number_of_rooms, published_date_time, total_area, facility_object_id, has_equipment, has_pit) VALUES(3, 'vehicles repair', 3, '2020-04-27 19:53:26.298205', 600, 3, true, true);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(2, 'barbershop, ready business model', 3, '2020-04-27 19:53:26.298205', 200, 2);
+INSERT INTO basements(id, it_commercial) VALUES(2, true);
 
-INSERT INTO houses(id, description, number_of_rooms, published_date_time, total_area, facility_object_id, has_backyard, has_garden, number_of_storeys) VALUES(4, 'new home with repair for big family', 8, '2020-04-27 19:53:26.298205', 300, 4, true, true, 3);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(3, 'vehicles repair', 3, '2020-04-27 19:53:26.298205', 600, 3);
+INSERT INTO garages(id, has_equipment, has_pit) VALUES(3, true, true);
 
-INSERT INTO storages(id, description, number_of_rooms, published_date_time, total_area, facility_object_id, commercial_capacity, has_cargo_equipment) VALUES(5, 'huge storage for drug dealers', 3, '2020-04-27 19:53:26.298205', 700, 5, 600, true);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(4, 'new home with repair for big family', 8, '2020-04-27 19:53:26.298205', 300, 4);
+INSERT INTO houses(id, has_backyard, has_garden, number_of_storeys) VALUES(4, true, true, 3);
 
-INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 255, 100305, 'Manhattan', 1);
-INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 28, 55322, 'Madison Ave', 2);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(5, 'huge storage for drug dealers', 3, '2020-04-27 19:53:26.298205', 700, 5);
+INSERT INTO storages(id, commercial_capacity, has_cargo_equipment) VALUES(5, 600, true);
+
+INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 255, 100305, 'Manhattan', 5);
+INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 28, 55322, 'Madison Ave', 4);
 INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 143, 200645, 'Bronx', 3);
-INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 657, 99887, 'Brooklyn', 4);
-INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 665, 888132, 'Queens', 5);
+INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 657, 99887, 'Brooklyn', 2);
+INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 665, 888132, 'Queens', 1);
 
 INSERT INTO clients_agents(agent_id, client_id) VALUES(1, 3);
 INSERT INTO clients_agents(agent_id, client_id) VALUES(1, 4);

@@ -36,7 +36,10 @@ class ApartmentCommandToApartmentTest {
 
     @Test
     void testEmptyObject() {
-        assertNotNull(toApartment.convert(new ApartmentCommand()));
+        AddressCommand addressCommand = new AddressCommand();
+        ApartmentCommand apartmentCommand = new ApartmentCommand();
+        apartmentCommand.setAddress(addressCommand);
+        assertNotNull(toApartment.convert(apartmentCommand));
     }
 
     @Test
@@ -54,7 +57,7 @@ class ApartmentCommandToApartmentTest {
         command.setDescription(DESCRIPTION);
         command.setPublishedDateTime(PUBLISHED_DATE_TIME);
         command.setClosedDateTime(CLOSED_DATE_TIME);
-        command.setAddressCommand(addressCommand);
+        command.setAddress(addressCommand);
 
         //when
         Apartment apartment = toApartment.convert(command);

@@ -44,21 +44,32 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public ApartmentCommand findCommandById(Long id) {
+    public ApartmentCommand findCommandById(final Long id) {
         return toApartmentCommand.convert(getById(id));
     }
 
     @Override
     @Transactional
-    public ApartmentCommand saveApartmentCommand(ApartmentCommand command) {
+    public ApartmentCommand saveApartmentCommand(final ApartmentCommand command) {
+        return command.getId() == null ? saveDetached(command) : saveAttached(command);
+    }
+
+    private ApartmentCommand saveDetached(final ApartmentCommand command) {
         Apartment detachedApartment = toApartment.convert(command);
         Apartment savedApartment = repository.save(detachedApartment);
         System.out.println("Save Apartment with id=" + savedApartment.getId());
         return toApartmentCommand.convert(savedApartment);
     }
 
+    private ApartmentCommand saveAttached(final ApartmentCommand command) {
+        Apartment attachedApartment = getById(command.getId());
+        Apartment updatedApartment = toApartment.convertWhenAttached(attachedApartment, command);
+        System.out.println("Update Apartment with id=" + updatedApartment.getId());
+        return toApartmentCommand.convert(updatedApartment);
+    }
+
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(final Long id) {
         repository.deleteById(id);
     }
 }

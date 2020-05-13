@@ -38,7 +38,7 @@ public class StorageServiceImplIT {
         //given
         Storage storage = repository
                 .findStoragesByCommercialCapacityGreaterThan(OLD_COMMERCIAL_CAPACITY)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException());
         storage.setCommercialCapacity(NEW_COMMERCIAL_CAPACITY);
 
         //when

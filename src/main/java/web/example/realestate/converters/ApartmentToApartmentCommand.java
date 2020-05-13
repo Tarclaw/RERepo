@@ -29,7 +29,7 @@ public class ApartmentToApartmentCommand implements Converter<Apartment, Apartme
         command.setDescription(apartment.getDescription());
         command.setPublishedDateTime(apartment.getPublishedDateTime());
         command.setClosedDateTime(apartment.getClosedDateTime());
-        command.setAddressCommand(toAddressCommand.convert(apartment.getAddress()));
+        command.setAddress(toAddressCommand.convert(apartment.getAddress()));
 
         return command;
     }

@@ -41,7 +41,7 @@ public class RealEstateAgentServiceImplIT {
         //given
         RealEstateAgent agent = repository
                 .findRealEstateAgentsByFirstNameAndLastName(OLD_NAME, OLD_SURNAME)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException());
         agent.setFirstName(NEW_NAME);
         agent.setLastName(NEW_SURNAME);
 
