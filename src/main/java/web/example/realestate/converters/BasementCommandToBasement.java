@@ -2,11 +2,11 @@ package web.example.realestate.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Basement;
 
 @Component
-public class BasementCommandToBasement implements Converter<BasementCommand, Basement> {
+public class BasementCommandToBasement implements Converter<FacilityCommand, Basement> {
 
     private final AddressCommandToAddress toAddress;
 
@@ -15,20 +15,20 @@ public class BasementCommandToBasement implements Converter<BasementCommand, Bas
     }
 
     @Override
-    public Basement convert(BasementCommand basementCommand) {
-        if (basementCommand == null) {
+    public Basement convert(final FacilityCommand command) {
+        if (command == null) {
             return null;
         }
 
         final Basement basement = new Basement();
-        basement.setId(basementCommand.getId());
-        basement.setNumberOfRooms(basementCommand.getNumberOfRooms());
-        basement.setTotalArea(basementCommand.getTotalArea());
-        basement.setDescription(basementCommand.getDescription());
-        basement.setItCommercial(basementCommand.isItCommercial());
-        basement.setPublishedDateTime(basementCommand.getPublishedDateTime());
-        basement.setClosedDateTime(basementCommand.getClosedDateTime());
-        basement.setAddress(toAddress.convert(basementCommand.getAddressCommand()));
+        basement.setId(command.getId());
+        basement.setNumberOfRooms(command.getNumberOfRooms());
+        basement.setTotalArea(command.getTotalArea());
+        basement.setDescription(command.getDescription());
+        basement.setItCommercial(command.isItCommercial());
+        basement.setPublishedDateTime(command.getPublishedDateTime());
+        basement.setClosedDateTime(command.getClosedDateTime());
+        basement.setAddress(toAddress.convert(command.getAddress()));
 
         return basement;
     }

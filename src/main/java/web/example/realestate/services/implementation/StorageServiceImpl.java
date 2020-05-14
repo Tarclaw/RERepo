@@ -1,7 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
-import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
@@ -44,13 +44,13 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     @Transactional
-    public StorageCommand findCommandById(Long id) {
+    public FacilityCommand findCommandById(Long id) {
         return toStorageCommand.convert(getById(id));
     }
 
     @Override
     @Transactional
-    public StorageCommand saveStorageCommand(StorageCommand command) {
+    public FacilityCommand saveStorageCommand(FacilityCommand command) {
         Storage detachedStorage = toStorage.convert(command);
         Storage savedStorage = repository.save(detachedStorage);
         System.out.println("Save Storage with id=" + savedStorage.getId());

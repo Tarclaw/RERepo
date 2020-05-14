@@ -1,6 +1,6 @@
 package web.example.realestate.services;
 
-import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Garage;
 
 import java.util.Set;
@@ -11,9 +11,9 @@ public interface GarageService {
 
     Set<Garage> getGarages();
 
-    GarageCommand findCommandById(Long id);
+    FacilityCommand findCommandById(Long id);
 
-    GarageCommand saveGarageCommand(GarageCommand command);
+    FacilityCommand saveGarageCommand(FacilityCommand command);
 
     void deleteById(Long id);
 }

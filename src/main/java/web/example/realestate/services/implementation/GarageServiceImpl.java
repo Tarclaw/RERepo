@@ -1,7 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
-import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.GarageCommandToGarage;
 import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
@@ -44,13 +44,13 @@ public class GarageServiceImpl implements GarageService {
 
     @Override
     @Transactional
-    public GarageCommand findCommandById(Long id) {
+    public FacilityCommand findCommandById(Long id) {
         return toGarageCommand.convert(getById(id));
     }
 
     @Override
     @Transactional
-    public GarageCommand saveGarageCommand(GarageCommand command) {
+    public FacilityCommand saveGarageCommand(FacilityCommand command) {
         Garage detachedGarage = toGarage.convert(command);
         Garage savedGarage = repository.save(detachedGarage);
         System.out.println("Save Garage with id=" + savedGarage.getId());

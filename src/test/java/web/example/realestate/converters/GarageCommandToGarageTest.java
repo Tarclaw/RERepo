@@ -3,7 +3,7 @@ package web.example.realestate.converters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.AddressCommand;
-import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Garage;
 
 import java.time.LocalDateTime;
@@ -36,7 +36,7 @@ class GarageCommandToGarageTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toGarage.convert(new GarageCommand()));
+        assertNotNull(toGarage.convert(new FacilityCommand()));
     }
 
     @Test
@@ -45,7 +45,7 @@ class GarageCommandToGarageTest {
         AddressCommand addressCommand = new AddressCommand();
         addressCommand.setId(ADDRESS_ID);
 
-        GarageCommand command = new GarageCommand();
+        FacilityCommand command = new FacilityCommand();
         command.setId(ID);
         command.setNumberOfRooms(NUMBER_OF_ROOMS);
         command.setTotalArea(TOTAL_AREA);
@@ -54,7 +54,7 @@ class GarageCommandToGarageTest {
         command.setClosedDateTime(CLOSED_DATE_TIME);
         command.setHasEquipment(HAS_EQUIPMENT);
         command.setHasPit(HAS_PIT);
-        command.setAddressCommand(addressCommand);
+        command.setAddress(addressCommand);
 
         //when
         Garage garage = toGarage.convert(command);

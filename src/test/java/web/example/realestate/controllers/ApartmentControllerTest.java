@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
-import web.example.realestate.commands.ApartmentCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Apartment;
 import web.example.realestate.services.ApartmentService;
 
@@ -107,8 +107,8 @@ class ApartmentControllerTest {
     @Test
     void updateApartment() throws Exception {
         //given
-        when(service.findCommandById(anyLong())).thenReturn(new ApartmentCommand());
-        ArgumentCaptor<ApartmentCommand> argumentCaptor = ArgumentCaptor.forClass(ApartmentCommand.class);
+        when(service.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        ArgumentCaptor<FacilityCommand> argumentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
         String viewName = controller.updateApartment("1", model);
@@ -128,7 +128,7 @@ class ApartmentControllerTest {
     @Test
     void saveOrUpdate() throws Exception {
         //given
-        ApartmentCommand source = new ApartmentCommand();
+        FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(service.saveApartmentCommand(any())).thenReturn(source);
 

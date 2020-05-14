@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
 import web.example.realestate.repositories.GarageRepository;
@@ -40,7 +40,7 @@ public class GarageServiceImplIT {
         garage.setHasEquipment(NEW_HAS_EQUIPMENT);
 
         //when
-        GarageCommand command = service.saveGarageCommand(toGarageCommand.convert(garage));
+        FacilityCommand command = service.saveGarageCommand(toGarageCommand.convert(garage));
 
         //then
         assertNotNull(command);

@@ -3,7 +3,7 @@ package web.example.realestate.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.GarageService;
 
 @Controller
@@ -29,7 +29,7 @@ public class GarageController {
 
     @GetMapping("/garage/new")
     public String newGarage(Model model) {
-        model.addAttribute("garage", new GarageCommand());
+        model.addAttribute("garage", new FacilityCommand());
         return "garage/garageForm";
     }
 
@@ -40,8 +40,8 @@ public class GarageController {
     }
 
     @PostMapping("/garage")
-    public String saveOrUpdate(@ModelAttribute GarageCommand command) {
-        GarageCommand savedCommand = service.saveGarageCommand(command);
+    public String saveOrUpdate(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = service.saveGarageCommand(command);
         return "redirect:/garage/" + savedCommand.getId() + "/show";
     }
 

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotEquals;
 @SpringBootTest
 public class FacilityServiceImplIT {
 
-    private static final String OLD_DESCRIPTION = "generic description";
+    private static final String OLD_DESCRIPTION = "top rated xata";
     private static final String NEW_DESCRIPTION = "decent apartment";
 
     @Autowired
@@ -46,6 +46,5 @@ public class FacilityServiceImplIT {
         //then
         assertNotEquals(OLD_DESCRIPTION, savedCommand.getDescription());
         assertEquals(NEW_DESCRIPTION, savedCommand.getDescription());
-        //assertEquals(facility.getId(), savedCommand.getId()); //todo wtf id
     }
 }

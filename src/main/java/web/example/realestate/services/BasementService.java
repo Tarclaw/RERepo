@@ -1,6 +1,6 @@
 package web.example.realestate.services;
 
-import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Basement;
 import java.util.Set;
 
@@ -10,9 +10,9 @@ public interface BasementService {
 
     Set<Basement> getBasements();
 
-    BasementCommand findCommandById(Long id);
+    FacilityCommand findCommandById(Long id);
 
-    BasementCommand saveBasementCommand(BasementCommand command);
+    FacilityCommand saveBasementCommand(FacilityCommand command);
 
     void deleteById(Long id);
 }

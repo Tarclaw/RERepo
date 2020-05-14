@@ -3,7 +3,7 @@ package web.example.realestate.converters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.AddressCommand;
-import web.example.realestate.commands.ApartmentCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Apartment;
 
 import java.time.LocalDateTime;
@@ -37,9 +37,9 @@ class ApartmentCommandToApartmentTest {
     @Test
     void testEmptyObject() {
         AddressCommand addressCommand = new AddressCommand();
-        ApartmentCommand apartmentCommand = new ApartmentCommand();
-        apartmentCommand.setAddress(addressCommand);
-        assertNotNull(toApartment.convert(apartmentCommand));
+        FacilityCommand command = new FacilityCommand();
+        command.setAddress(addressCommand);
+        assertNotNull(toApartment.convert(command));
     }
 
     @Test
@@ -48,7 +48,7 @@ class ApartmentCommandToApartmentTest {
         AddressCommand addressCommand = new AddressCommand();
         addressCommand.setId(ADDRESS_ID);
 
-        ApartmentCommand command = new ApartmentCommand();
+        FacilityCommand command = new FacilityCommand();
         command.setId(ID);
         command.setNumberOfRooms(NUMBER_OF_ROOMS);
         command.setTotalArea(TOTAL_AREA);

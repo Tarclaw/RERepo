@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.BasementToBasementCommand;
 import web.example.realestate.domain.building.Basement;
 import web.example.realestate.repositories.BasementRepository;
@@ -40,7 +40,7 @@ public class BasementServiceImplIT {
         basement.setItCommercial(NEW_VALUE);
 
         //when
-        BasementCommand savedCommand = service.saveBasementCommand(toBasementCommand.convert(basement));
+        FacilityCommand savedCommand = service.saveBasementCommand(toBasementCommand.convert(basement));
 
         //then
         assertNotNull(savedCommand);

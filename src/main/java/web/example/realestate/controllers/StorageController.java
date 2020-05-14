@@ -3,7 +3,7 @@ package web.example.realestate.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.StorageService;
 
 @Controller
@@ -29,7 +29,7 @@ public class StorageController {
 
     @GetMapping("/storage/new")
     public String newStorage(Model model) {
-        model.addAttribute("storage", new StorageCommand());
+        model.addAttribute("storage", new FacilityCommand());
         return "storage/storageForm";
     }
 
@@ -40,8 +40,8 @@ public class StorageController {
     }
 
     @PostMapping("/storage")
-    public String saveOrUpdate(@ModelAttribute StorageCommand command) {
-        StorageCommand savedCommand = service.saveStorageCommand(command);
+    public String saveOrUpdate(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = service.saveStorageCommand(command);
         return "redirect:/storage/" + savedCommand.getId() + "/show";
     }
 

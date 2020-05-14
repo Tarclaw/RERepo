@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.BasementCommandToBasement;
 import web.example.realestate.converters.BasementToBasementCommand;
 import web.example.realestate.domain.building.Basement;
@@ -82,12 +82,12 @@ class BasementServiceImplTest {
         //given
         when(repository.findById(anyLong())).thenReturn(Optional.of(new Basement()));
 
-        BasementCommand sourceCommand = new BasementCommand();
+        FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
         when(toBasementCommand.convert(any())).thenReturn(sourceCommand);
 
         //when
-        BasementCommand command = service.findCommandById(1L);
+        FacilityCommand command = service.findCommandById(1L);
 
         //then
         assertNotNull(command);

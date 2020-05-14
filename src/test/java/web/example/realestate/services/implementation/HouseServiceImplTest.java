@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import web.example.realestate.commands.HouseCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.HouseCommandToHouse;
 import web.example.realestate.converters.HouseToHouseCommand;
 import web.example.realestate.domain.building.House;
@@ -79,12 +79,12 @@ class HouseServiceImplTest {
     void findCommandById() {
         //given
         when(repository.findById(anyLong())).thenReturn(Optional.of(new House()));
-        HouseCommand source = new HouseCommand();
+        FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(toHouseCommand.convert(any())).thenReturn(source);
 
         //when
-        HouseCommand command = service.findCommandById(1L);
+        FacilityCommand command = service.findCommandById(1L);
 
         //then
         assertNotNull(command);

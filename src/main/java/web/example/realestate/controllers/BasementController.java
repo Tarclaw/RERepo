@@ -3,8 +3,7 @@ package web.example.realestate.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import web.example.realestate.commands.BasementCommand;
-import web.example.realestate.domain.building.Basement;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.BasementService;
 
 @Controller
@@ -30,7 +29,7 @@ public class BasementController {
 
     @GetMapping("/basement/new")
     public String newBasement(Model model) {
-        model.addAttribute("basement", new BasementCommand());
+        model.addAttribute("basement", new FacilityCommand());
         return "basement/basementForm";
     }
 
@@ -41,8 +40,8 @@ public class BasementController {
     }
 
     @PostMapping("/basement")
-    public String saveOrUpdate(@ModelAttribute BasementCommand command) {
-        BasementCommand savedCommand = service.saveBasementCommand(command);
+    public String saveOrUpdate(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = service.saveBasementCommand(command);
         return "redirect:/basement/" + savedCommand.getId() + "/show";
     }
 

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.GarageCommandToGarage;
 import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
@@ -78,12 +78,12 @@ class GarageServiceImplTest {
     void findCommandById() {
         //given
         when(repository.findById(anyLong())).thenReturn(Optional.of(new Garage()));
-        GarageCommand source = new GarageCommand();
+        FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(toGarageCommand.convert(any())).thenReturn(source);
 
         //when
-        GarageCommand command = service.findCommandById(1L);
+        FacilityCommand command = service.findCommandById(1L);
 
         //then
         assertNotNull(command);

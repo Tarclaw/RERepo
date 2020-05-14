@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import web.example.realestate.commands.HouseCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.HouseService;
 
 @Controller
@@ -32,7 +32,7 @@ public class HouseController {
 
     @GetMapping("/house/new")
     public String newHouse(Model model) {
-        model.addAttribute("house", new HouseCommand());
+        model.addAttribute("house", new FacilityCommand());
         return "house/houseForm";
     }
 
@@ -43,8 +43,8 @@ public class HouseController {
     }
 
     @PostMapping("/house")
-    public String saveOrUpdate(@ModelAttribute HouseCommand command) {
-        HouseCommand savedCommand = service.saveHouseCommand(command);
+    public String saveOrUpdate(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = service.saveHouseCommand(command);
         return "redirect:/house/" + savedCommand.getId() + "/show";
     }
 

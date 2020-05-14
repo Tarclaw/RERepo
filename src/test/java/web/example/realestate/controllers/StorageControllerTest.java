@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
-import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Storage;
 import web.example.realestate.services.StorageService;
 
@@ -99,7 +99,7 @@ class StorageControllerTest {
     @Test
     void newStorage() throws Exception {
         //given
-        ArgumentCaptor<StorageCommand> commandCaptor = ArgumentCaptor.forClass(StorageCommand.class);
+        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
         String viewName = controller.newStorage(model);
@@ -117,8 +117,8 @@ class StorageControllerTest {
     @Test
     void updateStorage() throws Exception {
         //given
-        when(service.findCommandById(anyLong())).thenReturn(new StorageCommand());
-        ArgumentCaptor<StorageCommand> commandCaptor = ArgumentCaptor.forClass(StorageCommand.class);
+        when(service.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
         String viewName = controller.updateStorage("1", model);
@@ -137,7 +137,7 @@ class StorageControllerTest {
     @Test
     void saveOrUpdate() throws Exception {
         //given
-        StorageCommand source = new StorageCommand();
+        FacilityCommand source = new FacilityCommand();
         source.setId(1L);
 
         when(service.saveStorageCommand(any())).thenReturn(source);

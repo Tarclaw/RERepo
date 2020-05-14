@@ -2,6 +2,7 @@ package web.example.realestate.converters;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.ClientCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.commands.RealEstateAgentCommand;
@@ -32,8 +33,13 @@ class ClientCommandToClientTest {
 
     @BeforeEach
     void setUp() {
-        toClient = new ClientCommandToClient(new FacilityCommandToFacility(new AddressCommandToAddress()),
-                new RealEstateAgentCommandToRealEstateAgent());
+        AddressCommandToAddress toAddress = new AddressCommandToAddress();
+        FacilityCommandToFacility toFacility = new FacilityCommandToFacility(new ApartmentCommandToApartment(toAddress),
+                                                                             new BasementCommandToBasement(toAddress),
+                                                                             new GarageCommandToGarage(toAddress),
+                                                                             new HouseCommandToHouse(toAddress),
+                                                                             new StorageCommandToStorage(toAddress));
+        toClient = new ClientCommandToClient(toFacility, new RealEstateAgentCommandToRealEstateAgent());
     }
 
     @Test
@@ -63,12 +69,16 @@ class ClientCommandToClientTest {
         command.setRenter(IS_RENTER);
         command.setLeaser(IS_LEASER);
 
-        FacilityCommand facilityCommand1 = new FacilityCommand();
-        facilityCommand1.setId(FACILITY_ID_1);
-        FacilityCommand facilityCommand2 = new FacilityCommand();
-        facilityCommand2.setId(FACILITY_ID_2);
-        command.getFacilityCommands().add(facilityCommand1);
-        command.getFacilityCommands().add(facilityCommand2);
+        FacilityCommand apartment = new FacilityCommand();
+        apartment.setId(FACILITY_ID_1);
+        apartment.setApartment(true);
+        apartment.setAddress(new AddressCommand());
+        FacilityCommand basement = new FacilityCommand();
+        basement.setId(FACILITY_ID_2);
+        basement.setBasement(true);
+        basement.setAddress(new AddressCommand());
+        command.getFacilityCommands().add(apartment);
+        command.getFacilityCommands().add(basement);
 
         RealEstateAgentCommand agentCommand1 = new RealEstateAgentCommand();
         agentCommand1.setLogin(AGENT_LOGIN_1);

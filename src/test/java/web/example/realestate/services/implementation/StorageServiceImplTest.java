@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
@@ -79,13 +79,13 @@ class StorageServiceImplTest {
         //given
         Storage storage = new Storage();
         storage.setId(1L);
-        StorageCommand source = new StorageCommand();
+        FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(repository.findById(anyLong())).thenReturn(Optional.of(storage));
         when(toStorageCommand.convert(storage)).thenReturn(source);
 
         //when
-        StorageCommand command = service.findCommandById(1L);
+        FacilityCommand command = service.findCommandById(1L);
 
         //then
         assertNotNull(command);

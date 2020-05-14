@@ -1,7 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
-import web.example.realestate.commands.ApartmentCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.ApartmentCommandToApartment;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
 import web.example.realestate.domain.building.Apartment;
@@ -44,24 +44,24 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public ApartmentCommand findCommandById(final Long id) {
+    public FacilityCommand findCommandById(final Long id) {
         return toApartmentCommand.convert(getById(id));
     }
 
     @Override
     @Transactional
-    public ApartmentCommand saveApartmentCommand(final ApartmentCommand command) {
+    public FacilityCommand saveApartmentCommand(final FacilityCommand command) {
         return command.getId() == null ? saveDetached(command) : saveAttached(command);
     }
 
-    private ApartmentCommand saveDetached(final ApartmentCommand command) {
+    private FacilityCommand saveDetached(final FacilityCommand command) {
         Apartment detachedApartment = toApartment.convert(command);
         Apartment savedApartment = repository.save(detachedApartment);
         System.out.println("Save Apartment with id=" + savedApartment.getId());
         return toApartmentCommand.convert(savedApartment);
     }
 
-    private ApartmentCommand saveAttached(final ApartmentCommand command) {
+    private FacilityCommand saveAttached(final FacilityCommand command) {
         Apartment attachedApartment = getById(command.getId());
         Apartment updatedApartment = toApartment.convertWhenAttached(attachedApartment, command);
         System.out.println("Update Apartment with id=" + updatedApartment.getId());

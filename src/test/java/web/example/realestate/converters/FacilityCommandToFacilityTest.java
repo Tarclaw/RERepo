@@ -26,7 +26,12 @@ public class FacilityCommandToFacilityTest {
 
     @Before
     public void setUp() {
-        toFacility = new FacilityCommandToFacility(new AddressCommandToAddress());
+        AddressCommandToAddress toAddress = new AddressCommandToAddress();
+        toFacility = new FacilityCommandToFacility(new ApartmentCommandToApartment(toAddress),
+                                                   new BasementCommandToBasement(toAddress),
+                                                   new GarageCommandToGarage(toAddress),
+                                                   new HouseCommandToHouse(toAddress),
+                                                   new StorageCommandToStorage(toAddress));
     }
 
     @Test
@@ -36,7 +41,10 @@ public class FacilityCommandToFacilityTest {
 
     @Test
     public void testEmptyValue() {
-        assertNotNull(toFacility.convert(new FacilityCommand()));
+        FacilityCommand command = new FacilityCommand();
+        command.setApartment(true);
+        command.setAddress(new AddressCommand());
+        assertNotNull(toFacility.convert(command));
     }
 
     @Test
@@ -45,17 +53,18 @@ public class FacilityCommandToFacilityTest {
         AddressCommand addressCommand = new AddressCommand();
         addressCommand.setId(ADDRESS_ID);
 
-        FacilityCommand facilityCommand = new FacilityCommand();
-        facilityCommand.setId(ID);
-        facilityCommand.setNumberOfRooms(NUMBER_OF_ROOMS);
-        facilityCommand.setTotalArea(TOTAL_AREA);
-        facilityCommand.setDescription(DESCRIPTION);
-        facilityCommand.setPublishedDateTime(PUBLISHED_DATE_TIME);
-        facilityCommand.setClosedDateTime(CLOSED_DATE_TIME);
-        facilityCommand.setAddressCommand(addressCommand);
+        FacilityCommand command = new FacilityCommand();
+        command.setId(ID);
+        command.setNumberOfRooms(NUMBER_OF_ROOMS);
+        command.setTotalArea(TOTAL_AREA);
+        command.setDescription(DESCRIPTION);
+        command.setPublishedDateTime(PUBLISHED_DATE_TIME);
+        command.setClosedDateTime(CLOSED_DATE_TIME);
+        command.setAddress(addressCommand);
+        command.setApartment(true);
 
         //when
-        Facility facility = toFacility.convert(facilityCommand);
+        Facility facility = toFacility.convert(command);
 
         //then
         assertEquals(ID, facility.getId());

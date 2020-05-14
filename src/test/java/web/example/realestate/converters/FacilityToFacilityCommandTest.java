@@ -64,6 +64,6 @@ public class FacilityToFacilityCommandTest {
         assertEquals(DESCRIPTION, facilityCommand.getDescription());
         assertEquals(PUBLISHED_DATE_TIME, facilityCommand.getPublishedDateTime());
         assertEquals(CLOSED_DATE_TIME, facilityCommand.getClosedDateTime());
-        assertEquals(ADDRESS_ID, facilityCommand.getAddressCommand().getId());
+        assertEquals(ADDRESS_ID, facilityCommand.getAddress().getId());
     }
 }

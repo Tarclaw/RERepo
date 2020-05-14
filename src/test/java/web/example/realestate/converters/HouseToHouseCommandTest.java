@@ -2,7 +2,7 @@ package web.example.realestate.converters;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import web.example.realestate.commands.HouseCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Address;
 import web.example.realestate.domain.building.House;
 
@@ -58,7 +58,7 @@ class HouseToHouseCommandTest {
         house.setAddress(address);
 
         //when
-        HouseCommand command = toHouseCommand.convert(house);
+        FacilityCommand command = toHouseCommand.convert(house);
 
         //then
         assertEquals(ID, command.getId());
@@ -70,6 +70,6 @@ class HouseToHouseCommandTest {
         assertEquals(CLOSED_DATE_TIME, command.getClosedDateTime());
         assertEquals(HAS_BACKYARD, command.isHasBackyard());
         assertEquals(HAS_GARDEN, command.isHasGarden());
-        assertEquals(ADDRESS_ID, command.getAddressCommand().getId());
+        assertEquals(ADDRESS_ID, command.getAddress().getId());
     }
 }

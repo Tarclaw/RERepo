@@ -2,11 +2,11 @@ package web.example.realestate.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import web.example.realestate.commands.HouseCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.House;
 
 @Component
-public class HouseToHouseCommand implements Converter<House, HouseCommand> {
+public class HouseToHouseCommand implements Converter<House, FacilityCommand> {
 
     private final AddressToAddressCommand toAddressCommand;
 
@@ -15,12 +15,12 @@ public class HouseToHouseCommand implements Converter<House, HouseCommand> {
     }
 
     @Override
-    public HouseCommand convert(House house) {
+    public FacilityCommand convert(House house) {
         if (house == null) {
             return null;
         }
 
-        final HouseCommand command = new HouseCommand();
+        final FacilityCommand command = new FacilityCommand();
         command.setId(house.getId());
         command.setNumberOfRooms(house.getNumberOfRooms());
         command.setTotalArea(house.getTotalArea());
@@ -30,7 +30,8 @@ public class HouseToHouseCommand implements Converter<House, HouseCommand> {
         command.setNumberOfStoreys(house.getNumberOfStoreys());
         command.setHasBackyard(house.isHasBackyard());
         command.setHasGarden(house.isHasGarden());
-        command.setAddressCommand(toAddressCommand.convert(house.getAddress()));
+        command.setAddress(toAddressCommand.convert(house.getAddress()));
+        command.setHouse(true);
 
         return command;
     }

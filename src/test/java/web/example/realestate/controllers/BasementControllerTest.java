@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
-import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Basement;
 import web.example.realestate.services.BasementService;
 
@@ -108,8 +108,8 @@ class BasementControllerTest {
     @Test
     void updateBasement() throws Exception {
         //given
-        when(service.findCommandById(anyLong())).thenReturn(new BasementCommand());
-        ArgumentCaptor<BasementCommand> commandCaptor = ArgumentCaptor.forClass(BasementCommand.class);
+        when(service.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
         String viewName = controller.updateBasement("1", model);
@@ -128,11 +128,11 @@ class BasementControllerTest {
     @Test
     void saveOrUpdate() throws Exception {
         //given
-        BasementCommand sourceCommand = new BasementCommand();
+        FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
 
         when(service.saveBasementCommand(any())).thenReturn(sourceCommand);
-        ArgumentCaptor<BasementCommand> commandCaptor = ArgumentCaptor.forClass(BasementCommand.class);
+        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
         String viewName = controller.saveOrUpdate(sourceCommand);

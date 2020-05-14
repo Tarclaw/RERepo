@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import web.example.realestate.commands.HouseCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.HouseToHouseCommand;
 import web.example.realestate.domain.building.House;
 import web.example.realestate.repositories.HouseRepository;
@@ -40,7 +40,7 @@ public class HouseServiceImplIT {
         house.setHasGarden(NEW_HAS_GARDEN);
 
         //when
-        HouseCommand command = service.saveHouseCommand(toHouseCommand.convert(house));
+        FacilityCommand command = service.saveHouseCommand(toHouseCommand.convert(house));
 
         //then
         assertNotNull(command);

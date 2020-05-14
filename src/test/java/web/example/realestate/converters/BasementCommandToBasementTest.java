@@ -3,8 +3,7 @@ package web.example.realestate.converters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.AddressCommand;
-import web.example.realestate.commands.BasementCommand;
-import web.example.realestate.domain.building.Address;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Basement;
 
 import java.time.LocalDateTime;
@@ -37,7 +36,7 @@ class BasementCommandToBasementTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toBasement.convert(new BasementCommand()));
+        assertNotNull(toBasement.convert(new FacilityCommand()));
     }
 
     @Test
@@ -46,7 +45,7 @@ class BasementCommandToBasementTest {
         AddressCommand addressCommand = new AddressCommand();
         addressCommand.setId(ADDRESS_ID);
 
-        BasementCommand command = new BasementCommand();
+        FacilityCommand command = new FacilityCommand();
         command.setId(ID);
         command.setNumberOfRooms(NUMBER_OF_ROOMS);
         command.setTotalArea(TOTAL_AREA);
@@ -54,7 +53,7 @@ class BasementCommandToBasementTest {
         command.setItCommercial(IT_COMMERCIAL);
         command.setPublishedDateTime(PUBLISHED_DATE_TIME);
         command.setClosedDateTime(CLOSED_DATE_TIME);
-        command.setAddressCommand(addressCommand);
+        command.setAddress(addressCommand);
 
         //when
         Basement basement = toBasement.convert(command);

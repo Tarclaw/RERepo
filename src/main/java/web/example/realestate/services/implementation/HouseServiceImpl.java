@@ -1,7 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
-import web.example.realestate.commands.HouseCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.HouseCommandToHouse;
 import web.example.realestate.converters.HouseToHouseCommand;
 import web.example.realestate.domain.building.House;
@@ -44,13 +44,13 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     @Transactional
-    public HouseCommand findCommandById(Long id) {
+    public FacilityCommand findCommandById(Long id) {
         return toHouseCommand.convert(getById(id));
     }
 
     @Override
     @Transactional
-    public HouseCommand saveHouseCommand(HouseCommand command) {
+    public FacilityCommand saveHouseCommand(FacilityCommand command) {
         House detachedHouse = toHouse.convert(command);
         House savedHouse = repository.save(detachedHouse);
         System.out.println("Save House with id=" + savedHouse.getId());

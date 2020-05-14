@@ -3,7 +3,7 @@ package web.example.realestate.converters;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
-import web.example.realestate.domain.building.Facility;
+import web.example.realestate.domain.building.*;
 
 @Component
 public class FacilityToFacilityCommand implements Converter<Facility, FacilityCommand> {
@@ -27,7 +27,46 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
         command.setDescription(facility.getDescription());
         command.setPublishedDateTime(facility.getPublishedDateTime());
         command.setClosedDateTime(facility.getClosedDateTime());
-        command.setAddressCommand(toAddressCommand.convert(facility.getAddress()));
+        command.setAddress(toAddressCommand.convert(facility.getAddress()));
+
+        if (facility instanceof Apartment) {
+            Apartment apartment = (Apartment) facility;
+            command.setApartment(true);
+            command.setApartmentNumber(apartment.getApartmentNumber());
+            command.setFloor(apartment.getFloor());
+            return command;
+        }
+
+        if (facility instanceof Basement) {
+            Basement basement = (Basement) facility;
+            command.setBasement(true);
+            command.setItCommercial(basement.isItCommercial());
+            return command;
+        }
+
+        if (facility instanceof Garage) {
+            Garage garage = (Garage) facility;
+            command.setGarage(true);
+            command.setHasPit(garage.isHasPit());
+            command.setHasEquipment(garage.isHasEquipment());
+            return command;
+        }
+
+        if (facility instanceof House) {
+            House house = (House) facility;
+            command.setHouse(true);
+            command.setNumberOfStoreys(house.getNumberOfStoreys());
+            command.setHasBackyard(house.isHasBackyard());
+            command.setHasGarden(house.isHasGarden());
+            return command;
+        }
+
+        if (facility instanceof Storage) {
+            Storage storage = (Storage) facility;
+            command.setStorage(true);
+            command.setCommercialCapacity(storage.getCommercialCapacity());
+            command.setHasCargoEquipment(storage.isHasCargoEquipment());
+        }
 
         return command;
     }

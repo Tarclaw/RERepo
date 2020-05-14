@@ -2,11 +2,11 @@ package web.example.realestate.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import web.example.realestate.commands.GarageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Garage;
 
 @Component
-public class GarageCommandToGarage implements Converter<GarageCommand, Garage> {
+public class GarageCommandToGarage implements Converter<FacilityCommand, Garage> {
 
     private final AddressCommandToAddress toAddress;
 
@@ -15,7 +15,7 @@ public class GarageCommandToGarage implements Converter<GarageCommand, Garage> {
     }
 
     @Override
-    public Garage convert(GarageCommand command) {
+    public Garage convert(final FacilityCommand command) {
         if (command == null) {
             return null;
         }
@@ -29,7 +29,7 @@ public class GarageCommandToGarage implements Converter<GarageCommand, Garage> {
         garage.setClosedDateTime(command.getClosedDateTime());
         garage.setHasEquipment(command.isHasEquipment());
         garage.setHasPit(command.isHasPit());
-        garage.setAddress(toAddress.convert(command.getAddressCommand()));
+        garage.setAddress(toAddress.convert(command.getAddress()));
 
         return garage;
     }

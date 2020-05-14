@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import web.example.realestate.commands.ApartmentCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.ApartmentCommandToApartment;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
 import web.example.realestate.domain.building.Apartment;
@@ -77,12 +77,12 @@ class ApartmentServiceImplTest {
         //given
         when(repository.findById(anyLong())).thenReturn(Optional.of(new Apartment()));
 
-        ApartmentCommand sourceCommand = new ApartmentCommand();
+        FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
         when(toApartmentCommand.convert(any())).thenReturn(sourceCommand);
 
         //when
-        ApartmentCommand command = service.findCommandById(1L);
+        FacilityCommand command = service.findCommandById(1L);
 
         //then
         assertEquals(1L, command.getId());

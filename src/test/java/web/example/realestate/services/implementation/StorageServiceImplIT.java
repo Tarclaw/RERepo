@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
 import web.example.realestate.repositories.StorageRepository;
@@ -42,7 +42,7 @@ public class StorageServiceImplIT {
         storage.setCommercialCapacity(NEW_COMMERCIAL_CAPACITY);
 
         //when
-        StorageCommand command = service.saveStorageCommand(toStorageCommand.convert(storage));
+        FacilityCommand command = service.saveStorageCommand(toStorageCommand.convert(storage));
 
         //then
         assertNotNull(command);

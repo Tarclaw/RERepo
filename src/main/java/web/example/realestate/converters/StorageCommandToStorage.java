@@ -2,11 +2,11 @@ package web.example.realestate.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Storage;
 
 @Component
-public class StorageCommandToStorage implements Converter<StorageCommand, Storage> {
+public class StorageCommandToStorage implements Converter<FacilityCommand, Storage> {
 
     private final AddressCommandToAddress toAddress;
 
@@ -15,7 +15,7 @@ public class StorageCommandToStorage implements Converter<StorageCommand, Storag
     }
 
     @Override
-    public Storage convert(StorageCommand command) {
+    public Storage convert(final FacilityCommand command) {
         if (command == null) {
             return null;
         }
@@ -29,7 +29,7 @@ public class StorageCommandToStorage implements Converter<StorageCommand, Storag
         storage.setHasCargoEquipment(command.isHasCargoEquipment());
         storage.setPublishedDateTime(command.getPublishedDateTime());
         storage.setClosedDateTime(command.getClosedDateTime());
-        storage.setAddress(toAddress.convert(command.getAddressCommand()));
+        storage.setAddress(toAddress.convert(command.getAddress()));
 
         return storage;
     }

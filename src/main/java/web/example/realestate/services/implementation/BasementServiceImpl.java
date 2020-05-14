@@ -1,7 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
-import web.example.realestate.commands.BasementCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.BasementCommandToBasement;
 import web.example.realestate.converters.BasementToBasementCommand;
 import web.example.realestate.domain.building.Basement;
@@ -44,13 +44,13 @@ public class BasementServiceImpl implements BasementService {
 
     @Override
     @Transactional
-    public BasementCommand findCommandById(Long id) {
+    public FacilityCommand findCommandById(Long id) {
         return toBasementCommand.convert(getById(id));
     }
 
     @Override
     @Transactional
-    public BasementCommand saveBasementCommand(BasementCommand command) {
+    public FacilityCommand saveBasementCommand(FacilityCommand command) {
         Basement detachetBasement = toBasement.convert(command);
         Basement savedBasement = repository.save(detachetBasement);
         System.out.println("Saved Basement with id=" + savedBasement.getId());

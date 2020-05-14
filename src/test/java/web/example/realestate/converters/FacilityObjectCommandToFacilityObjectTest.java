@@ -2,6 +2,7 @@ package web.example.realestate.converters;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.commands.FacilityObjectCommand;
 import web.example.realestate.commands.RealEstateAgentCommand;
@@ -27,8 +28,14 @@ class FacilityObjectCommandToFacilityObjectTest {
 
     @BeforeEach
     void setUp() {
+        AddressCommandToAddress toAddress = new AddressCommandToAddress();
+        FacilityCommandToFacility toFacility = new FacilityCommandToFacility(new ApartmentCommandToApartment(toAddress),
+                                                                             new BasementCommandToBasement(toAddress),
+                                                                             new GarageCommandToGarage(toAddress),
+                                                                             new HouseCommandToHouse(toAddress),
+                                                                             new StorageCommandToStorage(toAddress));
         toFacilityObject = new FacilityObjectCommandToFacilityObject(new RealEstateAgentCommandToRealEstateAgent(),
-                new FacilityCommandToFacility(new AddressCommandToAddress()));
+                                                                     toFacility);
     }
 
     @Test
@@ -55,14 +62,18 @@ class FacilityObjectCommandToFacilityObjectTest {
         agentCommand.setId(AGENT_ID);
         command.setRealEstateAgentCommand(agentCommand);
 
-        FacilityCommand facilityCommand1 = new FacilityCommand();
-        facilityCommand1.setId(FACILITY_ID_1);
+        FacilityCommand apartment = new FacilityCommand();
+        apartment.setId(FACILITY_ID_1);
+        apartment.setApartment(true);
+        apartment.setAddress(new AddressCommand());
 
-        FacilityCommand facilityCommand2 = new FacilityCommand();
-        facilityCommand2.setId(FACILITY_ID_2);
+        FacilityCommand basement = new FacilityCommand();
+        basement.setId(FACILITY_ID_2);
+        basement.setBasement(true);
+        basement.setAddress(new AddressCommand());
 
-        command.getFacilityCommands().add(facilityCommand1);
-        command.getFacilityCommands().add(facilityCommand2);
+        command.getFacilityCommands().add(apartment);
+        command.getFacilityCommands().add(basement);
 
         //when
         FacilityObject facilityObject = toFacilityObject.convert(command);

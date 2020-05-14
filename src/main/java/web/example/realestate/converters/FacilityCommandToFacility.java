@@ -2,33 +2,55 @@ package web.example.realestate.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
+
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Facility;
 
 @Component
 public class FacilityCommandToFacility implements Converter<FacilityCommand, Facility> {
 
-    private final AddressCommandToAddress toAddress;
+    private final ApartmentCommandToApartment toApartment;
+    private final BasementCommandToBasement toBasement;
+    private final GarageCommandToGarage toGarage;
+    private final HouseCommandToHouse toHouse;
+    private final StorageCommandToStorage toStorage;
 
-    public FacilityCommandToFacility(AddressCommandToAddress toAddress) {
-        this.toAddress = toAddress;
+    public FacilityCommandToFacility(ApartmentCommandToApartment toApartment, BasementCommandToBasement toBasement,
+                                     GarageCommandToGarage toGarage, HouseCommandToHouse toHouse,
+                                     StorageCommandToStorage toStorage) {
+        this.toApartment = toApartment;
+        this.toBasement = toBasement;
+        this.toGarage = toGarage;
+        this.toHouse = toHouse;
+        this.toStorage = toStorage;
     }
 
     @Override
-    public Facility convert(FacilityCommand facilityCommand) {
-        if (facilityCommand == null) {
+    public Facility convert(final FacilityCommand command) {
+        if (command == null) {
             return null;
         }
 
-        final Facility facility = new Facility();
-        facility.setId(facilityCommand.getId());
-        facility.setNumberOfRooms(facilityCommand.getNumberOfRooms());
-        facility.setTotalArea(facilityCommand.getTotalArea());
-        facility.setDescription(facilityCommand.getDescription());
-        facility.setPublishedDateTime(facilityCommand.getPublishedDateTime());
-        facility.setClosedDateTime(facilityCommand.getClosedDateTime());
-        facility.setAddress(toAddress.convert(facilityCommand.getAddressCommand()));
+        if (command.isApartment()) {
+            return toApartment.convert(command);
+        }
 
-        return facility;
+        if (command.isBasement()) {
+            return toBasement.convert(command);
+        }
+
+        if (command.isGarage()) {
+            return toGarage.convert(command);
+        }
+
+        if (command.isHouse()) {
+            return toHouse.convert(command);
+        }
+
+        if (command.isStorage()) {
+            return toStorage.convert(command);
+        }
+
+        return null;
     }
 }

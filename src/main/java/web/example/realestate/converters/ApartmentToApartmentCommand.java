@@ -2,11 +2,11 @@ package web.example.realestate.converters;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import web.example.realestate.commands.ApartmentCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Apartment;
 
 @Component
-public class ApartmentToApartmentCommand implements Converter<Apartment, ApartmentCommand> {
+public class ApartmentToApartmentCommand implements Converter<Apartment, FacilityCommand> {
 
     private final AddressToAddressCommand toAddressCommand;
 
@@ -15,12 +15,12 @@ public class ApartmentToApartmentCommand implements Converter<Apartment, Apartme
     }
 
     @Override
-    public ApartmentCommand convert(Apartment apartment) {
+    public FacilityCommand convert(Apartment apartment) {
         if (apartment == null) {
             return null;
         }
 
-        final ApartmentCommand command = new ApartmentCommand();
+        final FacilityCommand command = new FacilityCommand();
         command.setId(apartment.getId());
         command.setNumberOfRooms(apartment.getNumberOfRooms());
         command.setTotalArea(apartment.getTotalArea());
@@ -30,6 +30,7 @@ public class ApartmentToApartmentCommand implements Converter<Apartment, Apartme
         command.setPublishedDateTime(apartment.getPublishedDateTime());
         command.setClosedDateTime(apartment.getClosedDateTime());
         command.setAddress(toAddressCommand.convert(apartment.getAddress()));
+        command.setApartment(true);
 
         return command;
     }

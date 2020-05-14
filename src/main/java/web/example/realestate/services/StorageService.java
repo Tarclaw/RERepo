@@ -1,6 +1,6 @@
 package web.example.realestate.services;
 
-import web.example.realestate.commands.StorageCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Storage;
 
 import java.util.Set;
@@ -11,9 +11,9 @@ public interface StorageService {
 
     Set<Storage> getStorages();
 
-    StorageCommand findCommandById(Long id);
+    FacilityCommand findCommandById(Long id);
 
-    StorageCommand saveStorageCommand(StorageCommand command);
+    FacilityCommand saveStorageCommand(FacilityCommand command);
 
     void deleteById(Long id);
 
