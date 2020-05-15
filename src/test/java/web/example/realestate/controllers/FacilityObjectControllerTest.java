@@ -59,13 +59,13 @@ class FacilityObjectControllerTest {
         String viewName = controller.getFacilityObjectById("1", model);
 
         //then
-        assertEquals("facilityObjects/show", viewName);
+        assertEquals("facilityObject/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("facilityObject"), captor.capture());
 
-        mockMvc.perform(get("/facilityObjects/1/show"))
+        mockMvc.perform(get("/facilityObject/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("facilityObjects/show"))
+                .andExpect(view().name("facilityObject/show"))
                 .andExpect(model().attributeExists("facilityObject"));
     }
 
@@ -109,6 +109,26 @@ class FacilityObjectControllerTest {
         verify(model, times(1)).addAttribute(eq("facilityObject"), commandCaptor.capture());
 
         mockMvc.perform(get("/facilityObject/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("facilityObject/facilityObjectForm"))
+                .andExpect(model().attributeExists("facilityObject"));
+    }
+
+    @Test
+    void updateFacilityObject() throws Exception {
+        //given
+        when(service.findCommandById(anyLong())).thenReturn(new FacilityObjectCommand());
+        ArgumentCaptor<FacilityObjectCommand> commandCaptor = ArgumentCaptor.forClass(FacilityObjectCommand.class);
+
+        //when
+        String viewName = controller.updateFacilityObject("1", model);
+
+        //then
+        assertEquals("facilityObject/facilityObjectForm", viewName);
+        verify(service, times(1)).findCommandById(anyLong());
+        verify(model, times(1)).addAttribute(eq("facilityObject"), commandCaptor.capture());
+
+        mockMvc.perform(get("/facilityObject/1/update"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("facilityObject/facilityObjectForm"))
                 .andExpect(model().attributeExists("facilityObject"));

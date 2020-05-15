@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"></script>
+</head>
+
+<body>
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="pannel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Facility Object</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Month Rent:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${facilityObject.monthRent}">333</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Price:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${facilityObject.price}">333</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Commission Amount:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${facilityObject.commissionAmount}">333</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Status:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${facilityObject.status}">333</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Agent</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>First Name:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${facilityObject.agent.firstName}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Last Name:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${facilityObject.agent.lastName}">UNKNOWN</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5>Email:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${facilityObject.agent.contact.email}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Skype:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${facilityObject.agent.contact.skype}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Mobile:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${facilityObject.agent.contact.mobileNumber}">UNKNOWN</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Facilities</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="thead-inverse">
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Number of Rooms</th>
+                                    <th>Area</th>
+                                    <th>Published</th>
+                                    <th>Street</th>
+                                    <th>Facility Number</th>
+                                    <th>City</th>
+                                </tr>
+                                </thead>
+                                <tr th:each="facility : ${facilityObject.facilities}">
+                                    <td th:text="${facility.description}">UNKNOWN</td>
+                                    <td th:text="${facility.numberOfRooms}">UNKNOWN</td>
+                                    <td th:text="${facility.totalArea}">UNKNOWN</td>
+                                    <td th:text="${facility.publishedDateTime}">UNKNOWN</td>
+                                    <td th:text="${facility.address.street}">UNKNOWN</td>
+                                    <td th:text="${facility.address.facilityNumber}">UNKNOWN</td>
+                                    <td th:text="${facility.address.city}">UNKNOWN</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

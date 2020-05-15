@@ -18,10 +18,10 @@ public class FacilityObjectController {
         this.service = service;
     }
 
-    @GetMapping("/facilityObjects/{id}/show")
+    @GetMapping("/facilityObject/{id}/show")
     public String getFacilityObjectById(@PathVariable String id, Model model) {
         model.addAttribute("facilityObject", service.getById(Long.valueOf(id)));
-        return "facilityObjects/show";
+        return "facilityObject/show";
     }
 
     @GetMapping("/facilityObjects")
@@ -30,9 +30,15 @@ public class FacilityObjectController {
         return "facilityObject";
     }
 
-    @GetMapping("facilityObject/new")
+    @GetMapping("/facilityObject/new")
     public String newFacilityObject(Model model) {
         model.addAttribute("facilityObject", new FacilityObjectCommand());
+        return "facilityObject/facilityObjectForm";
+    }
+
+    @GetMapping("/facilityObject/{id}/update")
+    public String updateFacilityObject(@PathVariable String id, Model model) {
+        model.addAttribute("facilityObject", service.findCommandById(Long.valueOf(id)));
         return "facilityObject/facilityObjectForm";
     }
 

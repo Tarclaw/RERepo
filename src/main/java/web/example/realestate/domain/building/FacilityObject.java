@@ -27,7 +27,8 @@ public class FacilityObject implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private RealEstateAgent agent;
 
-    @OneToMany(mappedBy = "facilityObject", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@OneToMany(mappedBy = "facilityObject", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "facilityObject")
     private Set<Facility> facilities;
 
     public FacilityObject() {}

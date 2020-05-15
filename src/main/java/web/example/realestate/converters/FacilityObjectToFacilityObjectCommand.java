@@ -35,11 +35,11 @@ public class FacilityObjectToFacilityObjectCommand implements Converter<Facility
         command.setStatus(facilityObject.getStatus());
         command.setRealEstateAgentCommand(toRealEstateAgentCommand.convert(facilityObject.getAgent()));
 
-        /*if (facilityObject.getFacilities() != null && facilityObject.getFacilities().size() > 0) {
+        if (facilityObject.getFacilities() != null && facilityObject.getFacilities().size() > 0) {
             Set<FacilityCommand> source = new HashSet<>();
             facilityObject.getFacilities().forEach(facility -> source.add(toFacilityCommand.convert(facility)));
             command.setFacilityCommands(source);
-        }*/
+        }
 
         return command;
     }

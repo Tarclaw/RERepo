@@ -18,10 +18,18 @@
 
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-7 col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Facility Objects List</h1>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h1 class="panel-title">Facility Objects List</h1>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-default" href="#" th:href="@{'/facilityObject/new'}"
+                               role="button">Create</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -33,6 +41,9 @@
                                 <th>Commission Amount</th>
                                 <th>Month Rent</th>
                                 <th>Status</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="facilityObject : ${facilityObjects}">
@@ -41,6 +52,12 @@
                                 <td th:text="${facilityObject.getCommissionAmount()}">UNKNOWN</td>
                                 <td th:text="${facilityObject.getMonthRent()}">UNKNOWN</td>
                                 <td th:text="${facilityObject.getStatus()}">UNKNOWN</td>
+                                <td><a href="#" th:href="@{'/facilityObject/' + ${facilityObject.getId()} + '/show'}">View</a>
+                                </td>
+                                <td><a href="#" th:href="@{'/facilityObject/' + ${facilityObject.getId()} + '/update'}">Update</a>
+                                </td>
+                                <td><a href="#" th:href="@{'/facilityObject/' + ${facilityObject.getId()} + '/delete'}">Delete</a>
+                                </td>
                             </tr>
                         </table>
                     </div>
