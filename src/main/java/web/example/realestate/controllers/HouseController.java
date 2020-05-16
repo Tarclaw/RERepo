@@ -18,10 +18,10 @@ public class HouseController {
         this.service = service;
     }
 
-    @GetMapping("/houses/{id}/show")
+    @GetMapping("/house/{id}/show")
     public String getHouseById(@PathVariable String id, Model model) {
         model.addAttribute("house", service.getById(Long.valueOf(id)));
-        return "houses/show";
+        return "house/show";
     }
 
     @GetMapping("/houses")

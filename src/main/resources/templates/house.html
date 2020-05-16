@@ -18,10 +18,17 @@
 
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-7 col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Houses List</h1>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h1 class="panel-title">Houses</h1>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-default" href="#" th:href="@{'/house/new'}" role="button">Create</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -30,21 +37,17 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Description</th>
-                                <th>Number of Rooms</th>
-                                <th>Published</th>
-                                <th>Area</th>
-                                <th>Backyard</th>
-                                <th>Garden</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="house : ${houses}">
                                 <td th:text="${house.getId()}">ID</td>
-                                <td th:text="${house.getDescription()}">Kyiv</td>
-                                <td th:text="${house.getNumberOfRooms()}">Kyivska</td>
-                                <td th:text="${house.getPublishedDateTime()}">Shuhevuch</td>
-                                <td th:text="${house.getTotalArea()}">789000</td>
-                                <td th:text="${house.isHasBackyard()}">true</td>
-                                <td th:text="${house.isHasGarden()}">true</td>
+                                <td th:text="${house.getDescription()}">Description</td>
+                                <td><a href="#" th:href="@{'/house/' + ${house.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/house/' + ${house.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/house/' + ${house.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

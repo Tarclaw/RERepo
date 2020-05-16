@@ -59,13 +59,13 @@ class HouseControllerTest {
         String viewName = controller.getHouseById("1", model);
 
         //then
-        assertEquals("houses/show", viewName);
+        assertEquals("house/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("house"), houseCaptor.capture());
 
-        mockMvc.perform(get("/houses/1/show"))
+        mockMvc.perform(get("/house/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("houses/show"))
+                .andExpect(view().name("house/show"))
                 .andExpect(model().attributeExists("house"));
     }
 

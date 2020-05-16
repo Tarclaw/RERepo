@@ -13,7 +13,6 @@ public class House extends Facility {
     private boolean hasBackyard;
     private boolean hasGarden;
 
-
     public House() {}
 
     public House(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"></script>
+</head>
+
+<body>
+
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form th:object="${house}" th:action="@{/house/}" method="post">
+                <input type="hidden" th:field="*{id}"/>
+                <div class="pannel-group">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Edit Apartment Information</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>House Description:</label>
+                                    <input type="text" class="form-control" th:field="*{description}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Number of Storeys:</label>
+                                    <input type="text" class="form-control" th:field="*{numberOfStoreys}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Number of Rooms:</label>
+                                    <input type="text" class="form-control" th:field="*{numberOfRooms}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Total Area:</label>
+                                    <input type="text" class="form-control" th:field="*{totalArea}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Backyard:</label>
+                                    <input type="text" class="form-control" th:field="*{hasBackyard}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Garden:</label>
+                                    <input type="text" class="form-control" th:field="*{hasGarden}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Published Date Time:</label>
+                                    <input type="text" class="form-control" th:field="*{publishedDateTime}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Closed Date Time:</label>
+                                    <input type="text" class="form-control" th:field="*{closedDateTime}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Edit Address Information</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>District:</label>
+                                    <input type="text" class="form-control" th:field="*{address.district}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Postcode:</label>
+                                    <input type="text" class="form-control" th:field="*{address.postcode}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>City:</label>
+                                    <input type="text" class="form-control" th:field="*{address.city}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Street:</label>
+                                    <input type="text" class="form-control" th:field="*{address.street}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>House Number:</label>
+                                    <input type="text" class="form-control" th:field="*{address.facilityNumber}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

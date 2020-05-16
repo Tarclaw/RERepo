@@ -59,13 +59,13 @@ class GarageControllerTest {
         String viewName = controller.getGarageById("1", model);
 
         //then
-        assertEquals("garages/show", viewName);
+        assertEquals("garage/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("garage"), garageCaptor.capture());
 
-        mockMvc.perform(get("/garages/1/show"))
+        mockMvc.perform(get("/garage/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("garages/show"))
+                .andExpect(view().name("garage/show"))
                 .andExpect(model().attributeExists("garage"));
     }
 
