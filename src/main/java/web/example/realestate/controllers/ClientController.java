@@ -15,13 +15,13 @@ public class ClientController {
         this.service = service;
     }
 
-    @GetMapping("/clients/{id}/show")
+    @GetMapping("/client/{id}/show")
     public String getClientById(@PathVariable String id, Model model) {
         model.addAttribute("client", service.getById(Long.valueOf(id)));
-        return "clients/show";
+        return "client/show";
     }
 
-    @GetMapping("/clients")
+    @GetMapping("/client")
     public String getAllClients(Model model) {
         model.addAttribute("clients", service.getClients());
         return "client";

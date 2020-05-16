@@ -18,10 +18,17 @@
 
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-7 col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Clients List</h1>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h1 class="panel-title">Clients List</h1>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-default" href="#" th:href="@{'/client/new'}" role="button">Create</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -32,29 +39,19 @@
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>Phone</th>
-                                <th>Email</th>
-                                <th>Skype</th>
-                                <th>Login</th>
-                                <th>Password</th>
-                                <th>Buyer</th>
-                                <th>Leaser</th>
-                                <th>Renter</th>
-                                <th>Seller</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="client : ${clients}">
                                 <td th:text="${client.getId()}">ID</td>
                                 <td th:text="${client.getFirstName()}">Joe</td>
                                 <td th:text="${client.getLastName()}">Doe</td>
-                                <td th:text="${client.getContact().getMobileNumber()}">2-06-77</td>
-                                <td th:text="${client.getContact().getEmail()}">email@host.com</td>
-                                <td th:text="${client.getContact().getSkype()}">skype</td>
-                                <td th:text="${client.getLogin()}">doe</td>
-                                <td th:text="${client.getPassword()}">123</td>
-                                <td th:text="${client.isBuyer()}">true</td>
-                                <td th:text="${client.isLeaser()}">true</td>
-                                <td th:text="${client.isRenter()}">true</td>
-                                <td th:text="${client.isSeller()}">true</td>
+                                <td th:text="${client.getContact().getMobileNumber()}">+3-067-333-2211</td>
+                                <td><a href="#" th:href="@{'/client/' + ${client.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/client/' + ${client.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/client/' + ${client.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

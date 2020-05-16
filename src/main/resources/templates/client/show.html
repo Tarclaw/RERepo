@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"></script>
+</head>
+
+<body>
+
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="pannel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Client</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>First Name:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.firstName}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Last Name:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.lastName}">UNKNOWN</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Login:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.login}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Password:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.password}">UNKNOWN</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Want to Sell:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.seller}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Want to Buy:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.buyer}">UNKNOWN</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Want to Rent:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.renter}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Want to Lease:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.leaser}">UNKNOWN</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5>Skype:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${client.contact.skype}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Phone:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${client.contact.mobileNumber}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Email:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${client.contact.email}">UNKNOWN</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
