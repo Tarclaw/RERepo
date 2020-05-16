@@ -15,10 +15,10 @@ public class StorageController {
         this.service = service;
     }
 
-    @GetMapping("/storages/{id}/show")
+    @GetMapping("/storage/{id}/show")
     public String getStorageById(@PathVariable String id, Model model) {
         model.addAttribute("storage", service.getById(Long.valueOf(id)));
-        return "storages/show";
+        return "storage/show";
     }
 
     @GetMapping("/storages")

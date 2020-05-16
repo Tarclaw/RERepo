@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Real Estate Agency</title>
@@ -13,15 +14,22 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
 </head>
-</head>
+
 <body>
 
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-7 col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Storages List</h1>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h1 class="panel-title">Storages</h1>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-default" href="#" th:href="@{'/storage/new'}" role="button">Create</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -30,21 +38,17 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Description</th>
-                                <th>Number of Rooms</th>
-                                <th>Published</th>
-                                <th>Area</th>
-                                <th>Commercial Capacity</th>
-                                <th>Cargo Equipment</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="storage : ${storages}">
                                 <td th:text="${storage.getId()}">ID</td>
-                                <td th:text="${storage.getDescription()}">Kyiv</td>
-                                <td th:text="${storage.getNumberOfRooms()}">Kyivska</td>
-                                <td th:text="${storage.getPublishedDateTime()}">Shuhevuch</td>
-                                <td th:text="${storage.getTotalArea()}">789000</td>
-                                <td th:text="${storage.getCommercialCapacity()}">500000</td>
-                                <td th:text="${storage.isHasCargoEquipment()}">true</td>
+                                <td th:text="${storage.getDescription()}">Description</td>
+                                <td><a href="#" th:href="@{'/storage/' + ${storage.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/storage/' + ${storage.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/storage/' + ${storage.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

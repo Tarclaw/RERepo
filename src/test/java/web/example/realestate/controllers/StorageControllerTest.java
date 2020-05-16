@@ -59,13 +59,13 @@ class StorageControllerTest {
         String viewName = controller.getStorageById("1", model);
 
         //then
-        assertEquals("storages/show", viewName);
+        assertEquals("storage/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("storage"), storageCaptor.capture());
 
-        mockMvc.perform(get("/storages/1/show"))
+        mockMvc.perform(get("/storage/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("storages/show"))
+                .andExpect(view().name("storage/show"))
                 .andExpect(model().attributeExists("storage"));
     }
 
