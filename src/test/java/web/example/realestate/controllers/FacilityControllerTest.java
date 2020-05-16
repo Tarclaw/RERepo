@@ -59,13 +59,13 @@ class FacilityControllerTest {
         String viewName = controller.getFacilityById("1", model);
 
         //then
-        assertEquals("facilities/show", viewName);
+        assertEquals("facility/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("facility"), argumentCaptor.capture());
 
-        mockMvc.perform(get("/facilities/1/show"))
+        mockMvc.perform(get("/facility/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("facilities/show"))
+                .andExpect(view().name("facility/show"))
                 .andExpect(model().attributeExists("facility"));
     }
 
@@ -153,7 +153,7 @@ class FacilityControllerTest {
         assertEquals("redirect:/", viewName);
         verify(service, times(1)).deleteById(anyLong());
 
-        mockMvc.perform(get("/facilities/1/delete"))
+        mockMvc.perform(get("/facility/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
     }

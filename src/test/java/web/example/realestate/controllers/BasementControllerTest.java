@@ -59,13 +59,13 @@ class BasementControllerTest {
         String viewName = controller.getBasementById("1", model);
 
         //then
-        assertEquals("basements/show", viewName);
+        assertEquals("basement/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("basement"), basementCaptor.capture());
 
-        mockMvc.perform(get("/basements/1/show"))
+        mockMvc.perform(get("/basement/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("basements/show"))
+                .andExpect(view().name("basement/show"))
                 .andExpect(model().attributeExists("basement"));
     }
 

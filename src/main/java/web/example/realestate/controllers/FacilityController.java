@@ -15,10 +15,10 @@ public class FacilityController {
         this.service = service;
     }
 
-    @GetMapping("/facilities/{id}/show")
+    @GetMapping("/facility/{id}/show")
     public String getFacilityById(@PathVariable String id, Model model) {
         model.addAttribute("facility", service.getById(Long.valueOf(id)));
-        return "facilities/show";
+        return "facility/show";
     }
 
     @GetMapping("/facilities")
@@ -45,7 +45,7 @@ public class FacilityController {
         return "redirect:/facility/" + savedCommand.getId() + "/show";
     }
 
-    @GetMapping("/facilities/{id}/delete")
+    @GetMapping("/facility/{id}/delete")
     public String deleteById(@PathVariable String id) {
         service.deleteById(Long.valueOf(id));
         return "redirect:/";
