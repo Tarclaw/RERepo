@@ -15,10 +15,10 @@ public class BasementController {
         this.service = service;
     }
 
-    @GetMapping("/basements/{id}/show")
+    @GetMapping("/basement/{id}/show")
     public String getBasementById(@PathVariable String id, Model model) {
         model.addAttribute("basement", service.getById(Long.valueOf(id)));
-        return "basements/show";
+        return "basement/show";
     }
 
     @GetMapping("/basements")

@@ -17,10 +17,17 @@
 
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-7 col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Basements List</h1>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h1 class="panel-title">Basements</h1>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-default" href="#" th:href="@{'/basement/new'}" role="button">Create</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -31,17 +38,19 @@
                                 <th>Description</th>
                                 <th>Number of Rooms</th>
                                 <th>Published</th>
-                                <th>Area</th>
-                                <th>Commercial</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="basement : ${basements}">
                                 <td th:text="${basement.getId()}">ID</td>
-                                <td th:text="${basement.getDescription()}">Kyiv</td>
-                                <td th:text="${basement.getNumberOfRooms()}">Kyivska</td>
-                                <td th:text="${basement.getPublishedDateTime()}">Shuhevuch</td>
-                                <td th:text="${basement.getTotalArea()}">789000</td>
-                                <td th:text="${basement.isItCommercial()}">true</td>
+                                <td th:text="${basement.getDescription()}">UNKNOWN</td>
+                                <td th:text="${basement.getNumberOfRooms()}">UNKNOWN</td>
+                                <td th:text="${basement.getPublishedDateTime()}">UNKNOWN</td>
+                                <td><a href="#" th:href="@{'/basement/' + ${basement.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/basement/' + ${basement.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/basement/' + ${basement.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>
