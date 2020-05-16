@@ -59,13 +59,13 @@ class ClientControllerTest {
         String viewName = controller.getClientById("1", model);
 
         //then
-        assertEquals("clients/show", viewName);
+        assertEquals("client/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("client"), clientCaptor.capture());
 
-        mockMvc.perform(get("/clients/1/show"))
+        mockMvc.perform(get("/client/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("clients/show"))
+                .andExpect(view().name("client/show"))
                 .andExpect(model().attributeExists("client"));
     }
 

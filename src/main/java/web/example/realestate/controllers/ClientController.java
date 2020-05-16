@@ -21,7 +21,7 @@ public class ClientController {
         return "client/show";
     }
 
-    @GetMapping("/client")
+    @GetMapping("/clients")
     public String getAllClients(Model model) {
         model.addAttribute("clients", service.getClients());
         return "client";

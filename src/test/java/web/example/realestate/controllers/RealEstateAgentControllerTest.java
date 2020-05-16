@@ -59,13 +59,13 @@ class RealEstateAgentControllerTest {
         String viewName = controller.getRealEstateAgentById("1", model);
 
         //then
-        assertEquals("realEstateAgents/show", viewName);
+        assertEquals("realEstateAgent/show", viewName);
         verify(service, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("realEstateAgent"), agentCaptor.capture());
 
-        mockMvc.perform(get("/realEstateAgents/1/show"))
+        mockMvc.perform(get("/realEstateAgent/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("realEstateAgents/show"))
+                .andExpect(view().name("realEstateAgent/show"))
                 .andExpect(model().attributeExists("realEstateAgent"));
     }
 

@@ -15,10 +15,10 @@ public class RealEstateAgentController {
         this.service = service;
     }
 
-    @GetMapping("/realEstateAgents/{id}/show")
+    @GetMapping("/realEstateAgent/{id}/show")
     public String getRealEstateAgentById(@PathVariable String id, Model model) {
         model.addAttribute("realEstateAgent", service.getById(Long.valueOf(id)));
-        return "realEstateAgents/show";
+        return "realEstateAgent/show";
     }
 
     @GetMapping("/realEstateAgents")
