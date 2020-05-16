@@ -15,10 +15,10 @@ public class GarageController {
         this.service = service;
     }
 
-    @GetMapping("/garages/{id}/show")
+    @GetMapping("/garage/{id}/show")
     public String getGarageById(@PathVariable String id, Model model) {
         model.addAttribute("garage", service.getById(Long.valueOf(id)));
-        return "garages/show";
+        return "garage/show";
     }
 
     @GetMapping("/garages")

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Agency</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="pannel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title" th:text="${garage.description}">Garage Description</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Number of Rooms:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.numberOfRooms}">3</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Total Area:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.totalArea}">70</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Has Pit:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.hasPit}">yes</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Has Equipment:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.hasEquipment}">yes</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Published Date Time:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.publishedDateTime}">01.01.2020 00:00</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Closed Date Time:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.closedDateTime}">Not yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">Address</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <h5>District:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${garage.address.district}">IL</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>Postcode:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${garage.address.postcode}">99999</p>
+                            </div>
+                            <div class="col-md-2">
+                                <h5>City:</h5>
+                            </div>
+                            <div class="col-md-2">
+                                <p th:text="${garage.address.city}">Chicago</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Street:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.address.street}">Some Street</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>House Number:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.address.facilityNumber}">665</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Clients</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" role="button">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul>
+                                    <li th:each="client : ${garage.clients}"
+                                        th:text="${client.firstName + ' ' + client.lastName}">
+                                        Jane Doe
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
