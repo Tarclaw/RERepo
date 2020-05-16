@@ -22,10 +22,17 @@
 
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-7 col-md-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h1 class="panel-title">Address List</h1>
+                    <div class="row">
+                        <div class="col-md-11">
+                            <h1 class="panel-title">Addresses</h1>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-default" href="#" th:href="@{'/address/new'}" role="button">Create</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -38,6 +45,9 @@
                                 <th>Street</th>
                                 <th>Postcode</th>
                                 <th>Facility Number</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="address : ${addresses}">
@@ -47,6 +57,9 @@
                                 <td th:text="${address.getStreet()}">Street</td>
                                 <td th:text="${address.getPostcode()}">Postcode</td>
                                 <td th:text="${address.getFacilityNumber()}">Facility Number</td>
+                                <td><a href="#" th:href="@{'/address/' + ${address.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/address/' + ${address.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/address/' + ${address.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

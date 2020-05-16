@@ -52,9 +52,9 @@ class AddressControllerTest {
     @Test
     void getAddressById() throws Exception {
         when(service.getById(anyLong())).thenReturn(new Address());
-        mockMvc.perform(get("/addresses/1/show"))
+        mockMvc.perform(get("/address/1/show"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("addresses/show"))
+                .andExpect(view().name("address/show"))
                 .andExpect(model().attributeExists("address"));
     }
 

@@ -15,10 +15,10 @@ public class AddressController {
         this.service = service;
     }
 
-    @GetMapping("/addresses/{id}/show")
+    @GetMapping("/address/{id}/show")
     public String getAddressById(@PathVariable String id, Model model) {
         model.addAttribute("address", service.getById(Long.valueOf(id)));
-        return "addresses/show";
+        return "address/show";
     }
 
     @GetMapping("/addresses")
