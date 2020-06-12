@@ -29,7 +29,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public Storage getById(final Long id) {
-        return repository.findById(id)
+        return repository.findStoragesByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have storage with id=" + id)
                 );
@@ -50,11 +50,22 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     @Transactional
-    public FacilityCommand saveStorageCommand(FacilityCommand command) {
+    public FacilityCommand saveStorageCommand(final FacilityCommand command) {
+        return command.getId() == null ? saveDetached(command) : saveAttached(command);
+    }
+
+    private FacilityCommand saveDetached(final FacilityCommand command) {
         Storage detachedStorage = toStorage.convert(command);
         Storage savedStorage = repository.save(detachedStorage);
         System.out.println("Save Storage with id=" + savedStorage.getId());
         return toStorageCommand.convert(savedStorage);
+    }
+
+    private FacilityCommand saveAttached(final FacilityCommand command) {
+        Storage attachedStorage = getById(command.getId());
+        Storage updatedStorage = toStorage.convertWhenAttached(attachedStorage, command);
+        System.out.println("Update Storage with id=" + updatedStorage.getId());
+        return toStorageCommand.convert(updatedStorage);
     }
 
     @Override

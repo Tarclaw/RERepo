@@ -29,7 +29,7 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Facility getById(Long id) {
-        return repository.findById(id)
+        return repository.findFacilityByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("There is no entity with id:" + id)
                 );

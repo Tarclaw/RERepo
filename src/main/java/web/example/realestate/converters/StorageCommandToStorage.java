@@ -3,6 +3,7 @@ package web.example.realestate.converters;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
+import web.example.realestate.domain.building.Address;
 import web.example.realestate.domain.building.Storage;
 
 @Component
@@ -20,6 +21,7 @@ public class StorageCommandToStorage implements Converter<FacilityCommand, Stora
             return null;
         }
 
+        final Address address = toAddress.convert(command.getAddress());
         final Storage storage = new Storage();
         storage.setId(command.getId());
         storage.setNumberOfRooms(command.getNumberOfRooms());
@@ -29,7 +31,26 @@ public class StorageCommandToStorage implements Converter<FacilityCommand, Stora
         storage.setHasCargoEquipment(command.isHasCargoEquipment());
         storage.setPublishedDateTime(command.getPublishedDateTime());
         storage.setClosedDateTime(command.getClosedDateTime());
-        storage.setAddress(toAddress.convert(command.getAddress()));
+        address.setFacility(storage);
+        storage.setAddress(address);
+
+        return storage;
+    }
+
+    public Storage convertWhenAttached(Storage storage, FacilityCommand command) {
+        storage.setNumberOfRooms(command.getNumberOfRooms());
+        storage.setTotalArea(command.getTotalArea());
+        storage.setDescription(command.getDescription());
+        storage.setCommercialCapacity(command.getCommercialCapacity());
+        storage.setHasCargoEquipment(command.isHasCargoEquipment());
+        storage.setPublishedDateTime(command.getPublishedDateTime());
+        storage.setClosedDateTime(command.getClosedDateTime());
+
+        storage.getAddress().setPostcode(command.getAddress().getPostcode());
+        storage.getAddress().setFacilityNumber(command.getAddress().getFacilityNumber());
+        storage.getAddress().setCity(command.getAddress().getCity());
+        storage.getAddress().setDistrict(command.getAddress().getDistrict());
+        storage.getAddress().setStreet(command.getAddress().getStreet());
 
         return storage;
     }

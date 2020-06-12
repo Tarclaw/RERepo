@@ -29,7 +29,7 @@ public class BasementServiceImpl implements BasementService {
 
     @Override
     public Basement getById(final Long id) {
-        return repository.findById(id)
+        return repository.findBasementByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have basement with id=" + id)
                 );
@@ -50,11 +50,22 @@ public class BasementServiceImpl implements BasementService {
 
     @Override
     @Transactional
-    public FacilityCommand saveBasementCommand(FacilityCommand command) {
-        Basement detachetBasement = toBasement.convert(command);
-        Basement savedBasement = repository.save(detachetBasement);
+    public FacilityCommand saveBasementCommand(final FacilityCommand command) {
+        return command.getId() == null ? saveDetached(command) : saveAttached(command);
+    }
+
+    private FacilityCommand saveDetached(final FacilityCommand command) {
+        Basement detachedBasement = toBasement.convert(command);
+        Basement savedBasement = repository.save(detachedBasement);
         System.out.println("Saved Basement with id=" + savedBasement.getId());
         return toBasementCommand.convert(savedBasement);
+    }
+
+    private FacilityCommand saveAttached(final FacilityCommand command) {
+        Basement attachedBasement = getById(command.getId());
+        Basement updatedBasement = toBasement.convertWhenAttached(attachedBasement, command);
+        System.out.println("Update Basement with id=" + updatedBasement.getId());
+        return toBasementCommand.convert(updatedBasement);
     }
 
     @Override

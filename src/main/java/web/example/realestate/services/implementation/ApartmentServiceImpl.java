@@ -29,7 +29,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     public Apartment getById(final Long id) {
-        return repository.findById(id)
+        return repository.findApartmentsByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have apartment with id=" + id)
                 );

@@ -29,7 +29,7 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public House getById(final Long id) {
-        return repository.findById(id)
+        return repository.findHousesByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have house with id=" + id)
                 );
@@ -50,11 +50,22 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     @Transactional
-    public FacilityCommand saveHouseCommand(FacilityCommand command) {
+    public FacilityCommand saveHouseCommand(final FacilityCommand command) {
+        return command.getId() == null ? saveDetached(command) : saveAttached(command);
+    }
+
+    private FacilityCommand saveDetached(final FacilityCommand command) {
         House detachedHouse = toHouse.convert(command);
         House savedHouse = repository.save(detachedHouse);
         System.out.println("Save House with id=" + savedHouse.getId());
         return toHouseCommand.convert(savedHouse);
+    }
+
+    private FacilityCommand saveAttached(final FacilityCommand command) {
+        House attachedHouse = getById(command.getId());
+        House updatedHouse = toHouse.convertWhenAttached(attachedHouse, command);
+        System.out.println("Update House with id=" + updatedHouse.getId());
+        return toHouseCommand.convert(updatedHouse);
     }
 
     @Override

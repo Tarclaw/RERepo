@@ -48,6 +48,6 @@ public class BasementController {
     @GetMapping("/basement/{id}/delete")
     public String deleteById(@PathVariable String id) {
         service.deleteById(Long.valueOf(id));
-        return "redirect:/";
+        return "redirect:/basements";
     }
 }

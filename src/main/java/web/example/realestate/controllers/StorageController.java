@@ -48,6 +48,6 @@ public class StorageController {
     @GetMapping("/storage/{id}/delete")
     public String deleteById(@PathVariable String id) {
         service.deleteById(Long.valueOf(id));
-        return "redirect:/";
+        return "redirect:/storages";
     }
 }
