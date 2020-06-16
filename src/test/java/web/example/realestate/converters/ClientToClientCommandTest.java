@@ -60,10 +60,10 @@ class ClientToClientCommandTest {
         client.setLogin(LOGIN);
         client.setPassword(PASSWORD);
         client.setContact(new Contact(EMAIL, SKYPE, MOBILE_NUMBER));
-        client.setSeller(IS_SELLER);
+        /*client.setSeller(IS_SELLER);
         client.setBuyer(IS_BUYER);
         client.setRenter(IS_RENTER);
-        client.setLeaser(IS_LEASER);
+        client.setLeaser(IS_LEASER);*/
 
         Facility facility1 = new Facility();
         facility1.setId(FACILITY_ID_1);
@@ -89,10 +89,10 @@ class ClientToClientCommandTest {
         assertEquals(EMAIL, command.getEmail());
         assertEquals(SKYPE, command.getSkype());
         assertEquals(MOBILE_NUMBER, command.getMobileNumber());
-        assertEquals(IS_SELLER, command.isSeller());
+        /*assertEquals(IS_SELLER, command.isSeller());
         assertEquals(IS_BUYER, command.isBuyer());
         assertEquals(IS_RENTER, command.isRenter());
-        assertEquals(IS_LEASER, command.isLeaser());
+        assertEquals(IS_LEASER, command.isLeaser());*/
         //assertEquals(2, command.getFacilityCommands().size()); //todo mapping issue
         assertEquals(2, command.getRealEstateAgentCommands().size());
     }

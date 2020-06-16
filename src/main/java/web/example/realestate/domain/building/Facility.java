@@ -19,14 +19,13 @@ public class Facility implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private BigInteger monthRent;
+    private BigInteger price;
     private Integer numberOfRooms;
     private Integer totalArea;
     private String description;
     private LocalDateTime publishedDateTime;
     private LocalDateTime closedDateTime;
-
-    private BigInteger monthRent;
-    private BigInteger price;
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
@@ -40,11 +39,8 @@ public class Facility implements Serializable {
     @OneToOne(mappedBy = "facility", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Address address;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "clients_facilities",
-            joinColumns = @JoinColumn(name = "facility_id"),
-            inverseJoinColumns = @JoinColumn(name = "client_id"))
-    private Set<Client> clients;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Client client;
 
     public Facility() {}
 
@@ -158,12 +154,12 @@ public class Facility implements Serializable {
         this.address = address;
     }
 
-    public Set<Client> getClients() {
-        return clients;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClients(Set<Client> clients) {
-        this.clients = clients;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public BigInteger getMonthRent() {

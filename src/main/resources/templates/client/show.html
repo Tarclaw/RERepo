@@ -59,49 +59,29 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Want to Sell:</h5>
+                                <h5>Requirements for customer:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p th:text="${client.seller}">UNKNOWN</p>
+                                <p th:text="${client.customerRequirements}">UNKNOWN</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Want to Buy:</h5>
-                            </div>
-                            <div class="col-md-3">
-                                <p th:text="${client.buyer}">UNKNOWN</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h5>Want to Rent:</h5>
-                            </div>
-                            <div class="col-md-3">
-                                <p th:text="${client.renter}">UNKNOWN</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h5>Want to Lease:</h5>
-                            </div>
-                            <div class="col-md-3">
-                                <p th:text="${client.leaser}">UNKNOWN</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-2">
-                                <h5>Skype:</h5>
-                            </div>
-                            <div class="col-md-2">
-                                <p th:text="${client.contact.skype}">UNKNOWN</p>
-                            </div>
-                            <div class="col-md-2">
                                 <h5>Phone:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${client.contact.mobileNumber}">UNKNOWN</p>
                             </div>
-                            <div class="col-md-2">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Skype:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${client.contact.skype}">UNKNOWN</p>
+                            </div>
+                            <div class="col-md-3">
                                 <h5>Email:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${client.contact.email}">UNKNOWN</p>
                             </div>
                         </div>

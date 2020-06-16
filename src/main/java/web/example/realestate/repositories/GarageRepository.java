@@ -10,7 +10,7 @@ public interface GarageRepository extends CrudRepository<Garage, Long> {
 
     Optional<Garage> findGaragesByHasEquipment(Boolean hasEquipment);
 
-    @Query("select g from Garage g join fetch g.clients c where g.id = ?1")
+    @Query("select g from Garage g join fetch g.client c where g.id = ?1")
     Optional<Garage> findGaragesByIdWithClients(Long id);
 
 }

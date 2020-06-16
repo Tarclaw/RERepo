@@ -10,7 +10,7 @@ public interface FacilityRepository extends CrudRepository<Facility, Long> {
 
     Optional<Facility> findFacilitiesByDescription(String description);
 
-    @Query("select f from Facility f join fetch f.clients c where f.id = ?1")
+    @Query("select f from Facility f join fetch f.client c where f.id = ?1")
     Optional<Facility> findFacilityByIdWithClients(Long id);
 
 }

@@ -41,10 +41,7 @@ public class ClientCommandToClient implements Converter<ClientCommand, Client> {
         client.setContact(new Contact(command.getEmail(),
                                       command.getSkype(),
                                       command.getMobileNumber()));
-        client.setSeller(command.isSeller());
-        client.setBuyer(command.isBuyer());
-        client.setRenter(command.isRenter());
-        client.setLeaser(command.isLeaser());
+        client.setCustomerRequirements(command.getCustomerRequirements());
 
         if (command.getFacilityCommands() != null && command.getFacilityCommands().size() > 0) {
             Set<Facility> source = new HashSet<>();

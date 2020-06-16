@@ -15,10 +15,7 @@ public class ClientCommand {
     private String skype;
     private String mobileNumber;
     //client
-    private boolean isSeller;
-    private boolean isBuyer;
-    private boolean isRenter;
-    private boolean isLeaser;
+    private String customerRequirements;
 
     private Set<FacilityCommand> facilityCommands = new HashSet<>();
     private Set<RealEstateAgentCommand> realEstateAgentCommands = new HashSet<>();
@@ -90,36 +87,12 @@ public class ClientCommand {
         this.mobileNumber = mobileNumber;
     }
 
-    public boolean isSeller() {
-        return isSeller;
+    public String getCustomerRequirements() {
+        return customerRequirements;
     }
 
-    public void setSeller(boolean seller) {
-        isSeller = seller;
-    }
-
-    public boolean isBuyer() {
-        return isBuyer;
-    }
-
-    public void setBuyer(boolean buyer) {
-        isBuyer = buyer;
-    }
-
-    public boolean isRenter() {
-        return isRenter;
-    }
-
-    public void setRenter(boolean renter) {
-        isRenter = renter;
-    }
-
-    public boolean isLeaser() {
-        return isLeaser;
-    }
-
-    public void setLeaser(boolean leaser) {
-        isLeaser = leaser;
+    public void setCustomerRequirements(String customerRequirements) {
+        this.customerRequirements = customerRequirements;
     }
 
     public Set<FacilityCommand> getFacilityCommands() {

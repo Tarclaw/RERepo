@@ -10,7 +10,7 @@ public interface HouseRepository extends CrudRepository<House, Long> {
 
     Optional<House> findHousesByHasGarden(Boolean hasGarden);
 
-    @Query("select h from House h join fetch h.clients c where h.id = ?1")
+    @Query("select h from House h join fetch h.client c where h.id = ?1")
     Optional<House> findHousesByIdWithClients(Long id);
 
 }

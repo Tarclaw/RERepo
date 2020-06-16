@@ -10,7 +10,7 @@ public interface ApartmentRepository extends CrudRepository<Apartment, Long> {
 
     Optional<Apartment> findApartmentsByTotalArea(Integer totalArea);
 
-    @Query("select a from Apartment a join fetch a.clients c where a.id = ?1")
+    @Query("select a from Apartment a join fetch a.client c where a.id = ?1")
     Optional<Apartment> findApartmentsByIdWithClients(Long id);
 
 }

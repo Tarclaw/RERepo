@@ -10,7 +10,7 @@ public interface StorageRepository extends CrudRepository<Storage, Long> {
 
     Optional<Storage> findStoragesByCommercialCapacityGreaterThan(Integer commercialCapacity);
 
-    @Query("select s from Storage s join fetch s.clients where s.id = ?1")
+    @Query("select s from Storage s join fetch s.client where s.id = ?1")
     Optional<Storage> findStoragesByIdWithClients(Long id);
 
 }

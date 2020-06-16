@@ -64,10 +64,10 @@ class ClientCommandToClientTest {
         command.setEmail(EMAIL);
         command.setSkype(SKYPE);
         command.setMobileNumber(MOBILE_NUMBER);
-        command.setSeller(IS_SELLER);
+        /*command.setSeller(IS_SELLER);
         command.setBuyer(IS_BUYER);
         command.setRenter(IS_RENTER);
-        command.setLeaser(IS_LEASER);
+        command.setLeaser(IS_LEASER);*/
 
         FacilityCommand apartment = new FacilityCommand();
         apartment.setId(FACILITY_ID_1);
@@ -99,10 +99,10 @@ class ClientCommandToClientTest {
         assertEquals(EMAIL, client.getContact().getEmail());
         assertEquals(SKYPE, client.getContact().getSkype());
         assertEquals(MOBILE_NUMBER, client.getContact().getMobileNumber());
-        assertEquals(IS_SELLER, client.isSeller());
+        /*assertEquals(IS_SELLER, client.isSeller());
         assertEquals(IS_BUYER, client.isBuyer());
         assertEquals(IS_RENTER, client.isRenter());
-        assertEquals(IS_LEASER, client.isLeaser());
+        assertEquals(IS_LEASER, client.isLeaser());*/
         assertEquals(2, client.getFacilities().size());
         assertEquals(2, client.getRealEstateAgents().size());
     }

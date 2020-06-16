@@ -9,58 +9,29 @@ import java.util.Set;
 @Table(name = "clients")
 public class Client extends Person {
 
-    private boolean isSeller;
-    private boolean isBuyer;
-    private boolean isRenter;
-    private boolean isLeaser;
+    @Lob
+    private String customerRequirements;
+
+    @OneToMany(mappedBy = "client")
+    private Set<Facility> facilities;
 
     @ManyToMany(mappedBy = "clients")
     private Set<RealEstateAgent> realEstateAgents;
 
-    @ManyToMany(mappedBy = "clients")
-    private Set<Facility> facilities;
-
     public Client() {}
 
-    public Client(String firstName, String lastName, String login, String password, Contact contact,
-                  boolean isSeller, boolean isBuyer, boolean isRenter, boolean isLeaser) {
+    public Client(String firstName, String lastName, String login,
+                  String password, Contact contact, String customerRequirements) {
         super(firstName, lastName, login, password, contact);
-        this.isSeller = isSeller;
-        this.isBuyer = isBuyer;
-        this.isRenter = isRenter;
-        this.isLeaser = isLeaser;
+        this.customerRequirements = customerRequirements;
     }
 
-    public boolean isSeller() {
-        return isSeller;
+    public String getCustomerRequirements() {
+        return customerRequirements;
     }
 
-    public void setSeller(boolean seller) {
-        isSeller = seller;
-    }
-
-    public boolean isBuyer() {
-        return isBuyer;
-    }
-
-    public void setBuyer(boolean buyer) {
-        isBuyer = buyer;
-    }
-
-    public boolean isRenter() {
-        return isRenter;
-    }
-
-    public void setRenter(boolean renter) {
-        isRenter = renter;
-    }
-
-    public boolean isLeaser() {
-        return isLeaser;
-    }
-
-    public void setLeaser(boolean leaser) {
-        isLeaser = leaser;
+    public void setCustomerRequirements(String customerRequirements) {
+        this.customerRequirements = customerRequirements;
     }
 
     public Set<RealEstateAgent> getRealEstateAgents() {
@@ -81,12 +52,12 @@ public class Client extends Person {
 
     public void addFacility(Facility facility) {
         this.facilities.add(facility);
-        facility.getClients().add(this);
+        facility.setClient(this);
     }
 
     public void removeFacility(Facility facility) {
         this.facilities.remove(facility);
-        facility.getClients().remove(this);
+        facility.setClient(null);
     }
 
     public void addAgent(RealEstateAgent agent) {
@@ -102,12 +73,7 @@ public class Client extends Person {
     @Override
     public String toString() {
         return "Client{" +
-                "isSeller=" + isSeller +
-                ", isBuyer=" + isBuyer +
-                ", isRenter=" + isRenter +
-                ", isLeaser=" + isLeaser +
+                "customerRequirements='" + customerRequirements + '\'' +
                 '}';
     }
-
-
 }

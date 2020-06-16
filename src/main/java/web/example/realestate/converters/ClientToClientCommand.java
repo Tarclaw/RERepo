@@ -3,6 +3,7 @@ package web.example.realestate.converters;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.ClientCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.commands.RealEstateAgentCommand;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.Contact;
@@ -41,16 +42,13 @@ public class ClientToClientCommand implements Converter<Client, ClientCommand> {
         command.setEmail(client.getContact().getEmail());
         command.setSkype(client.getContact().getSkype());
         command.setMobileNumber(client.getContact().getMobileNumber());
-        command.setSeller(client.isSeller());
-        command.setBuyer(client.isBuyer());
-        command.setRenter(client.isRenter());
-        command.setLeaser(client.isLeaser());
+        command.setCustomerRequirements(client.getCustomerRequirements());
 
-        /*if (client.getFacilities() != null && client.getFacilities().size() > 0) {
+        if (client.getFacilities() != null && client.getFacilities().size() > 0) {
             Set<FacilityCommand> source = new HashSet<>();
             client.getFacilities().forEach(facility -> source.add(toFacilityCommand.convert(facility)));
             command.setFacilityCommands(source);
-        }*/
+        }
 
         if (client.getRealEstateAgents() != null && client.getRealEstateAgents().size() > 0) {
             Set<RealEstateAgentCommand> source = new HashSet<>();
