@@ -83,16 +83,6 @@ public class RealEstateAgent extends Person {
         this.clients = clients;
     }
 
-    public void addClient(Client client) {
-        this.clients.add(client);
-        client.getRealEstateAgents().add(this);
-    }
-
-    public void removeClient(Client client) {
-        this.clients.remove(client);
-        client.getRealEstateAgents().remove(this);
-    }
-
     @Override
     public String toString() {
         return "RealEstateAgent{" +

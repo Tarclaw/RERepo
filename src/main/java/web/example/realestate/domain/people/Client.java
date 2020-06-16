@@ -81,12 +81,22 @@ public class Client extends Person {
 
     public void addFacility(Facility facility) {
         this.facilities.add(facility);
-        facility.getClients().remove(this);
+        facility.getClients().add(this);
     }
 
     public void removeFacility(Facility facility) {
         this.facilities.remove(facility);
         facility.getClients().remove(this);
+    }
+
+    public void addAgent(RealEstateAgent agent) {
+        this.realEstateAgents.add(agent);
+        agent.getClients().add(this);
+    }
+
+    public void removeAgent(RealEstateAgent agent) {
+        this.realEstateAgents.remove(agent);
+        agent.getClients().remove(this);
     }
 
     @Override

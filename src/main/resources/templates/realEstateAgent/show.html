@@ -101,6 +101,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Client</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" role="button">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul>
+                                    <li th:each="client : ${realEstateAgent.clients}"
+                                        th:text="${client.firstName + ' ' + client.lastName}">
+                                        Aid Seeker
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

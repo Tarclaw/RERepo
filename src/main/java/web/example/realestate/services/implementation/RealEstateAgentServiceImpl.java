@@ -29,10 +29,10 @@ public class RealEstateAgentServiceImpl implements RealEstateAgentService {
 
     @Override
     public RealEstateAgent getById(final Long id) {
-        return repository.findById(id)
-                .orElseThrow(
-                        () -> new RuntimeException("We don't have agent with id=" + id)
-                );
+        return repository.findRealEstateAgentsByIdWithEntities(id)
+                         .orElseThrow(
+                                      () -> new RuntimeException("We don't have agent with id=" + id)
+                         );
     }
 
     @Override

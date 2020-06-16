@@ -107,6 +107,54 @@
                         </div>
                     </div>
                 </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Facilities</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" role="button">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul>
+                                    <li th:each="facility : ${client.facilities}"
+                                        th:text="${facility.description}">
+                                        Some Xalypa
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Agent</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" role="button">View</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul>
+                                    <li th:each="agent : ${client.realEstateAgents}"
+                                        th:text="${agent.firstName + ' ' + agent.lastName}">
+                                        Buy Seller
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
