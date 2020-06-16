@@ -47,7 +47,7 @@ class HouseServiceImplTest {
         //given
         House source = new House();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(source));
+        when(repository.findHousesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         House house = service.getById(1L);
@@ -55,7 +55,7 @@ class HouseServiceImplTest {
         //then
         assertNotNull(house);
         assertEquals(1L, house.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findHousesByIdWithClients(anyLong());
 
     }
 
@@ -78,7 +78,7 @@ class HouseServiceImplTest {
     @Test
     void findCommandById() {
         //given
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new House()));
+        when(repository.findHousesByIdWithClients(anyLong())).thenReturn(Optional.of(new House()));
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(toHouseCommand.convert(any())).thenReturn(source);
@@ -89,7 +89,7 @@ class HouseServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findHousesByIdWithClients(anyLong());
         verify(toHouseCommand, times(1)).convert(any());
     }
 

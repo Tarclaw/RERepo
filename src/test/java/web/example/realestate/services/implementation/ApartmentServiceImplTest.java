@@ -47,13 +47,13 @@ class ApartmentServiceImplTest {
         Apartment apartment = new Apartment();
         apartment.setId(1L);
         Optional<Apartment> source = Optional.of(apartment);
-        when(repository.findById(anyLong())).thenReturn(source);
+        when(repository.findApartmentsByIdWithClients(anyLong())).thenReturn(source);
 
         Apartment apartmentFromRepo = service.getById(1L);
 
         assertNotNull(apartmentFromRepo);
         assertEquals(1L, apartmentFromRepo.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findApartmentsByIdWithClients(anyLong());
     }
 
     @Test
@@ -75,7 +75,7 @@ class ApartmentServiceImplTest {
     @Test
     void findCommandById() {
         //given
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new Apartment()));
+        when(repository.findApartmentsByIdWithClients(anyLong())).thenReturn(Optional.of(new Apartment()));
 
         FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
@@ -86,7 +86,7 @@ class ApartmentServiceImplTest {
 
         //then
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findApartmentsByIdWithClients(anyLong());
         verify(toApartmentCommand, times(1)).convert(any());
     }
 

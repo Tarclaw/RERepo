@@ -36,7 +36,9 @@ class BasementCommandToBasementTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toBasement.convert(new FacilityCommand()));
+        FacilityCommand command = new FacilityCommand();
+        command.setAddress(new AddressCommand());
+        assertNotNull(toBasement.convert(command));
     }
 
     @Test

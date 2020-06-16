@@ -36,7 +36,9 @@ class StorageCommandToStorageTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toStorage.convert(new FacilityCommand()));
+        FacilityCommand command = new FacilityCommand();
+        command.setAddress(new AddressCommand());
+        assertNotNull(toStorage.convert(command));
     }
 
     @Test

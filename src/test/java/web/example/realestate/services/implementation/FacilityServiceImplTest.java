@@ -44,21 +44,21 @@ class FacilityServiceImplTest {
     @Test
     void getById() {
         //given
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new Facility()));
+        when(repository.findFacilityByIdWithClients(anyLong())).thenReturn(Optional.of(new Facility()));
 
         //when
         Facility facility = service.getById(1L);
 
         //then
         assertNotNull(facility);
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findFacilityByIdWithClients(anyLong());
 
     }
 
     @Test
     void getByIdWhenFacilityDoesNotExist() {
         assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findFacilityByIdWithClients(anyLong());
     }
 
     @Test
@@ -77,7 +77,7 @@ class FacilityServiceImplTest {
     @Test
     void findCommandById() {
         //given
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new Facility()));
+        when(repository.findFacilityByIdWithClients(anyLong())).thenReturn(Optional.of(new Facility()));
         when(toFacilityCommand.convert(any())).thenReturn(new FacilityCommand());
 
         //when
@@ -86,7 +86,7 @@ class FacilityServiceImplTest {
         //then
         assertNotNull(command);
         verify(toFacilityCommand, times(1)).convert(new Facility());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findFacilityByIdWithClients(anyLong());
     }
 
     @Test

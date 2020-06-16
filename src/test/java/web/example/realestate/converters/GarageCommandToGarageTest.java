@@ -36,7 +36,9 @@ class GarageCommandToGarageTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toGarage.convert(new FacilityCommand()));
+        FacilityCommand command = new FacilityCommand();
+        command.setAddress(new AddressCommand());
+        assertNotNull(toGarage.convert(command));
     }
 
     @Test

@@ -47,7 +47,7 @@ class StorageServiceImplTest {
         //given
         Storage source = new Storage();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(source));
+        when(repository.findStoragesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Storage storage = service.getById(1L);
@@ -55,7 +55,7 @@ class StorageServiceImplTest {
         //then
         assertNotNull(storage);
         assertEquals(1L, storage.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findStoragesByIdWithClients(anyLong());
     }
 
     @Test
@@ -81,7 +81,7 @@ class StorageServiceImplTest {
         storage.setId(1L);
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(storage));
+        when(repository.findStoragesByIdWithClients(anyLong())).thenReturn(Optional.of(storage));
         when(toStorageCommand.convert(storage)).thenReturn(source);
 
         //when
@@ -90,7 +90,7 @@ class StorageServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findStoragesByIdWithClients(anyLong());
         verify(toStorageCommand, times(1)).convert(any());
     }
 

@@ -158,11 +158,11 @@ class ClientControllerTest {
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
 
-        assertEquals("redirect:/", viewName);
+        assertEquals("redirect:/clients", viewName);
         verify(service, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/client/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/clients"));
     }
 }

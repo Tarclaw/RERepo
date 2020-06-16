@@ -47,7 +47,7 @@ class RealEstateAgentServiceImplTest {
         //given
         RealEstateAgent source = new RealEstateAgent();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(source));
+        when(repository.findRealEstateAgentsByIdWithEntities(anyLong())).thenReturn(Optional.of(source));
 
         //when
         RealEstateAgent agent = service.getById(1L);
@@ -55,7 +55,7 @@ class RealEstateAgentServiceImplTest {
         //then
         assertNotNull(agent);
         assertEquals(source.getId(), agent.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findRealEstateAgentsByIdWithEntities(anyLong());
     }
 
     @Test
@@ -79,7 +79,7 @@ class RealEstateAgentServiceImplTest {
         //given
         RealEstateAgentCommand source = new RealEstateAgentCommand();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new RealEstateAgent()));
+        when(repository.findRealEstateAgentsByIdWithEntities(anyLong())).thenReturn(Optional.of(new RealEstateAgent()));
         when(toAgentCommand.convert(any())).thenReturn(source);
 
         //when
@@ -88,7 +88,7 @@ class RealEstateAgentServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(source.getId(), command.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findRealEstateAgentsByIdWithEntities(anyLong());
         verify(toAgentCommand, times(1)).convert(any());
     }
 

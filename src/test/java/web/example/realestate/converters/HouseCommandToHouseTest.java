@@ -37,7 +37,9 @@ class HouseCommandToHouseTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toHouse.convert(new FacilityCommand()));
+        FacilityCommand command = new FacilityCommand();
+        command.setAddress(new AddressCommand());
+        assertNotNull(toHouse.convert(command));
     }
 
     @Test

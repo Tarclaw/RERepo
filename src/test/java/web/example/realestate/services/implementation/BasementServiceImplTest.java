@@ -47,7 +47,7 @@ class BasementServiceImplTest {
         //given
         Basement source = new Basement();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(source));
+        when(repository.findBasementByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Basement basement = service.getById(1L);
@@ -55,7 +55,7 @@ class BasementServiceImplTest {
         //then
         assertNotNull(basement);
         assertEquals(1, basement.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findBasementByIdWithClients(anyLong());
     }
 
     @Test
@@ -80,7 +80,7 @@ class BasementServiceImplTest {
     @Test
     void findCommandById() {
         //given
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new Basement()));
+        when(repository.findBasementByIdWithClients(anyLong())).thenReturn(Optional.of(new Basement()));
 
         FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
@@ -92,7 +92,7 @@ class BasementServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findBasementByIdWithClients(anyLong());
     }
 
     @Test

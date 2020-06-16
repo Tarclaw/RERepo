@@ -158,11 +158,11 @@ class GarageControllerTest {
     @Test
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
-        assertEquals("redirect:/", viewName);
+        assertEquals("redirect:/garages", viewName);
         verify(service, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/garage/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/garages"));
     }
 }

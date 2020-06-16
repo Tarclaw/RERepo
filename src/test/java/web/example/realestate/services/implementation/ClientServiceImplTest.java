@@ -7,7 +7,9 @@ import org.mockito.MockitoAnnotations;
 import web.example.realestate.commands.ClientCommand;
 import web.example.realestate.converters.ClientCommandToClient;
 import web.example.realestate.converters.ClientToClientCommand;
+import web.example.realestate.domain.building.Facility;
 import web.example.realestate.domain.people.Client;
+import web.example.realestate.domain.people.RealEstateAgent;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.ClientService;
 
@@ -47,7 +49,7 @@ class ClientServiceImplTest {
         //given
         Client source = new Client();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(source));
+        when(repository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Client client = service.getById(1L);
@@ -55,7 +57,7 @@ class ClientServiceImplTest {
         //then
         assertNotNull(client);
         assertEquals(1L, client.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
     }
 
     @Test
@@ -80,7 +82,7 @@ class ClientServiceImplTest {
         //given
         ClientCommand source = new ClientCommand();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new Client()));
+        when(repository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(new Client()));
         when(toClientCommand.convert(any())).thenReturn(source);
 
         //when
@@ -89,13 +91,37 @@ class ClientServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
         verify(toClientCommand, times(1)).convert(any());
     }
 
     @Test
     void deleteById() {
+        //given
+        Set<Facility> facilities = new HashSet<>();
+        facilities.add(new Facility());
+
+        Client source = new Client();
+        source.setFacilities(facilities);
+
+        Set<Client> clients = new HashSet<>();
+        clients.add(source);
+
+        RealEstateAgent agent = new RealEstateAgent();
+        agent.setClients(clients);
+        
+        Set<RealEstateAgent> agents = new HashSet<>();
+        agents.add(agent);
+
+        source.setRealEstateAgents(agents);
+
+        when(repository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(source));
+
+        //when
         service.deleteById(anyLong());
+
+        //then
+        verify(repository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
         verify(repository, times(1)).deleteById(anyLong());
     }
 }

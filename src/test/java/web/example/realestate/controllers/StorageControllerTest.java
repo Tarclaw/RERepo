@@ -159,10 +159,10 @@ class StorageControllerTest {
     @Test
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
-        assertEquals("redirect:/", viewName);
+        assertEquals("redirect:/storages", viewName);
 
         mockMvc.perform(get("/storage/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/storages"));
     }
 }

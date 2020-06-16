@@ -67,10 +67,10 @@ public class ClientServiceImpl implements ClientService {
         Client client = repository.findClientByIdWithFacilitiesAndAgents(id).get();
 
         List<Facility> facilities = new ArrayList<>(client.getFacilities());
-        facilities.forEach(facility -> client.removeFacility(facility));
+        facilities.forEach(client::removeFacility);
 
         List<RealEstateAgent> agents = new ArrayList<>(client.getRealEstateAgents());
-        agents.forEach(agent -> client.removeAgent(agent));
+        agents.forEach(client::removeAgent);
 
         repository.deleteById(id);
     }

@@ -150,11 +150,11 @@ class FacilityControllerTest {
     @Test
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
-        assertEquals("redirect:/", viewName);
+        assertEquals("redirect:/facilities", viewName);
         verify(service, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/facility/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/facilities"));
     }
 }

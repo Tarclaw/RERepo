@@ -47,7 +47,7 @@ class GarageServiceImplTest {
         //given
         Garage source = new Garage();
         source.setId(1L);
-        when(repository.findById(anyLong())).thenReturn(Optional.of(source));
+        when(repository.findGaragesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Garage garage = service.getById(1L);
@@ -55,7 +55,7 @@ class GarageServiceImplTest {
         //then
         assertNotNull(garage);
         assertEquals(1L, garage.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findGaragesByIdWithClients(anyLong());
     }
 
     @Test
@@ -77,7 +77,7 @@ class GarageServiceImplTest {
     @Test
     void findCommandById() {
         //given
-        when(repository.findById(anyLong())).thenReturn(Optional.of(new Garage()));
+        when(repository.findGaragesByIdWithClients(anyLong())).thenReturn(Optional.of(new Garage()));
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(toGarageCommand.convert(any())).thenReturn(source);
@@ -88,7 +88,7 @@ class GarageServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findById(anyLong());
+        verify(repository, times(1)).findGaragesByIdWithClients(anyLong());
         verify(toGarageCommand, times(1)).convert(any());
     }
 
