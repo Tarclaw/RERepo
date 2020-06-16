@@ -27,6 +27,9 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
         command.setDescription(facility.getDescription());
         command.setPublishedDateTime(facility.getPublishedDateTime());
         command.setClosedDateTime(facility.getClosedDateTime());
+        command.setMonthRent(facility.getMonthRent());
+        command.setPrice(facility.getPrice());
+        command.setStatus(facility.getStatus());
         command.setAddress(toAddressCommand.convert(facility.getAddress()));
 
         if (facility instanceof Apartment) {

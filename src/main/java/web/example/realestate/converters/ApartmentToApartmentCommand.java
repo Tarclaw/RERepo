@@ -29,6 +29,9 @@ public class ApartmentToApartmentCommand implements Converter<Apartment, Facilit
         command.setDescription(apartment.getDescription());
         command.setPublishedDateTime(apartment.getPublishedDateTime());
         command.setClosedDateTime(apartment.getClosedDateTime());
+        command.setMonthRent(apartment.getMonthRent());
+        command.setPrice(apartment.getPrice());
+        command.setStatus(apartment.getStatus());
         command.setAddress(toAddressCommand.convert(apartment.getAddress()));
         command.setApartment(true);
 

@@ -1,9 +1,11 @@
 package web.example.realestate.domain.building;
 
+import web.example.realestate.domain.enums.Status;
 import web.example.realestate.domain.people.Client;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +25,12 @@ public class Facility implements Serializable {
     private LocalDateTime publishedDateTime;
     private LocalDateTime closedDateTime;
 
+    private BigInteger monthRent;
+    private BigInteger price;
+
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
+
     @Lob
     private List<Byte[]> photos;
 
@@ -32,9 +40,6 @@ public class Facility implements Serializable {
     @OneToOne(mappedBy = "facility", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private FacilityObject facilityObject;
-
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "clients_facilities",
             joinColumns = @JoinColumn(name = "facility_id"),
@@ -43,51 +48,42 @@ public class Facility implements Serializable {
 
     public Facility() {}
 
-    public Facility(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime) {
-        this.numberOfRooms = numberOfRooms;
-        this.totalArea = totalArea;
-        this.description = description;
-        this.publishedDateTime = publishedDateTime;
-    }
-
     public Facility(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, Address address) {
+                    LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price, Status status) {
         this.numberOfRooms = numberOfRooms;
         this.totalArea = totalArea;
         this.description = description;
         this.publishedDateTime = publishedDateTime;
-        this.address = address;
-    }
-
-    public Facility(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, FacilityObject facilityObject) {
-        this.numberOfRooms = numberOfRooms;
-        this.totalArea = totalArea;
-        this.description = description;
-        this.publishedDateTime = publishedDateTime;
-        this.facilityObject = facilityObject;
-    }
-
-    public Facility(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, Address address, FacilityObject facilityObject) {
-        this.numberOfRooms = numberOfRooms;
-        this.totalArea = totalArea;
-        this.description = description;
-        this.publishedDateTime = publishedDateTime;
-        this.address = address;
-        this.facilityObject = facilityObject;
+        this.monthRent = monthRent;
+        this.price = price;
+        this.status = status;
     }
 
     public Facility(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
-                    List<Byte[]> photos, List<Byte[]> videos, Address address, FacilityObject facilityObject) {
+                    BigInteger monthRent, BigInteger price, Status status, Address address) {
         this.numberOfRooms = numberOfRooms;
         this.totalArea = totalArea;
         this.description = description;
         this.publishedDateTime = publishedDateTime;
+        this.monthRent = monthRent;
+        this.price = price;
+        this.status = status;
+        this.address = address;
+    }
+
+    public Facility(Integer numberOfRooms, Integer totalArea, String description,
+                    LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                    Status status, List<Byte[]> photos, List<Byte[]> videos, Address address) {
+        this.numberOfRooms = numberOfRooms;
+        this.totalArea = totalArea;
+        this.description = description;
+        this.publishedDateTime = publishedDateTime;
+        this.monthRent = monthRent;
+        this.price = price;
+        this.status = status;
         this.photos = photos;
         this.videos = videos;
         this.address = address;
-        this.facilityObject = facilityObject;
     }
 
     public Long getId() {
@@ -162,20 +158,36 @@ public class Facility implements Serializable {
         this.address = address;
     }
 
-    public FacilityObject getFacilityObject() {
-        return facilityObject;
-    }
-
-    public void setFacilityObject(FacilityObject facilityObject) {
-        this.facilityObject = facilityObject;
-    }
-
     public Set<Client> getClients() {
         return clients;
     }
 
     public void setClients(Set<Client> clients) {
         this.clients = clients;
+    }
+
+    public BigInteger getMonthRent() {
+        return monthRent;
+    }
+
+    public void setMonthRent(BigInteger monthRent) {
+        this.monthRent = monthRent;
+    }
+
+    public BigInteger getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigInteger price) {
+        this.price = price;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override

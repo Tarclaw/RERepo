@@ -28,6 +28,9 @@ public class BasementToBasementCommand implements Converter<Basement, FacilityCo
         command.setItCommercial(basement.isItCommercial());
         command.setPublishedDateTime(basement.getPublishedDateTime());
         command.setClosedDateTime(basement.getClosedDateTime());
+        command.setMonthRent(basement.getMonthRent());
+        command.setPrice(basement.getPrice());
+        command.setStatus(basement.getStatus());
         command.setAddress(toAddressCommand.convert(basement.getAddress()));
         command.setBasement(true);
 

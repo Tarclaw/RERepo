@@ -1,7 +1,10 @@
 package web.example.realestate.domain.building;
 
+import web.example.realestate.domain.enums.Status;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,39 +17,26 @@ public class Garage extends Facility {
 
     public Garage() {}
 
-    public Garage(Integer numberOfRooms, Integer totalArea, String description,
-                  LocalDateTime publishedDateTime, boolean hasPit, boolean hasEquipment) {
-        super(numberOfRooms, totalArea, description, publishedDateTime);
-        this.hasPit = hasPit;
-        this.hasEquipment = hasEquipment;
-    }
-
-    public Garage(Integer numberOfRooms, Integer totalArea, String description,
-                  LocalDateTime publishedDateTime, Address address, boolean hasPit, boolean hasEquipment) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, address);
-        this.hasPit = hasPit;
-        this.hasEquipment = hasEquipment;
-    }
-
-    public Garage(Integer numberOfRooms, Integer totalArea, String description,
-                  LocalDateTime publishedDateTime, FacilityObject facilityObject,
-                  boolean hasPit, boolean hasEquipment) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, facilityObject);
+    public Garage(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
+                  BigInteger monthRent, BigInteger price, Status status, boolean hasPit, boolean hasEquipment) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status);
         this.hasPit = hasPit;
         this.hasEquipment = hasEquipment;
     }
 
     public Garage(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
-                  Address address, FacilityObject facilityObject, boolean hasPit, boolean hasEquipment) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, address, facilityObject);
+                  BigInteger monthRent, BigInteger price, Status status, Address address,
+                  boolean hasPit, boolean hasEquipment) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, address);
         this.hasPit = hasPit;
         this.hasEquipment = hasEquipment;
     }
 
     public Garage(Integer numberOfRooms, Integer totalArea, String description,
-                  LocalDateTime publishedDateTime, List<Byte[]> photos, List<Byte[]> videos,
-                  Address address, FacilityObject facilityObject, boolean hasPit, boolean hasEquipment) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, photos, videos, address, facilityObject);
+                  LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                  Status status, List<Byte[]> photos, List<Byte[]> videos,
+                  Address address, boolean hasPit, boolean hasEquipment) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
         this.hasPit = hasPit;
         this.hasEquipment = hasEquipment;
     }

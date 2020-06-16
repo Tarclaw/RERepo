@@ -33,8 +33,12 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Apartment Description:</label>
+                                    <label>Description:</label>
                                     <input type="text" class="form-control" th:field="*{description}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Status:</label>
+                                    <input type="text" class="form-control" th:field="*{status}" />
                                 </div>
                             </div>
                             <div class="row">
@@ -46,8 +50,16 @@
                                     <label>Total Area:</label>
                                     <input type="text" class="form-control" th:field="*{totalArea}" />
                                 </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Month Rent:</label>
+                                    <input type="text" class="form-control" th:field="*{monthRent}" />
+                                </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Price:</label>
+                                    <input type="text" class="form-control" th:field="*{price}" />
+                                </div>
                                 <div class="col-md-3 form-group">
                                     <label>Published Date Time:</label>
                                     <input type="text" class="form-control" th:field="*{publishedDateTime}" />

@@ -30,6 +30,9 @@ public class HouseToHouseCommand implements Converter<House, FacilityCommand> {
         command.setNumberOfStoreys(house.getNumberOfStoreys());
         command.setHasBackyard(house.isHasBackyard());
         command.setHasGarden(house.isHasGarden());
+        command.setMonthRent(house.getMonthRent());
+        command.setPrice(house.getPrice());
+        command.setStatus(house.getStatus());
         command.setAddress(toAddressCommand.convert(house.getAddress()));
         command.setHouse(true);
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -44,23 +44,45 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>Number of Storeys:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${house.numberOfStoreys}">76</p>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>Backyard:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${house.hasBackyard}">yes</p>
                             </div>
-                            <div class="col-md-2">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
                                 <h5>Garden:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${house.hasGarden}">yes</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Status:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${house.status}">Unknown</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Month Rent:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${house.monthRent}">1 000</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Price:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${house.price}">1 000 000</p>
                             </div>
                         </div>
                         <div class="row">

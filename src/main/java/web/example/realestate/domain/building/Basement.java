@@ -1,7 +1,10 @@
 package web.example.realestate.domain.building;
 
+import web.example.realestate.domain.enums.Status;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,35 +16,23 @@ public class Basement extends Facility {
 
     public Basement() {}
 
-    public Basement(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, boolean itCommercial) {
-        super(numberOfRooms, totalArea, description, publishedDateTime);
+    public Basement(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
+                    BigInteger monthRent, BigInteger price, Status status, boolean itCommercial) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status);
+        this.itCommercial = itCommercial;
+    }
+
+    public Basement(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
+                    BigInteger monthRent, BigInteger price, Status status, Address address, boolean itCommercial) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, address);
         this.itCommercial = itCommercial;
     }
 
     public Basement(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, Address address, boolean itCommercial) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, address);
-        this.itCommercial = itCommercial;
-    }
-
-    public Basement(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, FacilityObject facilityObject, boolean itCommercial) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, facilityObject);
-        this.itCommercial = itCommercial;
-    }
-
-    public Basement(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, Address address,
-                    FacilityObject facilityObject, boolean itCommercial) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, address, facilityObject);
-        this.itCommercial = itCommercial;
-    }
-
-    public Basement(Integer numberOfRooms, Integer totalArea, String description,
-                    LocalDateTime publishedDateTime, List<Byte[]> photos, List<Byte[]> videos,
-                    Address address, FacilityObject facilityObject, boolean itCommercial) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, photos, videos, address, facilityObject);
+                    LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                    Status status, List<Byte[]> photos, List<Byte[]> videos,
+                    Address address, boolean itCommercial) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
         this.itCommercial = itCommercial;
     }
 

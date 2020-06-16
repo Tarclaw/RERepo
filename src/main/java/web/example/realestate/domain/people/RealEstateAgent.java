@@ -1,7 +1,5 @@
 package web.example.realestate.domain.people;
 
-import web.example.realestate.domain.building.FacilityObject;
-
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -12,11 +10,9 @@ import java.util.Set;
 public class RealEstateAgent extends Person {
 
     private BigInteger salary;
+
     private LocalDate hiredDate;
     private LocalDate quitDate;
-
-    @OneToMany(mappedBy = "agent")
-    private Set<FacilityObject> facilityObjects;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "clients_agents",
@@ -26,8 +22,9 @@ public class RealEstateAgent extends Person {
 
     public RealEstateAgent() {}
 
-    public RealEstateAgent(String firstName, String lastName, String login, String password,
-                           Contact contact, BigInteger salary, LocalDate hiredDate) {
+    public RealEstateAgent(String firstName, String lastName, String login,
+                           String password, Contact contact, BigInteger salary,
+                           LocalDate hiredDate) {
         super(firstName, lastName, login, password, contact);
         this.salary = salary;
         this.hiredDate = hiredDate;
@@ -55,24 +52,6 @@ public class RealEstateAgent extends Person {
 
     public void setQuitDate(LocalDate quitDate) {
         this.quitDate = quitDate;
-    }
-
-    public Set<FacilityObject> getFacilityObjects() {
-        return facilityObjects;
-    }
-
-    public void setFacilityObjects(Set<FacilityObject> facilityObjects) {
-        this.facilityObjects = facilityObjects;
-    }
-
-    public void addFacilityObject(FacilityObject facilityObject) {
-        this.facilityObjects.add(facilityObject);
-        facilityObject.setAgent(this);
-    }
-
-    public void removeFacilityObject(FacilityObject facilityObject) {
-        this.facilityObjects.remove(facilityObject);
-        facilityObject.setAgent(null);
     }
 
     public Set<Client> getClients() {

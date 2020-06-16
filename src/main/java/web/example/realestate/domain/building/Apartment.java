@@ -1,7 +1,10 @@
 package web.example.realestate.domain.building;
 
+import web.example.realestate.domain.enums.Status;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,40 +17,26 @@ public class Apartment extends Facility {
 
     public Apartment() {}
 
-    public Apartment(Integer numberOfRooms, Integer totalArea, String description,
-                     LocalDateTime publishedDateTime, Integer apartmentNumber, Integer floor) {
-        super(numberOfRooms, totalArea, description, publishedDateTime);
+    public Apartment(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
+                     BigInteger monthRent, BigInteger price, Status status, Integer apartmentNumber, Integer floor) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status);
         this.apartmentNumber = apartmentNumber;
         this.floor = floor;
     }
 
     public Apartment(Integer numberOfRooms, Integer totalArea, String description,
-                     LocalDateTime publishedDateTime, Address address, Integer apartmentNumber, Integer floor) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, address);
+                     LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                     Status status, Address address, Integer apartmentNumber, Integer floor) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, address);
         this.apartmentNumber = apartmentNumber;
         this.floor = floor;
     }
 
     public Apartment(Integer numberOfRooms, Integer totalArea, String description,
-                     LocalDateTime publishedDateTime, FacilityObject facilityObject,
+                     LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                     Status status, List<Byte[]> photos, List<Byte[]> videos, Address address,
                      Integer apartmentNumber, Integer floor) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, facilityObject);
-        this.apartmentNumber = apartmentNumber;
-        this.floor = floor;
-    }
-
-    public Apartment(Integer numberOfRooms, Integer totalArea, String description,
-                     LocalDateTime publishedDateTime, Address address,
-                     FacilityObject facilityObject, Integer apartmentNumber, Integer floor) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, address, facilityObject);
-        this.apartmentNumber = apartmentNumber;
-        this.floor = floor;
-    }
-
-    public Apartment(Integer numberOfRooms, Integer totalArea, String description,
-                     LocalDateTime publishedDateTime, List<Byte[]> photos, List<Byte[]> videos,
-                     Address address, FacilityObject facilityObject, Integer apartmentNumber, Integer floor) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, photos, videos, address, facilityObject);
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
         this.apartmentNumber = apartmentNumber;
         this.floor = floor;
     }

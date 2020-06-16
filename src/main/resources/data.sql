@@ -5,28 +5,21 @@ INSERT INTO clients(id, email, mobile_number, skype, first_name, last_name, logi
 INSERT INTO real_estate_agents(id, email, mobile_number, skype, first_name, last_name, login, password, hired_date, salary) VALUES(1, 'm.public@realestate.com', '+1-014-777-3355', 'm.public', 'Marry', 'Public', 'marry_login', '123456', '2020-04-27', 5000.00);
 INSERT INTO real_estate_agents(id, email, mobile_number, skype, first_name, last_name, login, password, hired_date, salary) VALUES(2, 'b.billy@realestate.com', '+1-014-515-2288', 'b.billy', 'Billy', 'Butkiss', 'billy_login', 'qwerty', '2020-04-27', 4500.00);
 
-INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(1, 2000.00, 4000.00, 1000000.00, 'FOR_RENT', 1);
-INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(2, 15000.00, 4200.00, 1500000.00, 'FOR_SALE', 2);
-INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(3, 20000.00, 6000.00, 2000000.00, 'FOR_SALE', 1);
-INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(4, 1500.00, 3000.00, 700000.00, 'FOR_RENT', 1);
-INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(5, 12000.00, 5000.00, 1200000.00, 'FOR_SALE', 2);
-INSERT INTO facility_objects(id, commission_amount, month_rent, price, status, agent_id) VALUES(6, 33000.00, 9000.00, 3300000.00, 'SOLD', 2);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status) VALUES(6, 'generic description', 5, '2020-04-27 19:53:26.298205', 150, 1000.00, 100000.00, 'SOLD');
 
-INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(6, 'generic description', 5, '2020-04-27 19:53:26.298205', 150, 6);
-
-INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(1, 'top rated xata', 5, '2020-04-27 19:53:26.298205', 150, 1);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status) VALUES(1, 'top rated xata', 5, '2020-04-27 19:53:26.298205', 150, 4000.00, 1000000.00, 'FOR_RENT');
 INSERT INTO apartments(id, apartment_number, floor) VALUES(1, 788, 25);
 
-INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(2, 'barbershop, ready business model', 3, '2020-04-27 19:53:26.298205', 200, 2);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status) VALUES(2, 'barbershop, ready business model', 3, '2020-04-27 19:53:26.298205', 200, 4200.00, 1500000.00, 'FOR_SALE');
 INSERT INTO basements(id, it_commercial) VALUES(2, true);
 
-INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(3, 'vehicles repair', 3, '2020-04-27 19:53:26.298205', 600, 3);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status) VALUES(3, 'vehicles repair', 3, '2020-04-27 19:53:26.298205', 600, 6000.00, 2000000.00, 'FOR_SALE');
 INSERT INTO garages(id, has_equipment, has_pit) VALUES(3, true, true);
 
-INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(4, 'new home with repair for big family', 8, '2020-04-27 19:53:26.298205', 300, 4);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status) VALUES(4, 'new home with repair for big family', 8, '2020-04-27 19:53:26.298205', 300, 3000.00, 700000.00, 'RENTED');
 INSERT INTO houses(id, has_backyard, has_garden, number_of_storeys) VALUES(4, true, true, 3);
 
-INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, facility_object_id) VALUES(5, 'huge storage for drug dealers', 3, '2020-04-27 19:53:26.298205', 700, 5);
+INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status) VALUES(5, 'huge storage for drug dealers', 3, '2020-04-27 19:53:26.298205', 700, 5000.00, 1200000.00, 'SOLD');
 INSERT INTO storages(id, commercial_capacity, has_cargo_equipment) VALUES(5, 600, true);
 
 INSERT INTO addresses(city, district, facility_number, postcode, street, facility_id) VALUES('New York', 'NY', 255, 100305, 'Manhattan', 5);

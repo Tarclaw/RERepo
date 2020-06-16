@@ -1,7 +1,10 @@
 package web.example.realestate.domain.building;
 
+import web.example.realestate.domain.enums.Status;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,44 +18,29 @@ public class House extends Facility {
 
     public House() {}
 
-    public House(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
-                 Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
-        super(numberOfRooms, totalArea, description, publishedDateTime);
-        this.numberOfStoreys = numberOfStoreys;
-        this.hasBackyard = hasBackyard;
-        this.hasGarden = hasGarden;
-    }
-
-    public House(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
-                 Address address, Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
-        super(numberOfRooms, totalArea, description,publishedDateTime, address);
-        this.numberOfStoreys = numberOfStoreys;
-        this.hasBackyard = hasBackyard;
-        this.hasGarden = hasGarden;
-    }
-
-    public House(Integer numberOfRooms, Integer totalArea, String description, LocalDateTime publishedDateTime,
-                 FacilityObject facilityObject, Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
-        super(numberOfRooms, totalArea, description,publishedDateTime, facilityObject);
+    public House(Integer numberOfRooms, Integer totalArea, String description,
+                 LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                 Status status, Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status);
         this.numberOfStoreys = numberOfStoreys;
         this.hasBackyard = hasBackyard;
         this.hasGarden = hasGarden;
     }
 
     public House(Integer numberOfRooms, Integer totalArea, String description,
-                 LocalDateTime publishedDateTime, Address address, FacilityObject facilityObject,
-                 Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
-        super(numberOfRooms, totalArea, description,publishedDateTime, address, facilityObject);
+                 LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                 Status status, Address address, Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, address);
         this.numberOfStoreys = numberOfStoreys;
         this.hasBackyard = hasBackyard;
         this.hasGarden = hasGarden;
     }
 
     public House(Integer numberOfRooms, Integer totalArea, String description,
-                 LocalDateTime publishedDateTime, List<Byte[]> photos, List<Byte[]> videos,
-                 Address address, FacilityObject facilityObject, Integer numberOfStoreys,
-                 boolean hasBackyard, boolean hasGarden) {
-        super(numberOfRooms, totalArea, description,publishedDateTime, photos, videos, address, facilityObject);
+                 LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
+                 Status status, List<Byte[]> photos, List<Byte[]> videos, Address address,
+                 Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
         this.numberOfStoreys = numberOfStoreys;
         this.hasBackyard = hasBackyard;
         this.hasGarden = hasGarden;

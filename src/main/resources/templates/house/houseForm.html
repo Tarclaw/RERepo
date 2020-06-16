@@ -28,17 +28,25 @@
                 <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Edit Apartment Information</h1>
+                            <h1 class="panel-title">Edit House Information</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>House Description:</label>
+                                    <label>Description:</label>
                                     <input type="text" class="form-control" th:field="*{description}" />
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Number of Storeys:</label>
                                     <input type="text" class="form-control" th:field="*{numberOfStoreys}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Status:</label>
+                                    <input type="text" class="form-control" th:field="*{status}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Month Rent:</label>
+                                    <input type="text" class="form-control" th:field="*{monthRent}" />
                                 </div>
                             </div>
                             <div class="row">
@@ -53,6 +61,10 @@
                                 <div class="col-md-3 form-group">
                                     <label>Backyard:</label>
                                     <input type="text" class="form-control" th:field="*{hasBackyard}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Price:</label>
+                                    <input type="text" class="form-control" th:field="*{price}" />
                                 </div>
                             </div>
                             <div class="row">

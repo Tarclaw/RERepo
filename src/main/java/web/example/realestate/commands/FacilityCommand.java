@@ -1,5 +1,8 @@
 package web.example.realestate.commands;
 
+import web.example.realestate.domain.enums.Status;
+
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 public class FacilityCommand {
@@ -9,6 +12,9 @@ public class FacilityCommand {
     private String description;
     private LocalDateTime publishedDateTime;
     private LocalDateTime closedDateTime;
+    private BigInteger monthRent;
+    private BigInteger price;
+    private Status status;
     private AddressCommand address;
     //Apartment
     private boolean isApartment = false;
@@ -208,5 +214,29 @@ public class FacilityCommand {
 
     public void setStorage(boolean storage) {
         isStorage = storage;
+    }
+
+    public BigInteger getMonthRent() {
+        return monthRent;
+    }
+
+    public void setMonthRent(BigInteger monthRent) {
+        this.monthRent = monthRent;
+    }
+
+    public BigInteger getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigInteger price) {
+        this.price = price;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

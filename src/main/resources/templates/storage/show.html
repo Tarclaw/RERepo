@@ -56,6 +56,20 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
+                                <h5>Month Rent:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${storage.monthRent}">1 000</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>Price:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${storage.price}">1 000 000</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
                                 <h5>Published Date Time:</h5>
                             </div>
                             <div class="col-md-3">
@@ -66,6 +80,14 @@
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.closedDateTime}">Not yet</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Status:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${storage.status}">Unknown</p>
                             </div>
                         </div>
                     </div>

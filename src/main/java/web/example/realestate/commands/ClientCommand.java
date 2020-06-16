@@ -20,8 +20,8 @@ public class ClientCommand {
     private boolean isRenter;
     private boolean isLeaser;
 
-    Set<FacilityCommand> facilityCommands = new HashSet<>();
-    Set<RealEstateAgentCommand> realEstateAgentCommands = new HashSet<>();
+    private Set<FacilityCommand> facilityCommands = new HashSet<>();
+    private Set<RealEstateAgentCommand> realEstateAgentCommands = new HashSet<>();
 
     public ClientCommand() {
     }

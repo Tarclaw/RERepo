@@ -10,7 +10,7 @@ public interface RealEstateAgentRepository extends CrudRepository<RealEstateAgen
 
     Optional<RealEstateAgent> findRealEstateAgentsByFirstNameAndLastName(String firstName, String lastName);
 
-    @Query("select r from RealEstateAgent r join fetch r.clients join fetch r.facilityObjects where r.id = ?1")
+    @Query("select r from RealEstateAgent r join fetch r.clients where r.id = ?1")
     Optional<RealEstateAgent> findRealEstateAgentsByIdWithEntities(Long id);
 
 }

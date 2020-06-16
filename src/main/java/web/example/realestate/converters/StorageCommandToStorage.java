@@ -45,6 +45,9 @@ public class StorageCommandToStorage implements Converter<FacilityCommand, Stora
         storage.setHasCargoEquipment(command.isHasCargoEquipment());
         storage.setPublishedDateTime(command.getPublishedDateTime());
         storage.setClosedDateTime(command.getClosedDateTime());
+        storage.setStatus(command.getStatus());
+        storage.setMonthRent(command.getMonthRent());
+        storage.setPrice(command.getPrice());
 
         storage.getAddress().setPostcode(command.getAddress().getPostcode());
         storage.getAddress().setFacilityNumber(command.getAddress().getFacilityNumber());
