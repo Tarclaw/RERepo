@@ -25,9 +25,6 @@
                         <div class="col-md-11">
                             <h1 class="panel-title">Facilities</h1>
                         </div>
-                        <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/facility/new'}" role="button">Create</a>
-                        </div>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -38,18 +35,23 @@
                                 <th>ID</th>
                                 <th>Description</th>
                                 <th>View</th>
+                                <th>Create</th>
                                 <th>Update</th>
                                 <th>Delete</th>
+                                <th>See All</th>
                             </tr>
                             </thead>
                             <tr th:each="facility : ${facilities}">
                                 <td th:text="${facility.getId()}">ID</td>
                                 <td th:text="${facility.getDescription()}">Description</td>
-                                <td><a href="#" th:href="@{'/facility/' + ${facility.getId()} + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{'/facility/' + ${facility.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:href="@{${mappings.get(facility.getId())} + '/' + ${facility.getId()}  + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{${mappings.get(facility.getId())} + '/new'}">Create</a></td>
+                                <td><a href="#" th:href="@{${mappings.get(facility.getId())} + '/' + ${facility.getId()} + '/update'}">Update</a></td>
                                 <td><a href="#" th:href="@{'/facility/' + ${facility.getId()} + '/delete'}">Delete</a></td>
+                                <td><a href="#" th:href="@{${mappings.get(facility.getId())}}">See All</a></td>
                             </tr>
                         </table>
+
                     </div>
                 </div>
             </div>

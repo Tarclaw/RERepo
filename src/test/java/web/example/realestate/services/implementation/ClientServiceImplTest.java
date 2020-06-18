@@ -109,7 +109,7 @@ class ClientServiceImplTest {
 
         RealEstateAgent agent = new RealEstateAgent();
         agent.setClients(clients);
-        
+
         Set<RealEstateAgent> agents = new HashSet<>();
         agents.add(agent);
 

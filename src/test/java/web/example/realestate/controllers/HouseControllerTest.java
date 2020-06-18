@@ -84,16 +84,16 @@ class HouseControllerTest {
         String viewName = controller.getAllHouses(model);
 
         //then
-        assertEquals("house", viewName);
+        assertEquals("houses", viewName);
         verify(service, times(1)).getHouses();
         verify(model, times(1)).addAttribute(eq("houses"), argumentCaptor.capture());
 
         Set<House> setInController = argumentCaptor.getValue();
         assertEquals(1, setInController.size());
 
-        mockMvc.perform(get("/houses"))
+        mockMvc.perform(get("/house"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("house"));
+                .andExpect(view().name("houses"));
     }
 
     @Test

@@ -21,10 +21,10 @@ public class GarageController {
         return "garage/show";
     }
 
-    @GetMapping("/garages")
+    @GetMapping("/garage")
     public String getAllGarages(Model model) {
         model.addAttribute("garages", service.getGarages());
-        return "garage";
+        return "garages";
     }
 
     @GetMapping("/garage/new")

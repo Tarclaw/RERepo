@@ -84,16 +84,16 @@ class GarageControllerTest {
         String viewName = controller.getAllGarages(model);
 
         //then
-        assertEquals("garage", viewName);
+        assertEquals("garages", viewName);
         verify(service, times(1)).getGarages();
         verify(model, times(1)).addAttribute(eq("garages"), argumentCaptor.capture());
 
         Set<Garage> setInController = argumentCaptor.getValue();
         assertEquals(1, setInController.size());
 
-        mockMvc.perform(get("/garages"))
+        mockMvc.perform(get("/garage"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("garage"));
+                .andExpect(view().name("garages"));
     }
 
     @Test

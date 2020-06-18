@@ -5,8 +5,6 @@ INSERT INTO clients(id, email, mobile_number, skype, first_name, last_name, logi
 INSERT INTO real_estate_agents(id, email, mobile_number, skype, first_name, last_name, login, password, hired_date, salary) VALUES(1, 'm.public@realestate.com', '+1-014-777-3355', 'm.public', 'Marry', 'Public', 'marry_login', '123456', '2020-04-27', 5000.00);
 INSERT INTO real_estate_agents(id, email, mobile_number, skype, first_name, last_name, login, password, hired_date, salary) VALUES(2, 'b.billy@realestate.com', '+1-014-515-2288', 'b.billy', 'Billy', 'Butkiss', 'billy_login', 'qwerty', '2020-04-27', 4500.00);
 
-INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status) VALUES(6, 'generic description', 5, '2020-04-27 19:53:26.298205', 150, 1000.00, 100000.00, 'SOLD');
-
 INSERT INTO facilities(id, description, number_of_rooms, published_date_time, total_area, month_rent, price, status, client_id) VALUES(1, 'top rated xata', 5, '2020-04-27 19:53:26.298205', 150, 4000.00, 1000000.00, 'FOR_RENT', 4);
 INSERT INTO apartments(id, apartment_number, floor) VALUES(1, 788, 25);
 
@@ -31,9 +29,3 @@ INSERT INTO addresses(city, district, facility_number, postcode, street, facilit
 INSERT INTO clients_agents(agent_id, client_id) VALUES(1, 3);
 INSERT INTO clients_agents(agent_id, client_id) VALUES(1, 4);
 INSERT INTO clients_agents(agent_id, client_id) VALUES(2, 5);
-
-/*INSERT INTO clients_facilities(client_id, facility_id) VALUES(4, 5);
-INSERT INTO clients_facilities(client_id, facility_id) VALUES(3, 4);
-INSERT INTO clients_facilities(client_id, facility_id) VALUES(5, 3);
-INSERT INTO clients_facilities(client_id, facility_id) VALUES(4, 2);
-INSERT INTO clients_facilities(client_id, facility_id) VALUES(3, 1);*/

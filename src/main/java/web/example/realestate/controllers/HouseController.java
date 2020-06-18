@@ -24,10 +24,10 @@ public class HouseController {
         return "house/show";
     }
 
-    @GetMapping("/houses")
+    @GetMapping("/house")
     public String getAllHouses(Model model) {
         model.addAttribute("houses", service.getHouses());
-        return "house";
+        return "houses";
     }
 
     @GetMapping("/house/new")

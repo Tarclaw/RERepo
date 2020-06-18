@@ -21,10 +21,10 @@ public class StorageController {
         return "storage/show";
     }
 
-    @GetMapping("/storages")
+    @GetMapping("/storage")
     public String getAllStorages(Model model) {
         model.addAttribute("storages", service.getStorages());
-        return "storage";
+        return "storages";
     }
 
     @GetMapping("/storage/new")

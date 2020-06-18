@@ -84,16 +84,16 @@ class StorageControllerTest {
         String viewName = controller.getAllStorages(model);
 
         //then
-        assertEquals("storage", viewName);
+        assertEquals("storages", viewName);
         verify(service, times(1)).getStorages();
         verify(model, times(1)).addAttribute(eq("storages"), argumentCaptor.capture());
 
         Set<Storage> setInController = argumentCaptor.getValue();
         assertEquals(1, setInController.size());
 
-        mockMvc.perform(get("/storages"))
+        mockMvc.perform(get("/storage"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("storage"));
+                .andExpect(view().name("storages"));
     }
 
     @Test

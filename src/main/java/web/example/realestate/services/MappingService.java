@@ -3,9 +3,10 @@ package web.example.realestate.services;
 import web.example.realestate.domain.building.Facility;
 
 import java.util.List;
+import java.util.Map;
 
-public interface FacilityService {
+public interface MappingService {
 
-    List<Facility> getFacilities();
+    Map<Long, String> buildMapping(List<Facility> facilities);
 
 }

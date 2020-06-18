@@ -21,10 +21,10 @@ public class BasementController {
         return "basement/show";
     }
 
-    @GetMapping("/basements")
+    @GetMapping("/basement")
     public String getAllBasements(Model model) {
         model.addAttribute("basements", service.getBasements());
-        return "basement";
+        return "basements";
     }
 
     @GetMapping("/basement/new")

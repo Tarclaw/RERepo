@@ -29,36 +29,10 @@ class FacilityServiceImplTest {
     @Mock
     private FacilityRepository repository;
 
-    @Mock
-    private FacilityCommandToFacility toFacility;
-
-    @Mock
-    private FacilityToFacilityCommand toFacilityCommand;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new FacilityServiceImpl(repository, toFacility, toFacilityCommand);
-    }
-
-    @Test
-    void getById() {
-        //given
-        when(repository.findFacilityByIdWithClients(anyLong())).thenReturn(Optional.of(new Facility()));
-
-        //when
-        Facility facility = service.getById(1L);
-
-        //then
-        assertNotNull(facility);
-        verify(repository, times(1)).findFacilityByIdWithClients(anyLong());
-
-    }
-
-    @Test
-    void getByIdWhenFacilityDoesNotExist() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
-        verify(repository, times(1)).findFacilityByIdWithClients(anyLong());
+        service = new FacilityServiceImpl(repository);
     }
 
     @Test
@@ -72,26 +46,5 @@ class FacilityServiceImplTest {
         //then
         assertEquals(1, facilities.size());
         verify(repository, times(1)).findAll();
-    }
-
-    @Test
-    void findCommandById() {
-        //given
-        when(repository.findFacilityByIdWithClients(anyLong())).thenReturn(Optional.of(new Facility()));
-        when(toFacilityCommand.convert(any())).thenReturn(new FacilityCommand());
-
-        //when
-        FacilityCommand command = service.findCommandById(1L);
-
-        //then
-        assertNotNull(command);
-        verify(toFacilityCommand, times(1)).convert(new Facility());
-        verify(repository, times(1)).findFacilityByIdWithClients(anyLong());
-    }
-
-    @Test
-    void deleteById() {
-        service.deleteById(anyLong());
-        verify(repository, times(1)).deleteById(anyLong());
     }
 }

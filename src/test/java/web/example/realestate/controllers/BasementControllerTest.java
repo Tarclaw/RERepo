@@ -83,16 +83,16 @@ class BasementControllerTest {
         String viewName = controller.getAllBasements(model);
 
         //then
-        assertEquals("basement", viewName);
+        assertEquals("basements", viewName);
         verify(service, times(1)).getBasements();
         verify(model, times(1)).addAttribute(eq("basements"), argumentCaptor.capture());
 
         Set<Basement> setInController = argumentCaptor.getValue();
         assertEquals(1, setInController.size());
 
-        mockMvc.perform(get("/basements"))
+        mockMvc.perform(get("/basement"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("basement"));
+                .andExpect(view().name("basements"));
     }
 
     @Test
