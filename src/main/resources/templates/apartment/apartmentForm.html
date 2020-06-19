@@ -23,9 +23,9 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:object="${apartment}" th:action="@{/apartment/}" method="post">
+            <form th:object="${apartment}" th:action="@{'/apartment/'}" method="post">
                 <input type="hidden" th:field="*{id}"/>
-                <div class="pannel-group">
+                <div class="panel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h1 class="panel-title">Edit Apartment Information</h1>
@@ -37,16 +37,20 @@
                                     <input type="text" class="form-control" th:field="*{description}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Status:</label>
-                                    <input type="text" class="form-control" th:field="*{status}" />
-                                </div>
-                                <div class="col-md-3 form-group">
                                     <label>Month Rent:</label>
                                     <input type="text" class="form-control" th:field="*{monthRent}" />
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Price:</label>
                                     <input type="text" class="form-control" th:field="*{price}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Status:</label>
+                                    <select class="form-control" th:field="*{status}">
+                                        <option th:each="statusValue : ${T(web.example.realestate.domain.enums.Status).values()}"
+                                                th:value="${statusValue.name()}"
+                                                th:text="${statusValue.name()}">Undefine</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
@@ -106,6 +110,32 @@
                                 <div class="col-md-3 form-group">
                                     <label>House Number:</label>
                                     <input type="text" class="form-control" th:field="*{address.facilityNumber}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h1 class="panel-title">Client</h1>
+                                </div>
+                                <div class="col-md-1">
+                                    <a class="btn btn-default" role="button"
+                                       th:href="${'/client/' + apartment.clientId + '/update'}">Update Client</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Select Client:</label>
+                                    <select class="form-control" name="clientId">
+                                        <option th:each="client : ${clients}"
+                                                th:value="${client.id}"
+                                                th:selected="${client.id.equals(apartment.clientId)}"
+                                                th:text="${client.firstName + ' ' + client.lastName}">Jane Doe</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

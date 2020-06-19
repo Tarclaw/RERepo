@@ -22,6 +22,7 @@ public class ApartmentToApartmentCommand implements Converter<Apartment, Facilit
 
         final FacilityCommand command = new FacilityCommand();
         command.setId(apartment.getId());
+        command.setClientId(apartment.getClient().getId());
         command.setNumberOfRooms(apartment.getNumberOfRooms());
         command.setTotalArea(apartment.getTotalArea());
         command.setFloor(apartment.getFloor());

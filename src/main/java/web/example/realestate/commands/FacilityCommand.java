@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public class FacilityCommand {
     private Long id;
+    private Long clientId;
     private Integer numberOfRooms;
     private Integer totalArea;
     private String description;
@@ -46,6 +47,14 @@ public class FacilityCommand {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public Integer getNumberOfRooms() {

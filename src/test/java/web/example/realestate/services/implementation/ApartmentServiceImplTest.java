@@ -9,6 +9,7 @@ import web.example.realestate.converters.ApartmentCommandToApartment;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
 import web.example.realestate.domain.building.Apartment;
 import web.example.realestate.repositories.ApartmentRepository;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.ApartmentService;
 
 import java.util.Collections;
@@ -28,7 +29,10 @@ class ApartmentServiceImplTest {
     private ApartmentService service;
 
     @Mock
-    private ApartmentRepository repository;
+    private ApartmentRepository apartmentRepository;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @Mock
     private ApartmentToApartmentCommand toApartmentCommand;
@@ -39,7 +43,7 @@ class ApartmentServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new ApartmentServiceImpl(repository, toApartmentCommand, toApartment);
+        service = new ApartmentServiceImpl(apartmentRepository, clientRepository, toApartmentCommand, toApartment);
     }
 
     @Test
@@ -47,13 +51,13 @@ class ApartmentServiceImplTest {
         Apartment apartment = new Apartment();
         apartment.setId(1L);
         Optional<Apartment> source = Optional.of(apartment);
-        when(repository.findApartmentsByIdWithClients(anyLong())).thenReturn(source);
+        when(apartmentRepository.findApartmentsByIdWithClients(anyLong())).thenReturn(source);
 
         Apartment apartmentFromRepo = service.getById(1L);
 
         assertNotNull(apartmentFromRepo);
         assertEquals(1L, apartmentFromRepo.getId());
-        verify(repository, times(1)).findApartmentsByIdWithClients(anyLong());
+        verify(apartmentRepository, times(1)).findApartmentsByIdWithClients(anyLong());
     }
 
     @Test
@@ -69,13 +73,13 @@ class ApartmentServiceImplTest {
         Set<Apartment> apartments = service.getApartments();
 
         assertEquals(1, apartments.size());
-        verify(repository, times(1)).findAll();
+        verify(apartmentRepository, times(1)).findAll();
     }
 
     @Test
     void findCommandById() {
         //given
-        when(repository.findApartmentsByIdWithClients(anyLong())).thenReturn(Optional.of(new Apartment()));
+        when(apartmentRepository.findApartmentsByIdWithClients(anyLong())).thenReturn(Optional.of(new Apartment()));
 
         FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
@@ -86,13 +90,13 @@ class ApartmentServiceImplTest {
 
         //then
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findApartmentsByIdWithClients(anyLong());
+        verify(apartmentRepository, times(1)).findApartmentsByIdWithClients(anyLong());
         verify(toApartmentCommand, times(1)).convert(any());
     }
 
     @Test
     void deleteById() {
         service.deleteById(1L);
-        verify(repository, times(1)).deleteById(anyLong());
+        verify(apartmentRepository, times(1)).deleteById(anyLong());
     }
 }

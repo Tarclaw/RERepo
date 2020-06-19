@@ -5,7 +5,9 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.ApartmentCommandToApartment;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
 import web.example.realestate.domain.building.Apartment;
+import web.example.realestate.domain.people.Client;
 import web.example.realestate.repositories.ApartmentRepository;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.ApartmentService;
 
 import javax.transaction.Transactional;
@@ -15,21 +17,24 @@ import java.util.Set;
 @Service
 public class ApartmentServiceImpl implements ApartmentService {
 
-    private final ApartmentRepository repository;
+    private final ApartmentRepository apartmentRepository;
+    private final ClientRepository clientRepository;
     private final ApartmentToApartmentCommand toApartmentCommand;
     private final ApartmentCommandToApartment toApartment;
 
-    public ApartmentServiceImpl(ApartmentRepository repository,
+    public ApartmentServiceImpl(ApartmentRepository apartmentRepository,
+                                ClientRepository clientRepository,
                                 ApartmentToApartmentCommand toApartmentCommand,
                                 ApartmentCommandToApartment toApartment) {
-        this.repository = repository;
+        this.apartmentRepository = apartmentRepository;
+        this.clientRepository = clientRepository;
         this.toApartmentCommand = toApartmentCommand;
         this.toApartment = toApartment;
     }
 
     @Override
     public Apartment getById(final Long id) {
-        return repository.findApartmentsByIdWithClients(id)
+        return apartmentRepository.findApartmentsByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have apartment with id=" + id)
                 );
@@ -38,7 +43,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public Set<Apartment> getApartments() {
         Set<Apartment> apartments = new HashSet<>();
-        repository.findAll().iterator().forEachRemaining(apartments :: add);
+        apartmentRepository.findAll().iterator().forEachRemaining(apartments :: add);
         return apartments;
     }
 
@@ -56,20 +61,22 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     private FacilityCommand saveDetached(final FacilityCommand command) {
         Apartment detachedApartment = toApartment.convert(command);
-        Apartment savedApartment = repository.save(detachedApartment);
+        Apartment savedApartment = apartmentRepository.save(detachedApartment);
         System.out.println("Save Apartment with id=" + savedApartment.getId());
         return toApartmentCommand.convert(savedApartment);
     }
 
     private FacilityCommand saveAttached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         Apartment attachedApartment = getById(command.getId());
         Apartment updatedApartment = toApartment.convertWhenAttached(attachedApartment, command);
+        updatedApartment.setClient(client);
         System.out.println("Update Apartment with id=" + updatedApartment.getId());
         return toApartmentCommand.convert(updatedApartment);
     }
 
     @Override
     public void deleteById(final Long id) {
-        repository.deleteById(id);
+        apartmentRepository.deleteById(id);
     }
 }
