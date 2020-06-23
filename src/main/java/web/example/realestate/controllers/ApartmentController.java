@@ -33,7 +33,8 @@ public class ApartmentController {
     @GetMapping("/apartment/new")
     public String newApartment(Model model) {
         model.addAttribute("apartment", new FacilityCommand());
-        return "apartment/apartmentForm";
+        model.addAttribute("clients", clientService.getClients());
+        return "apartment/apartmentEmptyForm";
     }
 
     @GetMapping("/apartment/{id}/update")

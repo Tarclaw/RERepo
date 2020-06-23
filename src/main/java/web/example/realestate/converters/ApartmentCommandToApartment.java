@@ -31,6 +31,9 @@ public class ApartmentCommandToApartment implements Converter<FacilityCommand, A
         apartment.setDescription(command.getDescription());
         apartment.setPublishedDateTime(command.getPublishedDateTime());
         apartment.setClosedDateTime(command.getClosedDateTime());
+        apartment.setStatus(command.getStatus());
+        apartment.setMonthRent(command.getMonthRent());
+        apartment.setPrice(command.getPrice());
         address.setFacility(apartment);
         apartment.setAddress(address);
 

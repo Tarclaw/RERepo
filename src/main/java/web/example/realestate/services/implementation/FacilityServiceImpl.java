@@ -23,4 +23,9 @@ public class FacilityServiceImpl implements FacilityService {
         repository.findAll().iterator().forEachRemaining(facilities :: add);
         return facilities;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
 }

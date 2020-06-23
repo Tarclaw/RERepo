@@ -38,7 +38,11 @@ class ApartmentToApartmentCommandTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toApartmentCommand.convert(new Apartment()));
+        Client client = new Client();
+        client.setId(1L);
+        Apartment apartment = new Apartment();
+        apartment.setClient(client);
+        assertNotNull(toApartmentCommand.convert(apartment));
     }
 
     @Test

@@ -47,4 +47,10 @@ class FacilityServiceImplTest {
         assertEquals(1, facilities.size());
         verify(repository, times(1)).findAll();
     }
+
+    @Test
+    void deleteById() {
+        service.deleteById(1L);
+        verify(repository, times(1)).deleteById(anyLong());
+    }
 }

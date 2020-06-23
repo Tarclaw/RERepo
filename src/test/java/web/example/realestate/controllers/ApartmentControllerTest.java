@@ -101,12 +101,23 @@ class ApartmentControllerTest {
 
     @Test
     void newApartment() throws Exception {
+        //given
+        when(clientService.getClients()).thenReturn(
+                new HashSet<>(
+                        Collections.singletonList(new Client())
+                )
+        );
+
+        //when
         String viewName = controller.newApartment(model);
-        assertEquals("apartment/apartmentForm", viewName);
+
+        //then
+        assertEquals("apartment/apartmentEmptyForm", viewName);
         mockMvc.perform(get("/apartment/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("apartment/apartmentForm"))
-                .andExpect(model().attributeExists("apartment"));
+                .andExpect(view().name("apartment/apartmentEmptyForm"))
+                .andExpect(model().attributeExists("apartment"))
+                .andExpect(model().attributeExists("clients"));
     }
 
     @Test

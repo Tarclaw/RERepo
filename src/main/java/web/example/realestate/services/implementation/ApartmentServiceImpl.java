@@ -60,7 +60,9 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     private FacilityCommand saveDetached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         Apartment detachedApartment = toApartment.convert(command);
+        detachedApartment.setClient(client);
         Apartment savedApartment = apartmentRepository.save(detachedApartment);
         System.out.println("Save Apartment with id=" + savedApartment.getId());
         return toApartmentCommand.convert(savedApartment);

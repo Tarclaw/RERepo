@@ -27,4 +27,10 @@ public class FacilityController {
         model.addAttribute("mappings", mappingService.buildMapping(facilities));
         return "facility";
     }
+
+    @GetMapping("/facility/{id}/delete")
+    public String deleteFacility(@PathVariable String id) {
+        facilityService.deleteById(Long.valueOf(id));
+        return "redirect:/facilities";
+    }
 }

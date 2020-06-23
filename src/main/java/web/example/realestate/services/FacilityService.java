@@ -8,4 +8,6 @@ public interface FacilityService {
 
     List<Facility> getFacilities();
 
+    void deleteById(Long id);
+
 }

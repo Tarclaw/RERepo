@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.example.realestate.commands.ClientCommand;
+import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.ClientService;
 
 @Controller
@@ -33,6 +34,13 @@ public class ClientController {
         return "client/clientForm";
     }
 
+    @GetMapping("/apartment/client/new")
+    public String newClientForApartment(Model model) {
+        model.addAttribute("client", new ClientCommand());
+        model.addAttribute("mapping", "apartment");
+        return "client/clientEmptyForm";
+    }
+
     @GetMapping("/client/{id}/update")
     public String updateClient(@PathVariable String id, Model model) {
         model.addAttribute("client", service.findCommandById(Long.valueOf(id)));
@@ -43,6 +51,14 @@ public class ClientController {
     public String saveOrUpdate(@ModelAttribute ClientCommand command) {
         ClientCommand savedCommand = service.saveClientCommand(command);
         return "redirect:/client/" + savedCommand.getId() + "/show";
+    }
+
+    @PostMapping("/client/apartment")
+    public String saveForApartment(@ModelAttribute ClientCommand command, Model model) {
+        service.saveClientCommand(command);
+        model.addAttribute("apartment", new FacilityCommand());
+        model.addAttribute("clients", service.getClients());
+        return "apartment/apartmentEmptyForm";
     }
 
     @GetMapping("/client/{id}/delete")
