@@ -34,7 +34,7 @@ public class HouseToHouseCommand implements Converter<House, FacilityCommand> {
         command.setPrice(house.getPrice());
         command.setStatus(house.getStatus());
         command.setAddress(toAddressCommand.convert(house.getAddress()));
-        command.setHouse(true);
+        command.setItHouse(true);
 
         return command;
     }

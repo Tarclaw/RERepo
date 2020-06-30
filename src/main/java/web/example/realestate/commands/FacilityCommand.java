@@ -18,23 +18,23 @@ public class FacilityCommand {
     private Status status;
     private AddressCommand address;
     //Apartment
-    private boolean isApartment = false;
+    private boolean itApartment = false;
     private Integer apartmentNumber;
     private Integer floor;
     //Basement
-    private boolean isBasement = false;
+    private boolean itBasement = false;
     private boolean itCommercial;
     //Garage
-    private boolean isGarage = false;
+    private boolean itGarage = false;
     private boolean hasPit;
     private boolean hasEquipment;
     //House
-    private boolean isHouse = false;
+    private boolean itHouse = false;
     private Integer numberOfStoreys;
     private boolean hasBackyard;
     private boolean hasGarden;
     //Storage
-    private boolean isStorage = false;
+    private boolean itStorage = false;
     private Integer commercialCapacity;
     private boolean hasCargoEquipment;
 
@@ -185,46 +185,6 @@ public class FacilityCommand {
         this.hasCargoEquipment = hasCargoEquipment;
     }
 
-    public boolean isApartment() {
-        return isApartment;
-    }
-
-    public void setApartment(boolean apartment) {
-        isApartment = apartment;
-    }
-
-    public boolean isBasement() {
-        return isBasement;
-    }
-
-    public void setBasement(boolean basement) {
-        isBasement = basement;
-    }
-
-    public boolean isGarage() {
-        return isGarage;
-    }
-
-    public void setGarage(boolean garage) {
-        isGarage = garage;
-    }
-
-    public boolean isHouse() {
-        return isHouse;
-    }
-
-    public void setHouse(boolean house) {
-        isHouse = house;
-    }
-
-    public boolean isStorage() {
-        return isStorage;
-    }
-
-    public void setStorage(boolean storage) {
-        isStorage = storage;
-    }
-
     public BigInteger getMonthRent() {
         return monthRent;
     }
@@ -247,5 +207,45 @@ public class FacilityCommand {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public boolean isItApartment() {
+        return itApartment;
+    }
+
+    public void setItApartment(boolean itApartment) {
+        this.itApartment = itApartment;
+    }
+
+    public boolean isItBasement() {
+        return itBasement;
+    }
+
+    public void setItBasement(boolean itBasement) {
+        this.itBasement = itBasement;
+    }
+
+    public boolean isItGarage() {
+        return itGarage;
+    }
+
+    public void setItGarage(boolean itGarage) {
+        this.itGarage = itGarage;
+    }
+
+    public boolean isItHouse() {
+        return itHouse;
+    }
+
+    public void setItHouse(boolean itHouse) {
+        this.itHouse = itHouse;
+    }
+
+    public boolean isItStorage() {
+        return itStorage;
+    }
+
+    public void setItStorage(boolean itStorage) {
+        this.itStorage = itStorage;
     }
 }

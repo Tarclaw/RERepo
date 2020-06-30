@@ -22,7 +22,7 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:object="${client}" th:action="@{'/client/' + ${mapping}}" method="post">
+            <form th:object="${client}" th:ob th:action="@{'/client/save'}" method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
@@ -52,22 +52,192 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Email:</label>
-                                    <input type="text" class="form-control" th:field="*{email}"/>
+                                    <label>Requirements for Customer:</label>
+                                    <input type="text" class="form-control" th:field="*{customerRequirements}"/>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Phone:</label>
+                                    <input type="text" class="form-control" th:field="*{mobileNumber}"/>
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Skype:</label>
                                     <input type="text" class="form-control" th:field="*{skype}"/>
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Mobile:</label>
-                                    <input type="text" class="form-control" th:field="*{mobileNumber}"/>
+                                    <label>Email:</label>
+                                    <input type="text" class="form-control" th:field="*{email}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:object="${facility}">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Add Facility</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Description:</label>
+                                    <input type="text" class="form-control" th:field="*{description}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Month Rent:</label>
+                                    <input type="text" class="form-control" th:field="*{monthRent}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Price:</label>
+                                    <input type="text" class="form-control" th:field="*{price}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Status:</label>
+                                    <select class="form-control" th:field="*{status}">
+                                        <option th:each="statusValue : ${T(web.example.realestate.domain.enums.Status).values()}"
+                                                th:value="${statusValue.name()}"
+                                                th:text="${statusValue.name()}">Undefine</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Requirements for Customer:</label>
-                                    <input type="text" class="form-control" th:field="*{customerRequirements}"/>
+                                    <label>Number of Rooms:</label>
+                                    <input type="text" class="form-control" th:field="*{numberOfRooms}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Total Area:</label>
+                                    <input type="text" class="form-control" th:field="*{totalArea}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Published Date Time:</label>
+                                    <input type="text" class="form-control" th:field="*{publishedDateTime}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Closed Date Time:</label>
+                                    <input type="text" class="form-control" th:field="*{closedDateTime}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Number Of Storeys:</label>
+                                    <input type="text" class="form-control" th:field="*{numberOfStoreys}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Has Backyard:</label>
+                                    <input type="text" class="form-control" th:field="*{hasBackyard}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Has Garden:</label>
+                                    <input type="text" class="form-control" th:field="*{hasGarden}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Chose House:</label>
+                                    <input type="text" class="form-control" th:field="*{itHouse}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Floor:</label>
+                                    <input type="text" class="form-control" th:field="*{floor}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Apartment Number:</label>
+                                    <input type="text" class="form-control" th:field="*{apartmentNumber}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Chose Apartment:</label>
+                                    <input type="text" class="form-control" th:field="*{itApartment}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Has Pit:</label>
+                                    <input type="text" class="form-control" th:field="*{hasPit}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Has Equipment:</label>
+                                    <input type="text" class="form-control" th:field="*{hasEquipment}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Chose Garage:</label>
+                                    <input type="text" class="form-control" th:field="*{itGarage}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Commercial Capacity:</label>
+                                    <input type="text" class="form-control" th:field="*{commercialCapacity}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Has Cargo Equipment:</label>
+                                    <input type="text" class="form-control" th:field="*{hasCargoEquipment}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Chose Storage:</label>
+                                    <input type="text" class="form-control" th:field="*{itStorage}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Commercial:</label>
+                                    <input type="text" class="form-control" th:field="*{itCommercial}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Chose Basement:</label>
+                                    <input type="text" class="form-control" th:field="*{itBasement}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Add Address Information</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>District:</label>
+                                    <input type="text" class="form-control" th:field="*{address.district}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Postcode:</label>
+                                    <input type="text" class="form-control" th:field="*{address.postcode}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>City:</label>
+                                    <input type="text" class="form-control" th:field="*{address.city}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Street:</label>
+                                    <input type="text" class="form-control" th:field="*{address.street}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>House Number:</label>
+                                    <input type="text" class="form-control" th:field="*{address.facilityNumber}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 ">
+                                    <h1 class="panel-title">Agents</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 form-group">
+                                    <label>Select Your Agent:</label>
+                                    <select class="form-control" name="agentId">
+                                        <option th:each="agent : ${realEstateAgents}"
+                                                th:value="${agent.id}"
+                                                th:selected="${agent.id.equals(client.agentId)}"
+                                                th:text="${agent.firstName + ' ' + agent.lastName}">Buy Seller</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -22,7 +22,7 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:object="${client}" th:action="@{/client/}" method="post">
+            <form th:object="${client}" th:action="@{'/client/'}" method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
@@ -39,6 +39,8 @@
                                     <label>Last Name:</label>
                                     <input type="text" class="form-control" th:field="*{lastName}"/>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-3 form-group">
                                     <label>Login:</label>
                                     <input type="text" class="form-control"
@@ -52,22 +54,70 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Email:</label>
-                                    <input type="text" class="form-control" th:field="*{email}"/>
+                                    <label>Requirements for Customer:</label>
+                                    <input type="text" class="form-control" th:field="*{customerRequirements}"/>
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Skype:</label>
-                                    <input type="text" class="form-control" th:field="*{skype}"/>
-                                </div>
-                                <div class="col-md-3 form-group">
-                                    <label>Mobile:</label>
+                                    <label>Phone:</label>
                                     <input type="text" class="form-control" th:field="*{mobileNumber}"/>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Requirements for Customer:</label>
-                                    <input type="text" class="form-control" th:field="*{customerRequirements}"/>
+                                    <label>Skype:</label>
+                                    <input type="text" class="form-control" th:field="*{skype}"/>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Email:</label>
+                                    <input type="text" class="form-control" th:field="*{email}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 ">
+                                    <h1 class="panel-title">Facilities</h1>
+                                </div>
+                                <div class="col-md-1">
+                                    <a class="btn btn-default" href="#" th:href="@{'/client/' + ${client.id} + '/facilities'}" role="button">View</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul>
+                                        <li th:each="facility : ${client.facilityCommands}"
+                                            th:text="${facility.description}">
+                                            Some Xalypa
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 ">
+                                    <h1 class="panel-title">Agents</h1>
+                                </div>
+                                <div class="col-md-1">
+                                    <a class="btn btn-default" href="#" th:href="@{'/client/' + ${client.id} + '/agents'}" role="button">View</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul>
+                                        <li th:each="agent : ${client.realEstateAgentCommands}"
+                                            th:text="${agent.firstName + ' ' + agent.lastName}">
+                                            Buy Seller
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

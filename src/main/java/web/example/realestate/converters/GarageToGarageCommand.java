@@ -33,7 +33,7 @@ public class GarageToGarageCommand implements Converter<Garage, FacilityCommand>
         command.setPrice(garage.getPrice());
         command.setStatus(garage.getStatus());
         command.setAddress(toAddressCommand.convert(garage.getAddress()));
-        command.setGarage(true);
+        command.setItGarage(true);
 
         return command;
     }

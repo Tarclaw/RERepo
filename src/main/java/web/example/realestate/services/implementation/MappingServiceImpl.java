@@ -57,8 +57,7 @@ public class MappingServiceImpl implements MappingService {
             }
         }
 
-
-
         return mappings;
     }
+
 }

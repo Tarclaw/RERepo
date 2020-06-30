@@ -42,7 +42,7 @@ public class FacilityCommandToFacilityTest {
     @Test
     public void testEmptyValue() {
         FacilityCommand command = new FacilityCommand();
-        command.setApartment(true);
+        command.setItApartment(true);
         command.setAddress(new AddressCommand());
         assertNotNull(toFacility.convert(command));
     }
@@ -61,7 +61,7 @@ public class FacilityCommandToFacilityTest {
         command.setPublishedDateTime(PUBLISHED_DATE_TIME);
         command.setClosedDateTime(CLOSED_DATE_TIME);
         command.setAddress(addressCommand);
-        command.setApartment(true);
+        command.setItApartment(true);
 
         //when
         Facility facility = toFacility.convert(command);

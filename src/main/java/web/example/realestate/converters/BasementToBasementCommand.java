@@ -32,7 +32,7 @@ public class BasementToBasementCommand implements Converter<Basement, FacilityCo
         command.setPrice(basement.getPrice());
         command.setStatus(basement.getStatus());
         command.setAddress(toAddressCommand.convert(basement.getAddress()));
-        command.setBasement(true);
+        command.setItBasement(true);
 
         return command;
     }

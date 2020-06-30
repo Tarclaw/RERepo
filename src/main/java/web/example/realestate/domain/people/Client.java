@@ -3,6 +3,7 @@ package web.example.realestate.domain.people;
 import web.example.realestate.domain.building.Facility;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,10 +14,10 @@ public class Client extends Person {
     private String customerRequirements;
 
     @OneToMany(mappedBy = "client")
-    private Set<Facility> facilities;
+    private Set<Facility> facilities = new HashSet<>();
 
     @ManyToMany(mappedBy = "clients")
-    private Set<RealEstateAgent> realEstateAgents;
+    private Set<RealEstateAgent> realEstateAgents = new HashSet<>();
 
     public Client() {}
 

@@ -34,7 +34,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
 
         if (facility instanceof Apartment) {
             Apartment apartment = (Apartment) facility;
-            command.setApartment(true);
+            command.setItApartment(true);
             command.setApartmentNumber(apartment.getApartmentNumber());
             command.setFloor(apartment.getFloor());
             return command;
@@ -42,14 +42,14 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
 
         if (facility instanceof Basement) {
             Basement basement = (Basement) facility;
-            command.setBasement(true);
+            command.setItBasement(true);
             command.setItCommercial(basement.isItCommercial());
             return command;
         }
 
         if (facility instanceof Garage) {
             Garage garage = (Garage) facility;
-            command.setGarage(true);
+            command.setItGarage(true);
             command.setHasPit(garage.isHasPit());
             command.setHasEquipment(garage.isHasEquipment());
             return command;
@@ -57,7 +57,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
 
         if (facility instanceof House) {
             House house = (House) facility;
-            command.setHouse(true);
+            command.setItHouse(true);
             command.setNumberOfStoreys(house.getNumberOfStoreys());
             command.setHasBackyard(house.isHasBackyard());
             command.setHasGarden(house.isHasGarden());
@@ -66,7 +66,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
 
         if (facility instanceof Storage) {
             Storage storage = (Storage) facility;
-            command.setStorage(true);
+            command.setItStorage(true);
             command.setCommercialCapacity(storage.getCommercialCapacity());
             command.setHasCargoEquipment(storage.isHasCargoEquipment());
         }

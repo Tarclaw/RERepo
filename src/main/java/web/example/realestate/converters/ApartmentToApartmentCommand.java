@@ -34,7 +34,7 @@ public class ApartmentToApartmentCommand implements Converter<Apartment, Facilit
         command.setPrice(apartment.getPrice());
         command.setStatus(apartment.getStatus());
         command.setAddress(toAddressCommand.convert(apartment.getAddress()));
-        command.setApartment(true);
+        command.setItApartment(true);
 
         return command;
     }

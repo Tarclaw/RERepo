@@ -11,7 +11,9 @@ import web.example.realestate.domain.building.Facility;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
 import web.example.realestate.repositories.ClientRepository;
+import web.example.realestate.repositories.RealEstateAgentRepository;
 import web.example.realestate.services.ClientService;
+import web.example.realestate.services.FacilityService;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,7 +32,10 @@ class ClientServiceImplTest {
     private ClientService service;
 
     @Mock
-    private ClientRepository repository;
+    private ClientRepository clientRepository;
+
+    @Mock
+    private RealEstateAgentRepository agentRepository;
 
     @Mock
     private ClientCommandToClient toClient;
@@ -38,10 +43,13 @@ class ClientServiceImplTest {
     @Mock
     private ClientToClientCommand toClientCommand;
 
+    @Mock
+    private FacilityService facilityService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new ClientServiceImpl(repository, toClient, toClientCommand);
+        service = new ClientServiceImpl(clientRepository, agentRepository, toClient, toClientCommand, facilityService);
     }
 
     @Test
@@ -49,7 +57,7 @@ class ClientServiceImplTest {
         //given
         Client source = new Client();
         source.setId(1L);
-        when(repository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(source));
+        when(clientRepository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Client client = service.getById(1L);
@@ -57,7 +65,7 @@ class ClientServiceImplTest {
         //then
         assertNotNull(client);
         assertEquals(1L, client.getId());
-        verify(repository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
+        verify(clientRepository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
     }
 
     @Test
@@ -73,7 +81,7 @@ class ClientServiceImplTest {
         Set<Client> clients = service.getClients();
 
         assertEquals(1, clients.size());
-        verify(repository, times(1)).findAll();
+        verify(clientRepository, times(1)).findAll();
 
     }
 
@@ -82,7 +90,7 @@ class ClientServiceImplTest {
         //given
         ClientCommand source = new ClientCommand();
         source.setId(1L);
-        when(repository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(new Client()));
+        when(clientRepository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(new Client()));
         when(toClientCommand.convert(any())).thenReturn(source);
 
         //when
@@ -91,7 +99,7 @@ class ClientServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
+        verify(clientRepository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
         verify(toClientCommand, times(1)).convert(any());
     }
 
@@ -115,13 +123,13 @@ class ClientServiceImplTest {
 
         source.setRealEstateAgents(agents);
 
-        when(repository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(source));
+        when(clientRepository.findClientByIdWithFacilitiesAndAgents(anyLong())).thenReturn(Optional.of(source));
 
         //when
         service.deleteById(anyLong());
 
         //then
-        verify(repository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
-        verify(repository, times(1)).deleteById(anyLong());
+        verify(clientRepository, times(1)).findClientByIdWithFacilitiesAndAgents(anyLong());
+        verify(clientRepository, times(1)).deleteById(anyLong());
     }
 }

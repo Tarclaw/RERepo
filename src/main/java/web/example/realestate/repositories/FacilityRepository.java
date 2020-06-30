@@ -11,4 +11,6 @@ public interface FacilityRepository extends CrudRepository<Facility, Long> {
     @Query("select f.id, f.description from Facility f")
     List<Facility> findAllWithIdAndDescription();
 
+    List<Facility> findFacilitiesByClientId(Long clientId);
+
 }

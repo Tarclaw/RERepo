@@ -13,6 +13,7 @@ import web.example.realestate.commands.ClientCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.services.ClientService;
+import web.example.realestate.services.RealEstateAgentService;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,7 +39,10 @@ class ClientControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private ClientService service;
+    private ClientService clientService;
+
+    @Mock
+    private RealEstateAgentService agentService;
 
     @Mock
     private Model model;
@@ -46,14 +50,14 @@ class ClientControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new ClientController(service);
+        controller = new ClientController(clientService, agentService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void getClientById() throws Exception {
         //given
-        when(service.getById(anyLong())).thenReturn(new Client());
+        when(clientService.getById(anyLong())).thenReturn(new Client());
         ArgumentCaptor<Client> clientCaptor = ArgumentCaptor.forClass(Client.class);
 
         //when
@@ -61,7 +65,7 @@ class ClientControllerTest {
 
         //then
         assertEquals("client/show", viewName);
-        verify(service, times(1)).getById(anyLong());
+        verify(clientService, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("client"), clientCaptor.capture());
 
         mockMvc.perform(get("/client/1/show"))
@@ -76,7 +80,7 @@ class ClientControllerTest {
         Set<Client> clients = new HashSet<>(
                 Collections.singletonList(new Client())
         );
-        when(service.getClients()).thenReturn(clients);
+        when(clientService.getClients()).thenReturn(clients);
 
         ArgumentCaptor<Set<Client>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
@@ -85,7 +89,7 @@ class ClientControllerTest {
 
         //then
         assertEquals("client", viewName);
-        verify(service, times(1)).getClients();
+        verify(clientService, times(1)).getClients();
         verify(model, times(1)).addAttribute(eq("clients"), argumentCaptor.capture());
 
         Set<Client> setInController = argumentCaptor.getValue();
@@ -105,12 +109,12 @@ class ClientControllerTest {
         String viewName = controller.newClient(model);
 
         //then
-        assertEquals("client/clientForm", viewName);
+        assertEquals("client/clientEmptyForm", viewName);
         verify(model, times(1)).addAttribute(eq("client"), commandCaptor.capture());
 
         mockMvc.perform(get("/client/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("client/clientForm"))
+                .andExpect(view().name("client/clientEmptyForm"))
                 .andExpect(model().attributeExists("client"));
     }
 
@@ -135,10 +139,11 @@ class ClientControllerTest {
                 .andExpect(model().attributeExists("mapping"));
     }
 
+
     @Test
     void updateClient() throws Exception {
         //given
-        when(service.findCommandById(anyLong())).thenReturn(new ClientCommand());
+        when(clientService.findCommandById(anyLong())).thenReturn(new ClientCommand());
         ArgumentCaptor<ClientCommand> commandCaptor = ArgumentCaptor.forClass(ClientCommand.class);
 
         //when
@@ -146,7 +151,7 @@ class ClientControllerTest {
 
         //then
         assertEquals("client/clientForm", viewName);
-        verify(service, times(1)).findCommandById(anyLong());
+        verify(clientService, times(1)).findCommandById(anyLong());
         verify(model, times(1)).addAttribute(eq("client"), commandCaptor.capture());
 
         mockMvc.perform(get("/client/1/update"))
@@ -156,18 +161,18 @@ class ClientControllerTest {
     }
 
     @Test
-    void saveOrUpdate() throws Exception {
+    void save() throws Exception {
         //given
         ClientCommand source = new ClientCommand();
         source.setId(1L);
-        when(service.saveClientCommand(any())).thenReturn(source);
+        when(clientService.saveAttached(any())).thenReturn(source);
 
         //when
         String viewName = controller.saveOrUpdate(source);
 
         //then
         assertEquals("redirect:/client/1/show", viewName);
-        verify(service, times(1)).saveClientCommand(any());
+        verify(clientService, times(1)).saveAttached(any());
 
         mockMvc.perform(post("/client")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -180,7 +185,7 @@ class ClientControllerTest {
     void saveForApartment() throws Exception {
         //given
         ClientCommand source = new ClientCommand();
-        when(service.saveClientCommand(any())).thenReturn(source);
+        when(clientService.saveAttached(any())).thenReturn(source);
 
         ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
         ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
@@ -190,8 +195,8 @@ class ClientControllerTest {
 
         //then
         assertEquals("apartment/apartmentEmptyForm", viewName);
-        verify(service, times(1)).saveClientCommand(any());
-        verify(service, times(1)).getClients();
+        verify(clientService, times(1)).saveAttached(any());
+        verify(clientService, times(1)).getClients();
         verify(model, times(1)).addAttribute(eq("apartment"), commandCaptor.capture());
         verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
 
@@ -206,7 +211,7 @@ class ClientControllerTest {
         String viewName = controller.deleteById("1");
 
         assertEquals("redirect:/clients", viewName);
-        verify(service, times(1)).deleteById(anyLong());
+        verify(clientService, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/client/1/delete"))
                 .andExpect(status().is3xxRedirection())

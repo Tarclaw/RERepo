@@ -6,6 +6,7 @@ import java.util.Set;
 public class ClientCommand {
     //person
     private Long id;
+    private Long agentId;
     private String firstName;
     private String lastName;
     private String login;
@@ -29,6 +30,14 @@ public class ClientCommand {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Long agentId) {
+        this.agentId = agentId;
     }
 
     public String getFirstName() {

@@ -71,11 +71,11 @@ class ClientCommandToClientTest {
 
         FacilityCommand apartment = new FacilityCommand();
         apartment.setId(FACILITY_ID_1);
-        apartment.setApartment(true);
+        apartment.setItApartment(true);
         apartment.setAddress(new AddressCommand());
         FacilityCommand basement = new FacilityCommand();
         basement.setId(FACILITY_ID_2);
-        basement.setBasement(true);
+        basement.setItBasement(true);
         basement.setAddress(new AddressCommand());
         command.getFacilityCommands().add(apartment);
         command.getFacilityCommands().add(basement);

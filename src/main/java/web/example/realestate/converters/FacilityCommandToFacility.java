@@ -31,23 +31,23 @@ public class FacilityCommandToFacility implements Converter<FacilityCommand, Fac
             return null;
         }
 
-        if (command.isApartment()) {
+        if (command.isItApartment()) {
             return toApartment.convert(command);
         }
 
-        if (command.isBasement()) {
+        if (command.isItBasement()) {
             return toBasement.convert(command);
         }
 
-        if (command.isGarage()) {
+        if (command.isItGarage()) {
             return toGarage.convert(command);
         }
 
-        if (command.isHouse()) {
+        if (command.isItHouse()) {
             return toHouse.convert(command);
         }
 
-        if (command.isStorage()) {
+        if (command.isItStorage()) {
             return toStorage.convert(command);
         }
 

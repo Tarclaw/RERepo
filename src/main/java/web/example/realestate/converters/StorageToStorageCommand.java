@@ -33,7 +33,7 @@ public class StorageToStorageCommand implements Converter<Storage, FacilityComma
         command.setPrice(storage.getPrice());
         command.setStatus(storage.getStatus());
         command.setAddress(toAddressCommand.convert(storage.getAddress()));
-        command.setStorage(true);
+        command.setItStorage(true);
 
         return command;
     }
