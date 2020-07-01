@@ -10,7 +10,7 @@ import web.example.realestate.domain.people.RealEstateAgent;
 public class RealEstateAgentToRealEstateAgentCommand implements Converter<RealEstateAgent, RealEstateAgentCommand> {
 
     @Override
-    public RealEstateAgentCommand convert(RealEstateAgent agent) {
+    public RealEstateAgentCommand convert(final RealEstateAgent agent) {
         if (agent == null) {
             return null;
         }
@@ -31,6 +31,7 @@ public class RealEstateAgentToRealEstateAgentCommand implements Converter<RealEs
         command.setSalary(agent.getSalary());
         command.setHiredDate(agent.getHiredDate());
         command.setQuitDate(agent.getQuitDate());
+        agent.getClients().forEach(client -> command.getClientIds().add(client.getId()));
 
         return command;
     }

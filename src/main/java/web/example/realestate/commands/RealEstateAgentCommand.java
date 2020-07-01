@@ -2,6 +2,8 @@ package web.example.realestate.commands;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RealEstateAgentCommand {
     //person
@@ -18,6 +20,8 @@ public class RealEstateAgentCommand {
     private BigInteger salary;
     private LocalDate hiredDate;
     private LocalDate quitDate;
+
+    private List<Long> clientIds = new ArrayList<>();
 
     public RealEstateAgentCommand() {
     }
@@ -110,4 +114,11 @@ public class RealEstateAgentCommand {
         this.quitDate = quitDate;
     }
 
+    public List<Long> getClientIds() {
+        return clientIds;
+    }
+
+    public void setClientIds(List<Long> clientIds) {
+        this.clientIds = clientIds;
+    }
 }

@@ -2,11 +2,14 @@ package web.example.realestate.converters;
 
 import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.RealEstateAgentCommand;
+import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.Contact;
 import web.example.realestate.domain.people.RealEstateAgent;
 
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,6 +44,11 @@ class RealEstateAgentToRealEstateAgentCommandTest {
     @Test
     void convert() {
         //given
+        Client client = new Client();
+        client.setId(ID);
+        Set<Client> clients = new HashSet<>();
+        clients.add(client);
+
         RealEstateAgent agent = new RealEstateAgent();
         agent.setId(ID);
         agent.setFirstName(FIRST_NAME);
@@ -51,6 +59,7 @@ class RealEstateAgentToRealEstateAgentCommandTest {
         agent.setSalary(SALARY);
         agent.setHiredDate(HIRED_DATE);
         agent.setQuitDate(QUIT_DATE);
+        agent.setClients(clients);
 
         //when
         final RealEstateAgentCommand command = toAgentCommand.convert(agent);
@@ -67,5 +76,6 @@ class RealEstateAgentToRealEstateAgentCommandTest {
         assertEquals(SALARY, command.getSalary());
         assertEquals(HIRED_DATE, command.getHiredDate());
         assertEquals(QUIT_DATE, command.getQuitDate());
+        assertEquals(clients.size(), command.getClientIds().size());
     }
 }

@@ -81,6 +81,31 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-11 ">
+                                    <h1 class="panel-title">Clients</h1>
+                                </div>
+                                <!--<div class="col-md-1">
+                                    <a class="btn btn-default" href="#" th:href="@{'/client/' + ${client.id} + '/agents'}" role="button">View</a>
+                                </div>-->
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <ul>
+                                    <li th:each="client : ${clients}">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" th:field="*{clientIds}" th:value="${client.id}" th:selected="${realEstateAgent.clientIds.equals(client.id)}">
+                                            <label th:text="${client.firstName} + ' ' + ${client.lastName}">Aid Seeker</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>

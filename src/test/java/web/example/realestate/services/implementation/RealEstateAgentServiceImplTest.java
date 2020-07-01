@@ -8,6 +8,7 @@ import web.example.realestate.commands.RealEstateAgentCommand;
 import web.example.realestate.converters.RealEstateAgentCommandToRealEstateAgent;
 import web.example.realestate.converters.RealEstateAgentToRealEstateAgentCommand;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.RealEstateAgentRepository;
 import web.example.realestate.services.RealEstateAgentService;
 
@@ -28,7 +29,10 @@ class RealEstateAgentServiceImplTest {
     private RealEstateAgentService service;
 
     @Mock
-    private RealEstateAgentRepository repository;
+    private RealEstateAgentRepository agentRepository;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @Mock
     private RealEstateAgentCommandToRealEstateAgent toAgent;
@@ -39,7 +43,7 @@ class RealEstateAgentServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new RealEstateAgentServiceImpl(repository, toAgent, toAgentCommand);
+        service = new RealEstateAgentServiceImpl(agentRepository, clientRepository, toAgent, toAgentCommand);
     }
 
     @Test
@@ -47,7 +51,7 @@ class RealEstateAgentServiceImplTest {
         //given
         RealEstateAgent source = new RealEstateAgent();
         source.setId(1L);
-        when(repository.findRealEstateAgentsByIdWithEntities(anyLong())).thenReturn(Optional.of(source));
+        when(agentRepository.findRealEstateAgentsByIdWithEntities(anyLong())).thenReturn(Optional.of(source));
 
         //when
         RealEstateAgent agent = service.getById(1L);
@@ -55,7 +59,7 @@ class RealEstateAgentServiceImplTest {
         //then
         assertNotNull(agent);
         assertEquals(source.getId(), agent.getId());
-        verify(repository, times(1)).findRealEstateAgentsByIdWithEntities(anyLong());
+        verify(agentRepository, times(1)).findRealEstateAgentsByIdWithEntities(anyLong());
     }
 
     @Test
@@ -71,7 +75,7 @@ class RealEstateAgentServiceImplTest {
         Set<RealEstateAgent> agents = service.getRealEstateAgents();
 
         assertEquals(1, agents.size());
-        verify(repository, times(1)).findAll();
+        verify(agentRepository, times(1)).findAll();
     }
 
     @Test
@@ -79,7 +83,7 @@ class RealEstateAgentServiceImplTest {
         //given
         RealEstateAgentCommand source = new RealEstateAgentCommand();
         source.setId(1L);
-        when(repository.findRealEstateAgentsByIdWithEntities(anyLong())).thenReturn(Optional.of(new RealEstateAgent()));
+        when(agentRepository.findRealEstateAgentsByIdWithEntities(anyLong())).thenReturn(Optional.of(new RealEstateAgent()));
         when(toAgentCommand.convert(any())).thenReturn(source);
 
         //when
@@ -88,14 +92,14 @@ class RealEstateAgentServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(source.getId(), command.getId());
-        verify(repository, times(1)).findRealEstateAgentsByIdWithEntities(anyLong());
+        verify(agentRepository, times(1)).findRealEstateAgentsByIdWithEntities(anyLong());
         verify(toAgentCommand, times(1)).convert(any());
     }
 
     @Test
     void deleteById() {
         service.deleteById(anyLong());
-        verify(repository, times(1)).deleteById(anyLong());
+        verify(agentRepository, times(1)).deleteById(anyLong());
     }
 
 

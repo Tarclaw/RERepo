@@ -3,6 +3,7 @@ package web.example.realestate.domain.people;
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class RealEstateAgent extends Person {
     @JoinTable(name = "clients_agents",
             joinColumns = @JoinColumn(name = "agent_id"),
             inverseJoinColumns = @JoinColumn(name = "client_id"))
-    private Set<Client> clients;
+    private Set<Client> clients = new HashSet<>();
 
     public RealEstateAgent() {}
 

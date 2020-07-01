@@ -10,7 +10,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import web.example.realestate.commands.RealEstateAgentCommand;
+import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.services.ClientService;
 import web.example.realestate.services.RealEstateAgentService;
 
 import java.util.Collections;
@@ -37,7 +39,10 @@ class RealEstateAgentControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private RealEstateAgentService service;
+    private RealEstateAgentService agentService;
+
+    @Mock
+    private ClientService clientService;
 
     @Mock
     private Model model;
@@ -45,14 +50,14 @@ class RealEstateAgentControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new RealEstateAgentController(service);
+        controller = new RealEstateAgentController(agentService, clientService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void getRealEstateAgentById() throws Exception {
         //given
-        when(service.getById(anyLong())).thenReturn(new RealEstateAgent());
+        when(agentService.getById(anyLong())).thenReturn(new RealEstateAgent());
         ArgumentCaptor<RealEstateAgent> agentCaptor = ArgumentCaptor.forClass(RealEstateAgent.class);
 
         //when
@@ -60,7 +65,7 @@ class RealEstateAgentControllerTest {
 
         //then
         assertEquals("realEstateAgent/show", viewName);
-        verify(service, times(1)).getById(anyLong());
+        verify(agentService, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("realEstateAgent"), agentCaptor.capture());
 
         mockMvc.perform(get("/realEstateAgent/1/show"))
@@ -76,7 +81,7 @@ class RealEstateAgentControllerTest {
                 Collections.singletonList(new RealEstateAgent())
         );
 
-        when(service.getRealEstateAgents()).thenReturn(agents);
+        when(agentService.getRealEstateAgents()).thenReturn(agents);
 
         ArgumentCaptor<Set<RealEstateAgent>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
@@ -85,7 +90,7 @@ class RealEstateAgentControllerTest {
 
         //then
         assertEquals("realEstateAgent", viewName);
-        verify(service, times(1)).getRealEstateAgents();
+        verify(agentService, times(1)).getRealEstateAgents();
         verify(model, times(1)).addAttribute(eq("realEstateAgents"), argumentCaptor.capture());
 
         Set<RealEstateAgent> setInController = argumentCaptor.getValue();
@@ -97,18 +102,70 @@ class RealEstateAgentControllerTest {
     }
 
     @Test
+    void newAgent() throws Exception {
+        //given
+        when(clientService.getClients()).thenReturn(
+                new HashSet<>(
+                        Collections.singletonList(new Client())
+                )
+        );
+        ArgumentCaptor<RealEstateAgentCommand> commandCaptor = ArgumentCaptor.forClass(RealEstateAgentCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
+
+        //when
+        String viewName = controller.newAgent(model);
+
+        //then
+        assertEquals("realEstateAgent/realEstateAgentForm", viewName);
+        verify(clientService, times(1)).getClients();
+        verify(model, times(1)).addAttribute(eq("realEstateAgent"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        mockMvc.perform(get("/realEstateAgent/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("realEstateAgent/realEstateAgentForm"))
+                .andExpect(model().attributeExists("realEstateAgent"))
+                .andExpect(model().attributeExists("clients"));
+    }
+
+    @Test
+    void updateAgent() throws Exception {
+        //given
+        Set<Client> clients = new HashSet<>(Collections.singletonList(new Client()));
+        when(agentService.findCommandById(1L)).thenReturn(new RealEstateAgentCommand());
+        when(clientService.getClients()).thenReturn(clients);
+        ArgumentCaptor<RealEstateAgentCommand> commandCaptor = ArgumentCaptor.forClass(RealEstateAgentCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
+
+        //when
+        String viewName = controller.updateAgent("1", model);
+
+        //then
+        assertEquals("realEstateAgent/realEstateAgentForm", viewName);
+        verify(agentService, times(1)).findCommandById(anyLong());
+        verify(clientService, times(1)).getClients();
+        verify(model, times(1)).addAttribute(eq("realEstateAgent"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+
+        mockMvc.perform(get("/realEstateAgent/1/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("realEstateAgent/realEstateAgentForm"))
+                .andExpect(model().attributeExists("realEstateAgent"))
+                .andExpect(model().attributeExists("clients"));
+    }
+
+    @Test
     void saveOrUpdate() throws Exception {
         //given
         RealEstateAgentCommand source = new RealEstateAgentCommand();
         source.setId(1L);
-        when(service.saveRealEstateAgentCommand(any())).thenReturn(source);
+        when(agentService.saveRealEstateAgentCommand(any())).thenReturn(source);
 
         //when
         String viewName = controller.saveOrUpdate(source);
 
         //then
         assertEquals("redirect:/realEstateAgent/1/show", viewName);
-        verify(service, times(1)).saveRealEstateAgentCommand(any());
+        verify(agentService, times(1)).saveRealEstateAgentCommand(any());
 
         mockMvc.perform(post("/realEstateAgent")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -122,7 +179,7 @@ class RealEstateAgentControllerTest {
         String viewName = controller.deleteById("1");
 
         assertEquals("redirect:/realEstateAgents", viewName);
-        verify(service, times(1)).deleteById(anyLong());
+        verify(agentService, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/realEstateAgent/1/delete"))
                 .andExpect(status().is3xxRedirection())
