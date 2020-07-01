@@ -44,9 +44,15 @@ public class ApartmentController {
         return "apartment/apartmentForm";
     }
 
-    @PostMapping("/apartment")
-    public String saveOrUpdate(@ModelAttribute FacilityCommand command) {
-        FacilityCommand savedCommand = apartmentService.saveApartmentCommand(command);
+    @PostMapping("/apartment/save")
+    public String saveNew(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = apartmentService.saveDetached(command);
+        return "redirect:/apartment/" + savedCommand.getId() + "/show";
+    }
+
+    @PostMapping("/apartment/update")
+    public String updateExisting(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = apartmentService.saveAttached(command);
         return "redirect:/apartment/" + savedCommand.getId() + "/show";
     }
 

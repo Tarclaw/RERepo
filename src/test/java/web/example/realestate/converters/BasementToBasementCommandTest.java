@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Address;
 import web.example.realestate.domain.building.Basement;
+import web.example.realestate.domain.people.Client;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +22,8 @@ class BasementToBasementCommandTest {
     private static final boolean IT_COMMERCIAL = true;
     private static final LocalDateTime PUBLISHED_DATE_TIME = LocalDateTime.now();
     private static final LocalDateTime CLOSED_DATE_TIME = LocalDateTime.now();
-    private static final Long ADDRESS_ID = 1l;
+    private static final Long ADDRESS_ID = 2l;
+    private static final Long CLIENT_ID = 3l;
 
     private BasementToBasementCommand toBasementCommand;
 
@@ -37,7 +39,10 @@ class BasementToBasementCommandTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toBasementCommand.convert(new Basement()));
+        Client client = new Client();
+        Basement basement = new Basement();
+        basement.setClient(client);
+        assertNotNull(toBasementCommand.convert(basement));
     }
 
     @Test
@@ -45,6 +50,9 @@ class BasementToBasementCommandTest {
         //given
         Address address = new Address();
         address.setId(ADDRESS_ID);
+
+        Client client = new Client();
+        client.setId(CLIENT_ID);
 
         Basement basement = new Basement();
         basement.setId(ID);
@@ -55,6 +63,7 @@ class BasementToBasementCommandTest {
         basement.setPublishedDateTime(PUBLISHED_DATE_TIME);
         basement.setClosedDateTime(CLOSED_DATE_TIME);
         basement.setAddress(address);
+        basement.setClient(client);
 
         //when
         FacilityCommand basementCommand = toBasementCommand.convert(basement);

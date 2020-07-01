@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.example.realestate.commands.ClientCommand;
 import web.example.realestate.commands.FacilityCommand;
+import web.example.realestate.commands.MappingCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.RealEstateAgentService;
 
@@ -39,13 +40,6 @@ public class ClientController {
         return "client/clientEmptyForm";
     }
 
-    @GetMapping("/apartment/client/new")
-    public String newClientForApartment(Model model) {
-        model.addAttribute("client", new ClientCommand());
-        model.addAttribute("mapping", "apartment");
-        return "client/clientEmptyForm";
-    }
-
     @GetMapping("/client/{id}/update")
     public String updateClient(@PathVariable String id, Model model) {
         model.addAttribute("client", clientService.findCommandById(Long.valueOf(id)));
@@ -60,22 +54,60 @@ public class ClientController {
 
     @PostMapping("/client/save")
     public String save(@ModelAttribute ClientCommand clientCommand, @ModelAttribute FacilityCommand facilityCommand) {
-        facilityCommand.setItApartment(true); //todo temp
         clientService.saveDetached(clientCommand, facilityCommand);
         return "redirect:/clients";
-    }
-
-    @PostMapping("/client/apartment")
-    public String saveForApartment(@ModelAttribute ClientCommand command, Model model) {
-        clientService.saveAttached(command);
-        model.addAttribute("apartment", new FacilityCommand());
-        model.addAttribute("clients", clientService.getClients());
-        return "apartment/apartmentEmptyForm";
     }
 
     @GetMapping("/client/{id}/delete")
     public String deleteById(@PathVariable String id) {
         clientService.deleteById(Long.valueOf(id));
         return "redirect:/clients";
+    }
+
+    @GetMapping("/apartment/client/new")
+    public String newClientForApartment(Model model) {
+        model.addAttribute("client", new ClientCommand());
+        model.addAttribute("mapping", new MappingCommand("apartment"));
+        model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
+        return "client/clientForFacilityForm";
+    }
+
+    @GetMapping("/basement/client/new")
+    public String newClientForBasement(Model model) {
+        model.addAttribute("client", new ClientCommand());
+        model.addAttribute("mapping", new MappingCommand("basement"));
+        model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
+        return "client/clientForFacilityForm";
+    }
+
+    @GetMapping("/garage/client/new")
+    public String newClientForGarage(Model model) {
+        model.addAttribute("client", new ClientCommand());
+        model.addAttribute("mapping", new MappingCommand("garage"));
+        model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
+        return "client/clientForFacilityForm";
+    }
+
+    @GetMapping("/house/client/new")
+    public String newClientForHouse(Model model) {
+        model.addAttribute("client", new ClientCommand());
+        model.addAttribute("mapping", new MappingCommand("house"));
+        model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
+        return "client/clientForFacilityForm";
+    }
+
+    @GetMapping("/storage/client/new")
+    public String newClientForStorage(Model model) {
+        model.addAttribute("client", new ClientCommand());
+        model.addAttribute("mapping", new MappingCommand("storage"));
+        model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
+        return "client/clientForFacilityForm";
+    }
+
+    @PostMapping("/client/facility/save")
+    public String saveForFacility(@ModelAttribute ClientCommand clientCommand,
+                                  @ModelAttribute MappingCommand mappingCommand) {
+        clientService.saveAttached(clientCommand);
+        return "redirect:/" + mappingCommand.getPageName() + "/new";
     }
 }

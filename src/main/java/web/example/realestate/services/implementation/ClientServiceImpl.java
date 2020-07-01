@@ -81,7 +81,7 @@ public class ClientServiceImpl implements ClientService {
 
         Client savedClient = clientRepository.save(detachedClient);
 
-        System.out.println("Save client with id="+savedClient.getId());
+        System.out.println("Save client with id=" + savedClient.getId());
         return toClientCommand.convert(savedClient);
     }
 

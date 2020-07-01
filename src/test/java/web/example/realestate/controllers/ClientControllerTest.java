@@ -11,8 +11,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import web.example.realestate.commands.ClientCommand;
 import web.example.realestate.commands.FacilityCommand;
+import web.example.realestate.commands.MappingCommand;
 import web.example.realestate.domain.people.Client;
+import web.example.realestate.domain.people.RealEstateAgent;
 import web.example.realestate.services.ClientService;
+import web.example.realestate.services.MappingService;
 import web.example.realestate.services.RealEstateAgentService;
 
 import java.util.Collections;
@@ -122,21 +125,24 @@ class ClientControllerTest {
     void newClientForApartment() throws Exception {
         //given
         ArgumentCaptor<ClientCommand> commandCaptor = ArgumentCaptor.forClass(ClientCommand.class);
-        ArgumentCaptor<String> mappingCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<MappingCommand> mappingCaptor = ArgumentCaptor.forClass(MappingCommand.class);
+        ArgumentCaptor<Set<RealEstateAgent>> agentsCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
         String viewName = controller.newClientForApartment(model);
 
         //then
-        assertEquals("client/clientEmptyForm", viewName);
+        assertEquals("client/clientForFacilityForm", viewName);
         verify(model, times(1)).addAttribute(eq("client"), commandCaptor.capture());
         verify(model, times(1)).addAttribute(eq("mapping"), mappingCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("realEstateAgents"), agentsCaptor.capture());
 
         mockMvc.perform(get("/apartment/client/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("client/clientEmptyForm"))
+                .andExpect(view().name("client/clientForFacilityForm"))
                 .andExpect(model().attributeExists("client"))
-                .andExpect(model().attributeExists("mapping"));
+                .andExpect(model().attributeExists("mapping"))
+                .andExpect(model().attributeExists("realEstateAgents"));
     }
 
 
@@ -184,26 +190,19 @@ class ClientControllerTest {
     @Test
     void saveForApartment() throws Exception {
         //given
-        ClientCommand source = new ClientCommand();
-        when(clientService.saveAttached(any())).thenReturn(source);
-
-        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
-        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
+        ClientCommand clientCommand = new ClientCommand();
+        when(clientService.saveAttached(any())).thenReturn(clientCommand);
 
         //when
-        String viewName = controller.saveForApartment(source, model);
+        String viewName = controller.saveForFacility(clientCommand, new MappingCommand("apartment"));
 
         //then
-        assertEquals("apartment/apartmentEmptyForm", viewName);
+        assertEquals("redirect:/apartment/new", viewName);
         verify(clientService, times(1)).saveAttached(any());
-        verify(clientService, times(1)).getClients();
-        verify(model, times(1)).addAttribute(eq("apartment"), commandCaptor.capture());
-        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
 
-        mockMvc.perform(post("/client/apartment")
+        mockMvc.perform(post("/client/facility/save")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isOk())
-                .andExpect(view().name("apartment/apartmentEmptyForm"));
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test

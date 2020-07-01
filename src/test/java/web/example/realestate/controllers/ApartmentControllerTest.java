@@ -150,24 +150,45 @@ class ApartmentControllerTest {
     }
 
     @Test
-    void saveOrUpdate() throws Exception {
+    void saveNew() throws Exception {
         //given
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
-        when(apartmentService.saveApartmentCommand(any())).thenReturn(source);
+        when(apartmentService.saveDetached(any())).thenReturn(source);
 
         //when
-        String viewName = controller.saveOrUpdate(source);
+        String viewName = controller.saveNew(source);
 
         //then
         assertEquals("redirect:/apartment/1/show", viewName);
-        verify(apartmentService, times(1)).saveApartmentCommand(any());
+        verify(apartmentService, times(1)).saveDetached(any());
 
-        mockMvc.perform(post("/apartment")
+        mockMvc.perform(post("/apartment/save")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "1"))
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/apartment/1/show"));
+    }
+
+    @Test
+    void updateExisting() throws Exception {
+        //given
+        FacilityCommand source = new FacilityCommand();
+        source.setId(1L);
+        when(apartmentService.saveAttached(any())).thenReturn(source);
+
+        //when
+        String viewName = controller.updateExisting(source);
+
+        //then
+        assertEquals("redirect:/apartment/1/show", viewName);
+        verify(apartmentService, times(1)).saveAttached(any());
+
+        mockMvc.perform(post("/apartment/update")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/apartment/1/show"));
     }
 
     @Test

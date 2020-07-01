@@ -23,12 +23,12 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:object="${apartment}" th:action="@{'/apartment/save'}" method="post">
+            <form th:object="${basement}" th:action="@{'/basement/save'}" method="post">
                 <input type="hidden" th:field="*{id}"/>
-                <div class="panel-group">
+                <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Create Apartment</h1>
+                            <h1 class="panel-title">Create Basement</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
@@ -63,15 +63,11 @@
                                     <input type="text" class="form-control" th:field="*{totalArea}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Apartment Number:</label>
-                                    <input type="text" class="form-control" th:field="*{apartmentNumber}" />
+                                    <label>It Commercial:</label>
+                                    <input type="text" class="form-control" th:field="*{itCommercial}" />
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3 form-group">
-                                    <label>Floor:</label>
-                                    <input type="text" class="form-control" th:field="*{floor}" />
-                                </div>
                                 <div class="col-md-3 form-group">
                                     <label>Published Date Time:</label>
                                     <input type="text" class="form-control" th:field="*{publishedDateTime}" />
@@ -85,7 +81,7 @@
                     </div>
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Add Address Information</h1>
+                            <h1 class="panel-title">Edit Address Information</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
@@ -122,7 +118,7 @@
                                 </div>
                                 <div class="col-md-1">
                                     <a class="btn btn-default" role="button"
-                                       th:href="${'/apartment/client/new'}">Create Client</a>
+                                       th:href="${'/basement/client/new'}">Create Client</a>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +129,7 @@
                                     <select class="form-control" name="clientId">
                                         <option th:each="client : ${clients}"
                                                 th:value="${client.id}"
-                                                th:selected="${client.id.equals(apartment.clientId)}"
+                                                th:selected="${client.id.equals(basement.clientId)}"
                                                 th:text="${client.firstName + ' ' + client.lastName}">Jane Doe</option>
                                     </select>
                                 </div>
@@ -148,5 +144,4 @@
 </div>
 
 </body>
-
 </html>

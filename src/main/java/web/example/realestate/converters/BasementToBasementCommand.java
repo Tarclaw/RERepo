@@ -22,6 +22,7 @@ public class BasementToBasementCommand implements Converter<Basement, FacilityCo
 
         final FacilityCommand command = new FacilityCommand();
         command.setId(basement.getId());
+        command.setClientId(basement.getClient().getId());
         command.setNumberOfRooms(basement.getNumberOfRooms());
         command.setTotalArea(basement.getTotalArea());
         command.setDescription(basement.getDescription());

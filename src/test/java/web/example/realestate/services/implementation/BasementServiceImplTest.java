@@ -9,6 +9,7 @@ import web.example.realestate.converters.BasementCommandToBasement;
 import web.example.realestate.converters.BasementToBasementCommand;
 import web.example.realestate.domain.building.Basement;
 import web.example.realestate.repositories.BasementRepository;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.BasementService;
 
 import java.util.Collections;
@@ -28,7 +29,10 @@ class BasementServiceImplTest {
     private BasementService service;
 
     @Mock
-    private BasementRepository repository;
+    private BasementRepository basementRepository;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @Mock
     private BasementCommandToBasement toBasement;
@@ -39,7 +43,7 @@ class BasementServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new BasementServiceImpl(repository, toBasement, toBasementCommand);
+        service = new BasementServiceImpl(basementRepository, clientRepository, toBasement, toBasementCommand);
     }
 
     @Test
@@ -47,7 +51,7 @@ class BasementServiceImplTest {
         //given
         Basement source = new Basement();
         source.setId(1L);
-        when(repository.findBasementByIdWithClients(anyLong())).thenReturn(Optional.of(source));
+        when(basementRepository.findBasementByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Basement basement = service.getById(1L);
@@ -55,7 +59,7 @@ class BasementServiceImplTest {
         //then
         assertNotNull(basement);
         assertEquals(1, basement.getId());
-        verify(repository, times(1)).findBasementByIdWithClients(anyLong());
+        verify(basementRepository, times(1)).findBasementByIdWithClients(anyLong());
     }
 
     @Test
@@ -74,13 +78,13 @@ class BasementServiceImplTest {
 
         //then
         assertEquals(1, basements.size());
-        verify(repository, times(1)).findAll();
+        verify(basementRepository, times(1)).findAll();
     }
 
     @Test
     void findCommandById() {
         //given
-        when(repository.findBasementByIdWithClients(anyLong())).thenReturn(Optional.of(new Basement()));
+        when(basementRepository.findBasementByIdWithClients(anyLong())).thenReturn(Optional.of(new Basement()));
 
         FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
@@ -92,12 +96,12 @@ class BasementServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findBasementByIdWithClients(anyLong());
+        verify(basementRepository, times(1)).findBasementByIdWithClients(anyLong());
     }
 
     @Test
     void deleteById() {
         service.deleteById(anyLong());
-        verify(repository, times(1)).deleteById(anyLong());
+        verify(basementRepository, times(1)).deleteById(anyLong());
     }
 }

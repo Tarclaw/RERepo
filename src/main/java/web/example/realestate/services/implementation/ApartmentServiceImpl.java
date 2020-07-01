@@ -55,11 +55,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     @Transactional
-    public FacilityCommand saveApartmentCommand(final FacilityCommand command) {
-        return command.getId() == null ? saveDetached(command) : saveAttached(command);
-    }
-
-    private FacilityCommand saveDetached(final FacilityCommand command) {
+    public FacilityCommand saveDetached(final FacilityCommand command) {
         Client client = clientRepository.findById(command.getClientId()).get();
         Apartment detachedApartment = toApartment.convert(command);
         detachedApartment.setClient(client);
@@ -68,7 +64,9 @@ public class ApartmentServiceImpl implements ApartmentService {
         return toApartmentCommand.convert(savedApartment);
     }
 
-    private FacilityCommand saveAttached(final FacilityCommand command) {
+    @Override
+    @Transactional
+    public FacilityCommand saveAttached(final FacilityCommand command) {
         Client client = clientRepository.findById(command.getClientId()).get();
         Apartment attachedApartment = getById(command.getId());
         Apartment updatedApartment = toApartment.convertWhenAttached(attachedApartment, command);

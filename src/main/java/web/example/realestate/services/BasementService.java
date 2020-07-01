@@ -12,7 +12,9 @@ public interface BasementService {
 
     FacilityCommand findCommandById(Long id);
 
-    FacilityCommand saveBasementCommand(FacilityCommand command);
+    FacilityCommand saveDetached(FacilityCommand command);
+
+    FacilityCommand saveAttached(FacilityCommand command);
 
     void deleteById(Long id);
 }

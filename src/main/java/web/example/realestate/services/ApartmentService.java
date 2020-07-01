@@ -13,7 +13,9 @@ public interface ApartmentService {
 
     FacilityCommand findCommandById(Long id);
 
-    FacilityCommand saveApartmentCommand(FacilityCommand command);
+    FacilityCommand saveDetached(FacilityCommand command);
+
+    FacilityCommand saveAttached(FacilityCommand command);
 
     void deleteById(Long id);
 }

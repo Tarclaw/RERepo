@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Basement;
 import web.example.realestate.services.BasementService;
+import web.example.realestate.services.ClientService;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -37,7 +38,10 @@ class BasementControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BasementService service;
+    private BasementService basementService;
+
+    @Mock
+    private ClientService clientService;
 
     @Mock
     private Model model;
@@ -45,14 +49,14 @@ class BasementControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new BasementController(service);
+        controller = new BasementController(basementService, clientService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void getBasementById() throws Exception {
         //given
-        when(service.getById(anyLong())).thenReturn(new Basement());
+        when(basementService.getById(anyLong())).thenReturn(new Basement());
         ArgumentCaptor<Basement> basementCaptor = ArgumentCaptor.forClass(Basement.class);
 
         //when
@@ -60,7 +64,7 @@ class BasementControllerTest {
 
         //then
         assertEquals("basement/show", viewName);
-        verify(service, times(1)).getById(anyLong());
+        verify(basementService, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("basement"), basementCaptor.capture());
 
         mockMvc.perform(get("/basement/1/show"))
@@ -75,7 +79,7 @@ class BasementControllerTest {
         Set<Basement> basements = new HashSet<>(
                 Collections.singletonList(new Basement())
         );
-        when(service.getBasements()).thenReturn(basements);
+        when(basementService.getBasements()).thenReturn(basements);
 
         ArgumentCaptor<Set<Basement>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
@@ -84,7 +88,7 @@ class BasementControllerTest {
 
         //then
         assertEquals("basements", viewName);
-        verify(service, times(1)).getBasements();
+        verify(basementService, times(1)).getBasements();
         verify(model, times(1)).addAttribute(eq("basements"), argumentCaptor.capture());
 
         Set<Basement> setInController = argumentCaptor.getValue();
@@ -98,17 +102,17 @@ class BasementControllerTest {
     @Test
     void newBasement() throws Exception {
         String viewName = controller.newBasement(model);
-        assertEquals("basement/basementForm", viewName);
+        assertEquals("basement/basementEmptyForm", viewName);
 
         mockMvc.perform(get("/basement/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("basement/basementForm"));
+                .andExpect(view().name("basement/basementEmptyForm"));
     }
 
     @Test
     void updateBasement() throws Exception {
         //given
-        when(service.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        when(basementService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
         ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
@@ -116,7 +120,7 @@ class BasementControllerTest {
 
         //then
         assertEquals("basement/basementForm", viewName);
-        verify(service, times(1)).findCommandById(anyLong());
+        verify(basementService, times(1)).findCommandById(anyLong());
         verify(model, times(1)).addAttribute(eq("basement"), commandCaptor.capture());
 
         mockMvc.perform(get("/basement/1/update"))
@@ -126,22 +130,22 @@ class BasementControllerTest {
     }
 
     @Test
-    void saveOrUpdate() throws Exception {
+    void saveNew() throws Exception {
         //given
         FacilityCommand sourceCommand = new FacilityCommand();
         sourceCommand.setId(1L);
 
-        when(service.saveBasementCommand(any())).thenReturn(sourceCommand);
+        when(basementService.saveDetached(any())).thenReturn(sourceCommand);
         ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
-        String viewName = controller.saveOrUpdate(sourceCommand);
+        String viewName = controller.saveNew(sourceCommand);
 
         //then
         assertEquals("redirect:/basement/1/show", viewName);
-        verify(service, times(1)).saveBasementCommand(any());
+        verify(basementService, times(1)).saveDetached(any());
 
-        mockMvc.perform(post("/basement")
+        mockMvc.perform(post("/basement/save")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "1"))
             .andExpect(status().is3xxRedirection())
@@ -150,10 +154,34 @@ class BasementControllerTest {
     }
 
     @Test
+    void updateExisting() throws Exception {
+        //given
+        FacilityCommand sourceCommand = new FacilityCommand();
+        sourceCommand.setId(1L);
+
+        when(basementService.saveAttached(any())).thenReturn(sourceCommand);
+        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+
+        //when
+        String viewName = controller.updateExisting(sourceCommand);
+
+        //then
+        assertEquals("redirect:/basement/1/show", viewName);
+        verify(basementService, times(1)).saveAttached(any());
+
+        mockMvc.perform(post("/basement/update")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/basement/1/show"));
+
+    }
+
+    @Test
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
         assertEquals("redirect:/basements", viewName);
-        verify(service, times(1)).deleteById(anyLong());
+        verify(basementService, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/basement/1/delete"))
                 .andExpect(status().is3xxRedirection())
