@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Address;
 import web.example.realestate.domain.building.Garage;
+import web.example.realestate.domain.people.Client;
 
 import java.time.LocalDateTime;
 
@@ -36,7 +37,9 @@ class GarageToGarageCommandTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toGarageCommand.convert(new Garage()));
+        Garage garage = new Garage();
+        garage.setClient(new Client());
+        assertNotNull(toGarageCommand.convert(garage));
     }
 
     @Test
@@ -44,6 +47,9 @@ class GarageToGarageCommandTest {
         //given
         Address address = new Address();
         address.setId(ADDRESS_ID);
+
+        Client client = new Client();
+        client.setId(ID);
 
         Garage garage = new Garage();
         garage.setId(ID);
@@ -55,6 +61,7 @@ class GarageToGarageCommandTest {
         garage.setHasEquipment(HAS_EQUIPMENT);
         garage.setHasPit(HAS_PIT);
         garage.setAddress(address);
+        garage.setClient(client);
 
         //when
         FacilityCommand command = toGarageCommand.convert(garage);

@@ -22,6 +22,7 @@ public class GarageToGarageCommand implements Converter<Garage, FacilityCommand>
 
         final FacilityCommand command = new FacilityCommand();
         command.setId(garage.getId());
+        command.setClientId(garage.getClient().getId());
         command.setNumberOfRooms(garage.getNumberOfRooms());
         command.setTotalArea(garage.getTotalArea());
         command.setDescription(garage.getDescription());

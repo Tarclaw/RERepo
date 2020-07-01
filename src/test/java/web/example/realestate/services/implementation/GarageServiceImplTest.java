@@ -8,6 +8,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.GarageCommandToGarage;
 import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.GarageRepository;
 import web.example.realestate.services.GarageService;
 
@@ -28,7 +29,10 @@ class GarageServiceImplTest {
     private GarageService service;
 
     @Mock
-    private GarageRepository repository;
+    private GarageRepository garageRepository;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @Mock
     private GarageCommandToGarage toGarage;
@@ -39,7 +43,7 @@ class GarageServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new GarageServiceImpl(repository, toGarage, toGarageCommand);
+        service = new GarageServiceImpl(garageRepository, clientRepository, toGarage, toGarageCommand);
     }
 
     @Test
@@ -47,7 +51,7 @@ class GarageServiceImplTest {
         //given
         Garage source = new Garage();
         source.setId(1L);
-        when(repository.findGaragesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
+        when(garageRepository.findGaragesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Garage garage = service.getById(1L);
@@ -55,7 +59,7 @@ class GarageServiceImplTest {
         //then
         assertNotNull(garage);
         assertEquals(1L, garage.getId());
-        verify(repository, times(1)).findGaragesByIdWithClients(anyLong());
+        verify(garageRepository, times(1)).findGaragesByIdWithClients(anyLong());
     }
 
     @Test
@@ -71,13 +75,13 @@ class GarageServiceImplTest {
         Set<Garage> garages = service.getGarages();
 
         assertEquals(1, garages.size());
-        verify(repository, times(1)).findAll();
+        verify(garageRepository, times(1)).findAll();
     }
 
     @Test
     void findCommandById() {
         //given
-        when(repository.findGaragesByIdWithClients(anyLong())).thenReturn(Optional.of(new Garage()));
+        when(garageRepository.findGaragesByIdWithClients(anyLong())).thenReturn(Optional.of(new Garage()));
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(toGarageCommand.convert(any())).thenReturn(source);
@@ -88,13 +92,13 @@ class GarageServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findGaragesByIdWithClients(anyLong());
+        verify(garageRepository, times(1)).findGaragesByIdWithClients(anyLong());
         verify(toGarageCommand, times(1)).convert(any());
     }
 
     @Test
     void deleteById() {
         service.deleteById(anyLong());
-        verify(repository, times(1)).deleteById(anyLong());
+        verify(garageRepository, times(1)).deleteById(anyLong());
     }
 }

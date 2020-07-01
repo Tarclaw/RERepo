@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Garage;
+import web.example.realestate.services.ClientService;
 import web.example.realestate.services.GarageService;
 
 import java.util.Collections;
@@ -37,7 +38,10 @@ class GarageControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private GarageService service;
+    private GarageService garageService;
+
+    @Mock
+    private ClientService clientService;
 
     @Mock
     private Model model;
@@ -45,14 +49,14 @@ class GarageControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new GarageController(service);
+        controller = new GarageController(garageService, clientService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void getGarageById() throws Exception {
         //given
-        when(service.getById(anyLong())).thenReturn(new Garage());
+        when(garageService.getById(anyLong())).thenReturn(new Garage());
         ArgumentCaptor<Garage> garageCaptor = ArgumentCaptor.forClass(Garage.class);
 
         //when
@@ -60,7 +64,7 @@ class GarageControllerTest {
 
         //then
         assertEquals("garage/show", viewName);
-        verify(service, times(1)).getById(anyLong());
+        verify(garageService, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("garage"), garageCaptor.capture());
 
         mockMvc.perform(get("/garage/1/show"))
@@ -76,7 +80,7 @@ class GarageControllerTest {
                 Collections.singletonList(new Garage())
         );
 
-        when(service.getGarages()).thenReturn(garages);
+        when(garageService.getGarages()).thenReturn(garages);
 
         ArgumentCaptor<Set<Garage>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
@@ -85,7 +89,7 @@ class GarageControllerTest {
 
         //then
         assertEquals("garages", viewName);
-        verify(service, times(1)).getGarages();
+        verify(garageService, times(1)).getGarages();
         verify(model, times(1)).addAttribute(eq("garages"), argumentCaptor.capture());
 
         Set<Garage> setInController = argumentCaptor.getValue();
@@ -105,19 +109,19 @@ class GarageControllerTest {
         String viewName = controller.newGarage(model);
 
         //then
-        assertEquals("garage/garageForm", viewName);
+        assertEquals("garage/garageEmptyForm", viewName);
         verify(model, times(1)).addAttribute(eq("garage"), commandCaptor.capture());
 
         mockMvc.perform(get("/garage/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("garage/garageForm"))
+                .andExpect(view().name("garage/garageEmptyForm"))
                 .andExpect(model().attributeExists("garage"));
     }
 
     @Test
     void updateGarage() throws Exception {
         //given
-        when(service.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        when(garageService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
         ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
@@ -125,7 +129,7 @@ class GarageControllerTest {
 
         //then
         assertEquals("garage/garageForm", viewName);
-        verify(service, times(1)).findCommandById(anyLong());
+        verify(garageService, times(1)).findCommandById(anyLong());
         verify(model, times(1)).addAttribute(eq("garage"), commandCaptor.capture());
 
         mockMvc.perform(get("/garage/1/update"))
@@ -135,20 +139,20 @@ class GarageControllerTest {
     }
 
     @Test
-    void saveOrUpdate() throws Exception {
+    void saveNew() throws Exception {
         //given
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
-        when(service.saveGarageCommand(any())).thenReturn(source);
+        when(garageService.saveDetached(any())).thenReturn(source);
 
         //when
-        String viewName = controller.saveOrUpdate(source);
+        String viewName = controller.saveNew(source);
 
         //then
         assertEquals("redirect:/garage/1/show", viewName);
-        verify(service, times(1)).saveGarageCommand(any());
+        verify(garageService, times(1)).saveDetached(any());
 
-        mockMvc.perform(post("/garage")
+        mockMvc.perform(post("/garage/save")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "1"))
             .andExpect(status().is3xxRedirection())
@@ -156,13 +160,34 @@ class GarageControllerTest {
     }
 
     @Test
+    void updateExisting() throws Exception {
+        //given
+        FacilityCommand source = new FacilityCommand();
+        source.setId(1L);
+        when(garageService.saveAttached(any())).thenReturn(source);
+
+        //when
+        String viewName = controller.updateExisting(source);
+
+        //then
+        assertEquals("redirect:/garage/1/show", viewName);
+        verify(garageService, times(1)).saveAttached(any());
+
+        mockMvc.perform(post("/garage/update")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/garage/1/show"));
+    }
+
+    @Test
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
-        assertEquals("redirect:/garages", viewName);
-        verify(service, times(1)).deleteById(anyLong());
+        assertEquals("redirect:/garage", viewName);
+        verify(garageService, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/garage/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/garages"));
+                .andExpect(view().name("redirect:/garage"));
     }
 }

@@ -1,12 +1,12 @@
 package web.example.realestate.services.implementation;
 
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.stereotype.Service;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.GarageCommandToGarage;
 import web.example.realestate.converters.GarageToGarageCommand;
-import web.example.realestate.domain.building.Facility;
 import web.example.realestate.domain.building.Garage;
+import web.example.realestate.domain.people.Client;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.GarageRepository;
 import web.example.realestate.services.GarageService;
 
@@ -17,21 +17,22 @@ import java.util.Set;
 @Service
 public class GarageServiceImpl implements GarageService {
 
-    private final GarageRepository repository;
+    private final GarageRepository garageRepository;
+    private final ClientRepository clientRepository;
     private final GarageCommandToGarage toGarage;
     private final GarageToGarageCommand toGarageCommand;
 
-    public GarageServiceImpl(GarageRepository repository,
-                             GarageCommandToGarage toGarage,
-                             GarageToGarageCommand toGarageCommand) {
-        this.repository = repository;
+    public GarageServiceImpl(GarageRepository garageRepository, ClientRepository clientRepository,
+                             GarageCommandToGarage toGarage, GarageToGarageCommand toGarageCommand) {
+        this.garageRepository = garageRepository;
+        this.clientRepository = clientRepository;
         this.toGarage = toGarage;
         this.toGarageCommand = toGarageCommand;
     }
 
     @Override
     public Garage getById(final Long id) {
-        return repository.findGaragesByIdWithClients(id)
+        return garageRepository.findGaragesByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have garage with id=" + id)
                 );
@@ -40,7 +41,7 @@ public class GarageServiceImpl implements GarageService {
     @Override
     public Set<Garage> getGarages() {
         Set<Garage> garages = new HashSet<>();
-        repository.findAll().iterator().forEachRemaining(garages :: add);
+        garageRepository.findAll().iterator().forEachRemaining(garages :: add);
         return garages;
     }
 
@@ -52,26 +53,28 @@ public class GarageServiceImpl implements GarageService {
 
     @Override
     @Transactional
-    public FacilityCommand saveGarageCommand(final FacilityCommand command) {
-        return command.getId() == null ? saveDetached(command) : saveAttached(command);
-    }
-
-    private FacilityCommand saveDetached(final FacilityCommand command) {
+    public FacilityCommand saveDetached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         Garage detachedGarage = toGarage.convert(command);
-        Garage savedGarage = repository.save(detachedGarage);
+        detachedGarage.setClient(client);
+        Garage savedGarage = garageRepository.save(detachedGarage);
         System.out.println("Save Garage with id=" + savedGarage.getId());
         return toGarageCommand.convert(savedGarage);
     }
 
-    private FacilityCommand saveAttached(final FacilityCommand command) {
+    @Override
+    @Transactional
+    public FacilityCommand saveAttached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         Garage attachedGarage = getById(command.getId());
         Garage updatedGarage = toGarage.convertWhenAttached(attachedGarage, command);
+        updatedGarage.setClient(client);
         System.out.println("Update Garage with id=" + updatedGarage.getId());
         return toGarageCommand.convert(updatedGarage);
     }
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        garageRepository.deleteById(id);
     }
 }

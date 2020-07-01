@@ -13,7 +13,9 @@ public interface GarageService {
 
     FacilityCommand findCommandById(Long id);
 
-    FacilityCommand saveGarageCommand(FacilityCommand command);
+    FacilityCommand saveDetached(FacilityCommand command);
+
+    FacilityCommand saveAttached(FacilityCommand command);
 
     void deleteById(Long id);
 }
