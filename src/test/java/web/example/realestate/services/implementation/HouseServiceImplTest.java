@@ -8,6 +8,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.HouseCommandToHouse;
 import web.example.realestate.converters.HouseToHouseCommand;
 import web.example.realestate.domain.building.House;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.HouseRepository;
 import web.example.realestate.services.HouseService;
 
@@ -28,7 +29,10 @@ class HouseServiceImplTest {
     private HouseService service;
 
     @Mock
-    private HouseRepository repository;
+    private HouseRepository houseRepository;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @Mock
     private HouseCommandToHouse toHouse;
@@ -39,7 +43,7 @@ class HouseServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new HouseServiceImpl(repository, toHouse, toHouseCommand);
+        service = new HouseServiceImpl(houseRepository, clientRepository, toHouse, toHouseCommand);
     }
 
     @Test
@@ -47,7 +51,7 @@ class HouseServiceImplTest {
         //given
         House source = new House();
         source.setId(1L);
-        when(repository.findHousesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
+        when(houseRepository.findHousesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         House house = service.getById(1L);
@@ -55,7 +59,7 @@ class HouseServiceImplTest {
         //then
         assertNotNull(house);
         assertEquals(1L, house.getId());
-        verify(repository, times(1)).findHousesByIdWithClients(anyLong());
+        verify(houseRepository, times(1)).findHousesByIdWithClients(anyLong());
 
     }
 
@@ -72,13 +76,13 @@ class HouseServiceImplTest {
         Set<House> houses = service.getHouses();
 
         assertEquals(1, houses.size());
-        verify(repository, times(1)).findAll();
+        verify(houseRepository, times(1)).findAll();
     }
 
     @Test
     void findCommandById() {
         //given
-        when(repository.findHousesByIdWithClients(anyLong())).thenReturn(Optional.of(new House()));
+        when(houseRepository.findHousesByIdWithClients(anyLong())).thenReturn(Optional.of(new House()));
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
         when(toHouseCommand.convert(any())).thenReturn(source);
@@ -89,13 +93,13 @@ class HouseServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findHousesByIdWithClients(anyLong());
+        verify(houseRepository, times(1)).findHousesByIdWithClients(anyLong());
         verify(toHouseCommand, times(1)).convert(any());
     }
 
     @Test
     void deleteById() {
         service.deleteById(anyLong());
-        verify(repository, times(1)).deleteById(anyLong());
+        verify(houseRepository, times(1)).deleteById(anyLong());
     }
 }

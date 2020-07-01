@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Address;
 import web.example.realestate.domain.building.House;
+import web.example.realestate.domain.people.Client;
 
 import java.time.LocalDateTime;
 
@@ -36,7 +37,9 @@ class HouseToHouseCommandTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toHouseCommand.convert(new House()));
+        House house = new House();
+        house.setClient(new Client());
+        assertNotNull(toHouseCommand.convert(house));
     }
 
     @Test
@@ -44,6 +47,9 @@ class HouseToHouseCommandTest {
         //given
         Address address = new Address();
         address.setId(ADDRESS_ID);
+
+        Client client = new Client();
+        client.setId(ID);
 
         House house = new House();
         house.setId(ID);
@@ -56,6 +62,7 @@ class HouseToHouseCommandTest {
         house.setHasBackyard(HAS_BACKYARD);
         house.setHasGarden(HAS_GARDEN);
         house.setAddress(address);
+        house.setClient(client);
 
         //when
         FacilityCommand command = toHouseCommand.convert(house);

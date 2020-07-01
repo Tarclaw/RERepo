@@ -5,6 +5,8 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.HouseCommandToHouse;
 import web.example.realestate.converters.HouseToHouseCommand;
 import web.example.realestate.domain.building.House;
+import web.example.realestate.domain.people.Client;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.HouseRepository;
 import web.example.realestate.services.HouseService;
 
@@ -15,21 +17,22 @@ import java.util.Set;
 @Service
 public class HouseServiceImpl implements HouseService {
 
-    private final HouseRepository repository;
+    private final HouseRepository houseRepository;
+    private final ClientRepository clientRepository;
     private final HouseCommandToHouse toHouse;
     private final HouseToHouseCommand toHouseCommand;
 
-    public HouseServiceImpl(HouseRepository repository,
-                            HouseCommandToHouse toHouse,
-                            HouseToHouseCommand toHouseCommand) {
-        this.repository = repository;
+    public HouseServiceImpl(HouseRepository houseRepository, ClientRepository clientRepository,
+                            HouseCommandToHouse toHouse, HouseToHouseCommand toHouseCommand) {
+        this.houseRepository = houseRepository;
+        this.clientRepository = clientRepository;
         this.toHouse = toHouse;
         this.toHouseCommand = toHouseCommand;
     }
 
     @Override
     public House getById(final Long id) {
-        return repository.findHousesByIdWithClients(id)
+        return houseRepository.findHousesByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have house with id=" + id)
                 );
@@ -38,7 +41,7 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public Set<House> getHouses() {
         Set<House> houses = new HashSet<>();
-        repository.findAll().iterator().forEachRemaining(houses :: add);
+        houseRepository.findAll().iterator().forEachRemaining(houses :: add);
         return houses;
     }
 
@@ -50,26 +53,28 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     @Transactional
-    public FacilityCommand saveHouseCommand(final FacilityCommand command) {
-        return command.getId() == null ? saveDetached(command) : saveAttached(command);
-    }
-
-    private FacilityCommand saveDetached(final FacilityCommand command) {
+    public FacilityCommand saveDetached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         House detachedHouse = toHouse.convert(command);
-        House savedHouse = repository.save(detachedHouse);
+        detachedHouse.setClient(client);
+        House savedHouse = houseRepository.save(detachedHouse);
         System.out.println("Save House with id=" + savedHouse.getId());
         return toHouseCommand.convert(savedHouse);
     }
 
-    private FacilityCommand saveAttached(final FacilityCommand command) {
+    @Override
+    @Transactional
+    public FacilityCommand saveAttached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         House attachedHouse = getById(command.getId());
         House updatedHouse = toHouse.convertWhenAttached(attachedHouse, command);
+        updatedHouse.setClient(client);
         System.out.println("Update House with id=" + updatedHouse.getId());
         return toHouseCommand.convert(updatedHouse);
     }
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        houseRepository.deleteById(id);
     }
 }

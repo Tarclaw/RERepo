@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.House;
+import web.example.realestate.services.ClientService;
 import web.example.realestate.services.HouseService;
 
 import java.util.Collections;
@@ -37,7 +38,10 @@ class HouseControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private HouseService service;
+    private HouseService houseService;
+
+    @Mock
+    private ClientService clientService;
 
     @Mock
     private Model model;
@@ -45,14 +49,14 @@ class HouseControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new HouseController(service);
+        controller = new HouseController(houseService, clientService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     void getHouseById() throws Exception {
         //given
-        when(service.getById(anyLong())).thenReturn(new House());
+        when(houseService.getById(anyLong())).thenReturn(new House());
         ArgumentCaptor<House> houseCaptor = ArgumentCaptor.forClass(House.class);
 
         //when
@@ -60,7 +64,7 @@ class HouseControllerTest {
 
         //then
         assertEquals("house/show", viewName);
-        verify(service, times(1)).getById(anyLong());
+        verify(houseService, times(1)).getById(anyLong());
         verify(model, times(1)).addAttribute(eq("house"), houseCaptor.capture());
 
         mockMvc.perform(get("/house/1/show"))
@@ -76,7 +80,7 @@ class HouseControllerTest {
                 Collections.singletonList(new House())
         );
 
-        when(service.getHouses()).thenReturn(houses);
+        when(houseService.getHouses()).thenReturn(houses);
 
         ArgumentCaptor<Set<House>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
 
@@ -85,7 +89,7 @@ class HouseControllerTest {
 
         //then
         assertEquals("houses", viewName);
-        verify(service, times(1)).getHouses();
+        verify(houseService, times(1)).getHouses();
         verify(model, times(1)).addAttribute(eq("houses"), argumentCaptor.capture());
 
         Set<House> setInController = argumentCaptor.getValue();
@@ -105,19 +109,19 @@ class HouseControllerTest {
         String viewName = controller.newHouse(model);
 
         //then
-        assertEquals("house/houseForm", viewName);
+        assertEquals("house/houseEmptyForm", viewName);
         verify(model, times(1)).addAttribute(eq("house"), commandCaptor.capture());
 
         mockMvc.perform(get("/house/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("house/houseForm"))
+                .andExpect(view().name("house/houseEmptyForm"))
                 .andExpect(model().attributeExists("house"));
     }
 
     @Test
     void updateHouse() throws Exception {
         //given
-        when(service.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        when(houseService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
         ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
 
         //when
@@ -125,7 +129,7 @@ class HouseControllerTest {
 
         //then
         assertEquals("house/houseForm", viewName);
-        verify(service, times(1)).findCommandById(anyLong());
+        verify(houseService, times(1)).findCommandById(anyLong());
         verify(model, times(1)).addAttribute(eq("house"), commandCaptor.capture());
 
         mockMvc.perform(get("/house/1/update"))
@@ -135,21 +139,43 @@ class HouseControllerTest {
     }
 
     @Test
-    void saveOrUpdate() throws Exception {
+    void saveNew() throws Exception {
         //given
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
 
-        when(service.saveHouseCommand(any())).thenReturn(source);
+        when(houseService.saveDetached(any())).thenReturn(source);
 
         //when
-        String viewName = controller.saveOrUpdate(source);
+        String viewName = controller.saveNew(source);
 
         //then
         assertEquals("redirect:/house/1/show", viewName);
-        verify(service, times(1)).saveHouseCommand(any());
+        verify(houseService, times(1)).saveDetached(any());
 
-        mockMvc.perform(post("/house")
+        mockMvc.perform(post("/house/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/house/1/show"));
+    }
+
+    @Test
+    void updateExisting() throws Exception {
+        //given
+        FacilityCommand source = new FacilityCommand();
+        source.setId(1L);
+
+        when(houseService.saveAttached(any())).thenReturn(source);
+
+        //when
+        String viewName = controller.updateExisting(source);
+
+        //then
+        assertEquals("redirect:/house/1/show", viewName);
+        verify(houseService, times(1)).saveAttached(any());
+
+        mockMvc.perform(post("/house/update")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "1"))
                 .andExpect(status().is3xxRedirection())
@@ -159,11 +185,11 @@ class HouseControllerTest {
     @Test
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
-        assertEquals("redirect:/houses", viewName);
-        verify(service, times(1)).deleteById(anyLong());
+        assertEquals("redirect:/house", viewName);
+        verify(houseService, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/house/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/houses"));
+                .andExpect(view().name("redirect:/house"));
     }
 }

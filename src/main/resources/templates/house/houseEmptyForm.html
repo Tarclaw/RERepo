@@ -7,12 +7,15 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"></script>
 </head>
 
 <body>
@@ -20,12 +23,12 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:object="${garage}" th:action="@{'/garage/save'}" method="post">
+            <form th:object="${house}" th:action="@{'/house/save'}" method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Create new Garage</h1>
+                            <h1 class="panel-title">Create new House</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
@@ -60,14 +63,18 @@
                                     <input type="text" class="form-control" th:field="*{totalArea}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Has Pit:</label>
-                                    <input type="text" class="form-control" th:field="*{hasPit}" />
+                                    <label>Backyard:</label>
+                                    <input type="text" class="form-control" th:field="*{hasBackyard}" />
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Number of Storeys:</label>
+                                    <input type="text" class="form-control" th:field="*{numberOfStoreys}" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Has Equipment:</label>
-                                    <input type="text" class="form-control" th:field="*{hasEquipment}" />
+                                    <label>Garden:</label>
+                                    <input type="text" class="form-control" th:field="*{hasGarden}" />
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Published Date Time:</label>
@@ -119,7 +126,7 @@
                                 </div>
                                 <div class="col-md-1">
                                     <a class="btn btn-default" role="button"
-                                       th:href="${'/garage/client/new'}">Create Client</a>
+                                       th:href="${'/house/client/new'}">Create Client</a>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +137,7 @@
                                     <select class="form-control" name="clientId">
                                         <option th:each="client : ${clients}"
                                                 th:value="${client.id}"
-                                                th:selected="${client.id.equals(garage.clientId)}"
+                                                th:selected="${client.id.equals(house.clientId)}"
                                                 th:text="${client.firstName + ' ' + client.lastName}">Jane Doe</option>
                                     </select>
                                 </div>

@@ -7,50 +7,61 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import web.example.realestate.commands.FacilityCommand;
+import web.example.realestate.services.ClientService;
 import web.example.realestate.services.HouseService;
 
 @Controller
 public class HouseController {
 
-    private final HouseService service;
+    private final HouseService houseService;
+    private final ClientService clientService;
 
-    public HouseController(HouseService service) {
-        this.service = service;
+    public HouseController(HouseService houseService, ClientService clientService) {
+        this.houseService = houseService;
+        this.clientService = clientService;
     }
 
     @GetMapping("/house/{id}/show")
     public String getHouseById(@PathVariable String id, Model model) {
-        model.addAttribute("house", service.getById(Long.valueOf(id)));
+        model.addAttribute("house", houseService.getById(Long.valueOf(id)));
         return "house/show";
     }
 
     @GetMapping("/house")
     public String getAllHouses(Model model) {
-        model.addAttribute("houses", service.getHouses());
+        model.addAttribute("houses", houseService.getHouses());
         return "houses";
     }
 
     @GetMapping("/house/new")
     public String newHouse(Model model) {
         model.addAttribute("house", new FacilityCommand());
-        return "house/houseForm";
+        model.addAttribute("clients", clientService.getClients());
+        return "house/houseEmptyForm";
     }
 
     @GetMapping("/house/{id}/update")
     public String updateHouse(@PathVariable String id, Model model) {
-        model.addAttribute("house", service.findCommandById(Long.valueOf(id)));
+        model.addAttribute("house", houseService.findCommandById(Long.valueOf(id)));
+        model.addAttribute("clients", clientService.getClients());
         return "house/houseForm";
     }
 
-    @PostMapping("/house")
-    public String saveOrUpdate(@ModelAttribute FacilityCommand command) {
-        FacilityCommand savedCommand = service.saveHouseCommand(command);
+    @PostMapping("/house/save")
+    public String saveNew(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = houseService.saveDetached(command);
+        return "redirect:/house/" + savedCommand.getId() + "/show";
+    }
+
+    @PostMapping("/house/update")
+    public String updateExisting(@ModelAttribute FacilityCommand command) {
+        FacilityCommand savedCommand = houseService.saveAttached(command);
         return "redirect:/house/" + savedCommand.getId() + "/show";
     }
 
     @GetMapping("/house/{id}/delete")
     public String deleteById(@PathVariable String id) {
-        service.deleteById(Long.valueOf(id));
-        return "redirect:/houses";
+        houseService.deleteById(Long.valueOf(id));
+        return "redirect:/house";
     }
 }

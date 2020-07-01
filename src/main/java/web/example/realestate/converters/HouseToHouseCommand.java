@@ -22,6 +22,7 @@ public class HouseToHouseCommand implements Converter<House, FacilityCommand> {
 
         final FacilityCommand command = new FacilityCommand();
         command.setId(house.getId());
+        command.setClientId(house.getClient().getId());
         command.setNumberOfRooms(house.getNumberOfRooms());
         command.setTotalArea(house.getTotalArea());
         command.setDescription(house.getDescription());

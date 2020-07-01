@@ -13,7 +13,9 @@ public interface HouseService {
 
     FacilityCommand findCommandById(Long id);
 
-    FacilityCommand saveHouseCommand(FacilityCommand command);
+    FacilityCommand saveDetached(FacilityCommand command);
+
+    FacilityCommand saveAttached(FacilityCommand command);
 
     void deleteById(Long id);
 }
