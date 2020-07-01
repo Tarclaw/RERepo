@@ -13,7 +13,9 @@ public interface StorageService {
 
     FacilityCommand findCommandById(Long id);
 
-    FacilityCommand saveStorageCommand(FacilityCommand command);
+    FacilityCommand saveDetached(FacilityCommand command);
+
+    FacilityCommand saveAttached(FacilityCommand command);
 
     void deleteById(Long id);
 

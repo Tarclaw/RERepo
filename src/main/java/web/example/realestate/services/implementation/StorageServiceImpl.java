@@ -5,6 +5,8 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
+import web.example.realestate.domain.people.Client;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
 
@@ -15,21 +17,22 @@ import java.util.Set;
 @Service
 public class StorageServiceImpl implements StorageService {
 
-    private final StorageRepository repository;
+    private final StorageRepository storageRepository;
+    private final ClientRepository clientRepository;
     private final StorageCommandToStorage toStorage;
     private final StorageToStorageCommand toStorageCommand;
 
-    public StorageServiceImpl(StorageRepository repository,
-                              StorageCommandToStorage toStorage,
-                              StorageToStorageCommand toStorageCommand) {
-        this.repository = repository;
+    public StorageServiceImpl(StorageRepository storageRepository, ClientRepository clientRepository,
+                              StorageCommandToStorage toStorage, StorageToStorageCommand toStorageCommand) {
+        this.storageRepository = storageRepository;
+        this.clientRepository = clientRepository;
         this.toStorage = toStorage;
         this.toStorageCommand = toStorageCommand;
     }
 
     @Override
     public Storage getById(final Long id) {
-        return repository.findStoragesByIdWithClients(id)
+        return storageRepository.findStoragesByIdWithClients(id)
                 .orElseThrow(
                         () -> new RuntimeException("We don't have storage with id=" + id)
                 );
@@ -38,7 +41,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public Set<Storage> getStorages() {
         Set<Storage> storages = new HashSet<>();
-        repository.findAll().iterator().forEachRemaining(storages :: add);
+        storageRepository.findAll().iterator().forEachRemaining(storages :: add);
         return storages;
     }
 
@@ -50,26 +53,28 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     @Transactional
-    public FacilityCommand saveStorageCommand(final FacilityCommand command) {
-        return command.getId() == null ? saveDetached(command) : saveAttached(command);
-    }
-
-    private FacilityCommand saveDetached(final FacilityCommand command) {
+    public FacilityCommand saveDetached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         Storage detachedStorage = toStorage.convert(command);
-        Storage savedStorage = repository.save(detachedStorage);
+        detachedStorage.setClient(client);
+        Storage savedStorage = storageRepository.save(detachedStorage);
         System.out.println("Save Storage with id=" + savedStorage.getId());
         return toStorageCommand.convert(savedStorage);
     }
 
-    private FacilityCommand saveAttached(final FacilityCommand command) {
+    @Override
+    @Transactional
+    public FacilityCommand saveAttached(final FacilityCommand command) {
+        Client client = clientRepository.findById(command.getClientId()).get();
         Storage attachedStorage = getById(command.getId());
         Storage updatedStorage = toStorage.convertWhenAttached(attachedStorage, command);
+        updatedStorage.setClient(client);
         System.out.println("Update Storage with id=" + updatedStorage.getId());
         return toStorageCommand.convert(updatedStorage);
     }
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        storageRepository.deleteById(id);
     }
 }

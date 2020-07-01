@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Basement;
+import web.example.realestate.domain.people.Client;
 import web.example.realestate.services.BasementService;
 import web.example.realestate.services.ClientService;
 
@@ -101,12 +102,19 @@ class BasementControllerTest {
 
     @Test
     void newBasement() throws Exception {
+        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<Set<Client>> clientCaptor = ArgumentCaptor.forClass(Set.class);
+
         String viewName = controller.newBasement(model);
         assertEquals("basement/basementEmptyForm", viewName);
+        verify(model, times(1)).addAttribute(eq("basement"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientCaptor.capture());
 
         mockMvc.perform(get("/basement/new"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("basement/basementEmptyForm"));
+                .andExpect(view().name("basement/basementEmptyForm"))
+                .andExpect(model().attributeExists("basement"))
+                .andExpect(model().attributeExists("clients"));
     }
 
     @Test
@@ -114,6 +122,7 @@ class BasementControllerTest {
         //given
         when(basementService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
         ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<Set<Client>> clientCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
         String viewName = controller.updateBasement("1", model);
@@ -122,11 +131,13 @@ class BasementControllerTest {
         assertEquals("basement/basementForm", viewName);
         verify(basementService, times(1)).findCommandById(anyLong());
         verify(model, times(1)).addAttribute(eq("basement"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientCaptor.capture());
 
         mockMvc.perform(get("/basement/1/update"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("basement/basementForm"))
-                .andExpect(model().attributeExists("basement"));
+                .andExpect(model().attributeExists("basement"))
+                .andExpect(model().attributeExists("clients"));
     }
 
     @Test

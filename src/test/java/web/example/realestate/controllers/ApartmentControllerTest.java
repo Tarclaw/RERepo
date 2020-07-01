@@ -107,12 +107,18 @@ class ApartmentControllerTest {
                         Collections.singletonList(new Client())
                 )
         );
+        ArgumentCaptor<FacilityCommand> argumentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
         String viewName = controller.newApartment(model);
 
         //then
         assertEquals("apartment/apartmentEmptyForm", viewName);
+        verify(clientService, times(1)).getClients();
+        verify(model, times(1)).addAttribute(eq("apartment"), argumentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+
         mockMvc.perform(get("/apartment/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("apartment/apartmentEmptyForm"))

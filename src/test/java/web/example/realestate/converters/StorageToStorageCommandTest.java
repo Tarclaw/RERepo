@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Address;
 import web.example.realestate.domain.building.Storage;
+import web.example.realestate.domain.people.Client;
 
 import java.time.LocalDateTime;
 
@@ -36,7 +37,9 @@ class StorageToStorageCommandTest {
 
     @Test
     void testEmptyValue() {
-        assertNotNull(toStorageCommand.convert(new Storage()));
+        Storage storage = new Storage();
+        storage.setClient(new Client());
+        assertNotNull(toStorageCommand.convert(storage));
     }
 
     @Test
@@ -44,6 +47,9 @@ class StorageToStorageCommandTest {
         //given
         Address address = new Address();
         address.setId(ADDRESS_ID);
+
+        Client client = new Client();
+        client.setId(ID);
 
         Storage storage = new Storage();
         storage.setId(ID);
@@ -55,6 +61,7 @@ class StorageToStorageCommandTest {
         storage.setPublishedDateTime(PUBLISHED_DATE_TIME);
         storage.setClosedDateTime(CLOSED_DATE_TIME);
         storage.setAddress(address);
+        storage.setClient(client);
 
         //when
         FacilityCommand command = toStorageCommand.convert(storage);

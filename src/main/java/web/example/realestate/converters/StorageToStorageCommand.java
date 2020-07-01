@@ -22,6 +22,7 @@ public class StorageToStorageCommand implements Converter<Storage, FacilityComma
 
         final FacilityCommand command = new FacilityCommand();
         command.setId(storage.getId());
+        command.setClientId(storage.getClient().getId());
         command.setNumberOfRooms(storage.getNumberOfRooms());
         command.setTotalArea(storage.getTotalArea());
         command.setDescription(storage.getDescription());

@@ -8,6 +8,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
+import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
 
@@ -28,7 +29,10 @@ class StorageServiceImplTest {
     private StorageService service;
 
     @Mock
-    private StorageRepository repository;
+    private StorageRepository storageRepository;
+
+    @Mock
+    private ClientRepository clientRepository;
 
     @Mock
     private StorageCommandToStorage toStorage;
@@ -39,7 +43,7 @@ class StorageServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new StorageServiceImpl(repository, toStorage, toStorageCommand);
+        service = new StorageServiceImpl(storageRepository, clientRepository, toStorage, toStorageCommand);
     }
 
     @Test
@@ -47,7 +51,7 @@ class StorageServiceImplTest {
         //given
         Storage source = new Storage();
         source.setId(1L);
-        when(repository.findStoragesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
+        when(storageRepository.findStoragesByIdWithClients(anyLong())).thenReturn(Optional.of(source));
 
         //when
         Storage storage = service.getById(1L);
@@ -55,7 +59,7 @@ class StorageServiceImplTest {
         //then
         assertNotNull(storage);
         assertEquals(1L, storage.getId());
-        verify(repository, times(1)).findStoragesByIdWithClients(anyLong());
+        verify(storageRepository, times(1)).findStoragesByIdWithClients(anyLong());
     }
 
     @Test
@@ -71,7 +75,7 @@ class StorageServiceImplTest {
         Set<Storage> storages = service.getStorages();
 
         assertEquals(1, storages.size());
-        verify(repository, times(1)).findAll();
+        verify(storageRepository, times(1)).findAll();
     }
 
     @Test
@@ -81,7 +85,7 @@ class StorageServiceImplTest {
         storage.setId(1L);
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
-        when(repository.findStoragesByIdWithClients(anyLong())).thenReturn(Optional.of(storage));
+        when(storageRepository.findStoragesByIdWithClients(anyLong())).thenReturn(Optional.of(storage));
         when(toStorageCommand.convert(storage)).thenReturn(source);
 
         //when
@@ -90,13 +94,13 @@ class StorageServiceImplTest {
         //then
         assertNotNull(command);
         assertEquals(1L, command.getId());
-        verify(repository, times(1)).findStoragesByIdWithClients(anyLong());
+        verify(storageRepository, times(1)).findStoragesByIdWithClients(anyLong());
         verify(toStorageCommand, times(1)).convert(any());
     }
 
     @Test
     void deleteById() {
         service.deleteById(anyLong());
-        verify(repository, times(1)).deleteById(anyLong());
+        verify(storageRepository, times(1)).deleteById(anyLong());
     }
 }
