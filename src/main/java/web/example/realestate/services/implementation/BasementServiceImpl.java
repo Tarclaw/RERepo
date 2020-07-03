@@ -1,6 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.BasementCommandToBasement;
 import web.example.realestate.converters.BasementToBasementCommand;
@@ -11,6 +12,7 @@ import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.BasementService;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -76,5 +78,18 @@ public class BasementServiceImpl implements BasementService {
     @Override
     public void deleteById(Long id) {
         basementRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void saveImage(Long id, MultipartFile file) {
+        try {
+            Basement basement = basementRepository.findById(id).get();
+            basement.setImage(file.getBytes());
+            basementRepository.save(basement);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

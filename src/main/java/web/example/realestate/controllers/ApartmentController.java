@@ -77,12 +77,12 @@ public class ApartmentController {
 
     @GetMapping("apartment/{id}/apartmentimage")
     public void renderApartmentImage(@PathVariable String id, HttpServletResponse response) throws IOException {
-        FacilityCommand facilityCommand = apartmentService.findCommandById(Long.valueOf(id));
+        FacilityCommand apartment = apartmentService.findCommandById(Long.valueOf(id));
 
-        if (facilityCommand.getImage() != null) {
+        if (apartment.getImage() != null) {
             response.setContentType("image/jpeg");
-            InputStream is = new ByteArrayInputStream(facilityCommand.getImage());
-            IOUtils.copy(is, response.getOutputStream());
+            InputStream inputStream = new ByteArrayInputStream(apartment.getImage());
+            IOUtils.copy(inputStream, response.getOutputStream());
         }
     }
 

@@ -2,8 +2,10 @@ package web.example.realestate.services.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.BasementCommandToBasement;
 import web.example.realestate.converters.BasementToBasementCommand;
@@ -12,6 +14,7 @@ import web.example.realestate.repositories.BasementRepository;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.BasementService;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -103,5 +106,25 @@ class BasementServiceImplTest {
     void deleteById() {
         service.deleteById(anyLong());
         verify(basementRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void saveImage() throws IOException {
+        Long id = 1L;
+        Basement basement = new Basement();
+        basement.setId(id);
+        Optional<Basement> basementOptional = Optional.of(basement);
+        when(basementRepository.findById(id)).thenReturn(basementOptional);
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt",
+                "text/plain", "BasementImageStub".getBytes());
+        ArgumentCaptor<Basement> basementCaptor = ArgumentCaptor.forClass(Basement.class);
+
+        //when
+        service.saveImage(id, multipartFile);
+
+        //then
+        verify(basementRepository, times(1)).save(basementCaptor.capture());
+        Basement saved = basementCaptor.getValue();
+        assertEquals(multipartFile.getBytes().length, saved.getImage().length);
     }
 }

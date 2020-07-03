@@ -6,6 +6,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -198,5 +201,63 @@ class BasementControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/basements"));
 
+    }
+
+    @Test
+    void uploadBasementImage() throws Exception {
+        //given
+        Basement basement = new Basement();
+        basement.setId(1L);
+        when(basementService.getById(anyLong())).thenReturn(basement);
+        ArgumentCaptor<Basement> basementCaptor = ArgumentCaptor.forClass(Basement.class);
+
+        //when
+        String viewName = controller.basementImageUpload("1", model);
+
+        //then
+        assertEquals("basement/basementImageUpload", viewName);
+        verify(basementService, times(1)).getById(anyLong());
+        verify(model, times(1)).addAttribute(eq("basement"), basementCaptor.capture());
+
+        mockMvc.perform(get("/basement/1/image")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("basement/basementImageUpload"));
+    }
+
+    @Test
+    void renderBasementImage() throws Exception {
+        //given
+        FacilityCommand command = new FacilityCommand();
+        command.setId(1L);
+        command.setImage("BasementImageStub".getBytes());
+
+        when(basementService.findCommandById(anyLong())).thenReturn(command);
+
+        //when
+        MockHttpServletResponse response = mockMvc.perform(get("/basement/1/basementimage"))
+                .andExpect(status().isOk()).andReturn().getResponse();
+
+        //then
+        assertEquals(command.getImage().length, response.getContentAsByteArray().length);
+    }
+
+    @Test
+    void saveBasementImage() throws Exception {
+        //given
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt",
+                "text/plan", "BasementImageStub".getBytes());
+
+        //when
+        String viewName = controller.saveBasementImage("1", multipartFile);
+
+        //then
+        assertEquals("redirect:/basement/1/show", viewName);
+        verify(basementService, times(1)).saveImage(1L, multipartFile);
+
+        mockMvc.perform(multipart("/basement/1/image").file(multipartFile))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/basement/1/show"));
     }
 }
