@@ -2,8 +2,10 @@ package web.example.realestate.services.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.GarageCommandToGarage;
 import web.example.realestate.converters.GarageToGarageCommand;
@@ -12,6 +14,7 @@ import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.GarageRepository;
 import web.example.realestate.services.GarageService;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -100,5 +103,28 @@ class GarageServiceImplTest {
     void deleteById() {
         service.deleteById(anyLong());
         verify(garageRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void saveImage() throws IOException {
+        //given
+        Long id = 1L;
+        Garage garage = new Garage();
+        garage.setId(id);
+        Optional<Garage> optionalGarage = Optional.of(garage);
+
+        when(garageRepository.findById(id)).thenReturn(optionalGarage);
+
+        ArgumentCaptor<Garage> garageCaptor = ArgumentCaptor.forClass(Garage.class);
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt",
+                "text/plain", "GarageImage".getBytes());
+
+        //when
+        service.saveImage(id, multipartFile);
+
+        //then
+        verify(garageRepository, times(1)).save(garageCaptor.capture());
+        Garage saved = garageCaptor.getValue();
+        assertEquals(multipartFile.getBytes().length, saved.getImage().length);
     }
 }

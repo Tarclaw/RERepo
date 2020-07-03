@@ -28,6 +28,19 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
+                                <h5>Status:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.status}">Unknown</p>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../../static/images/garage.jpg"
+                                     th:src="@{'/garage/' + ${garage.id} + '/garageimage'}"
+                                     width="300" height="200">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
                                 <h5>Number of Rooms:</h5>
                             </div>
                             <div class="col-md-3">
@@ -82,14 +95,6 @@
                                 <p th:text="${garage.price}">1 000 000</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h5>Status:</h5>
-                            </div>
-                            <div class="col-md-3">
-                                <p th:text="${garage.status}">Unknown</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -98,22 +103,16 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>District:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${garage.address.district}">IL</p>
                             </div>
-                            <div class="col-md-2">
-                                <h5>Postcode:</h5>
-                            </div>
-                            <div class="col-md-2">
-                                <p th:text="${garage.address.postcode}">99999</p>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>City:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${garage.address.city}">Chicago</p>
                             </div>
                         </div>
@@ -129,6 +128,14 @@
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${garage.address.facilityNumber}">665</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Postcode:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${garage.address.postcode}">99999</p>
                             </div>
                         </div>
                     </div>

@@ -24,13 +24,13 @@
             <div class="pannel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Upload a new basement image</h1>
+                        <h1 class="panel-title">Upload a new garage image</h1>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-5">
                                 <form  action="http:\\localhost" method="post" enctype="multipart/form-data"
-                                       th:action="@{'/basement/' + ${basement.getId()} + '/image'}">
+                                       th:action="@{'/garage/' + ${garage.getId()} + '/image'}">
                                     <label class="control-label">Select File</label>
                                     <input id="imagefile" name="imagefile" type="file" class="file">
                                     <button type="submit" class="btn btn-primary">Submit</button>

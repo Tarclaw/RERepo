@@ -1,11 +1,18 @@
 package web.example.realestate.controllers;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.GarageService;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Controller
 public class GarageController {
@@ -60,5 +67,28 @@ public class GarageController {
     public String deleteById(@PathVariable String id) {
         garageService.deleteById(Long.valueOf(id));
         return "redirect:/garage";
+    }
+
+    @GetMapping("/garage/{id}/image")
+    public String garageImageUpload(@PathVariable String id, Model model) {
+        model.addAttribute("garage", garageService.getById(Long.valueOf(id)));
+        return "garage/garageImageUpload";
+    }
+
+    @GetMapping("/garage/{id}/garageimage")
+    public void renderGarageImage(@PathVariable String id, HttpServletResponse response) throws IOException {
+        FacilityCommand garage = garageService.findCommandById(Long.valueOf(id));
+
+        if (garage.getImage() != null) {
+            response.setContentType("image/jpeg");
+            InputStream inputStream = new ByteArrayInputStream(garage.getImage());
+            IOUtils.copy(inputStream, response.getOutputStream());
+        }
+    }
+
+    @PostMapping("/garage/{id}/image")
+    public String saveGarageImage(@PathVariable String id, @RequestParam("imagefile") MultipartFile multipartFile) {
+        garageService.saveImage(Long.valueOf(id), multipartFile);
+        return "redirect:/garage/" + id + "/show";
     }
 }
