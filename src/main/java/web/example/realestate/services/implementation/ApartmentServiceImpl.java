@@ -1,6 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.ApartmentCommandToApartment;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
@@ -11,6 +12,7 @@ import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.ApartmentService;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -78,5 +80,17 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public void deleteById(final Long id) {
         apartmentRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void saveImage(Long id, MultipartFile multipartFile) {
+        try {
+            Apartment apartment = apartmentRepository.findById(id).get();
+            apartment.setImage(multipartFile.getBytes());
+            apartmentRepository.save(apartment);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

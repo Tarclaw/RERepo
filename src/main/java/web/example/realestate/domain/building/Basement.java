@@ -30,9 +30,8 @@ public class Basement extends Facility {
 
     public Basement(Integer numberOfRooms, Integer totalArea, String description,
                     LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
-                    Status status, List<Byte[]> photos, List<Byte[]> videos,
-                    Address address, boolean itCommercial) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
+                    Status status, byte[] image, Address address, boolean itCommercial) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, image, address);
         this.itCommercial = itCommercial;
     }
 

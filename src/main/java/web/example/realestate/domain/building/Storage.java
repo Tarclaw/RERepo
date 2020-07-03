@@ -34,10 +34,10 @@ public class Storage extends Facility {
     }
 
     public Storage(Integer numberOfRooms, Integer totalArea, String description,
-                   LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
-                   Status status, List<Byte[]> photos, List<Byte[]> videos,
+                   LocalDateTime publishedDateTime, BigInteger monthRent,
+                   BigInteger price, Status status, byte[] image,
                    Address address, Integer commercialCapacity, boolean hasCargoEquipment) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, image, address);
         this.commercialCapacity = commercialCapacity;
         this.hasCargoEquipment = hasCargoEquipment;
     }

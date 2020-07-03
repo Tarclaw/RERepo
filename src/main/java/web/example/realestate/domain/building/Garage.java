@@ -34,9 +34,8 @@ public class Garage extends Facility {
 
     public Garage(Integer numberOfRooms, Integer totalArea, String description,
                   LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
-                  Status status, List<Byte[]> photos, List<Byte[]> videos,
-                  Address address, boolean hasPit, boolean hasEquipment) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
+                  Status status, byte[] image, Address address, boolean hasPit, boolean hasEquipment) {
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, image, address);
         this.hasPit = hasPit;
         this.hasEquipment = hasEquipment;
     }

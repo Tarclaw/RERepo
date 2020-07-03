@@ -16,6 +16,7 @@ public class FacilityCommand {
     private BigInteger monthRent;
     private BigInteger price;
     private Status status;
+    private byte[] image;
     private AddressCommand address;
     //Apartment
     private boolean itApartment = false;
@@ -103,6 +104,14 @@ public class FacilityCommand {
 
     public void setAddress(AddressCommand address) {
         this.address = address;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public Integer getApartmentNumber() {

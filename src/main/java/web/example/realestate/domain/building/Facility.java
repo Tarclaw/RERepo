@@ -31,10 +31,7 @@ public class Facility implements Serializable {
     private Status status;
 
     @Lob
-    private List<Byte[]> photos;
-
-    @Lob
-    private List<Byte[]> videos;
+    private byte[] image;
 
     @OneToOne(mappedBy = "facility", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private Address address;
@@ -69,7 +66,7 @@ public class Facility implements Serializable {
 
     public Facility(Integer numberOfRooms, Integer totalArea, String description,
                     LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
-                    Status status, List<Byte[]> photos, List<Byte[]> videos, Address address) {
+                    Status status, byte[] image, Address address) {
         this.numberOfRooms = numberOfRooms;
         this.totalArea = totalArea;
         this.description = description;
@@ -77,8 +74,7 @@ public class Facility implements Serializable {
         this.monthRent = monthRent;
         this.price = price;
         this.status = status;
-        this.photos = photos;
-        this.videos = videos;
+        this.image = image;
         this.address = address;
     }
 
@@ -130,20 +126,12 @@ public class Facility implements Serializable {
         this.closedDateTime = closedDateTime;
     }
 
-    public List<Byte[]> getPhotos() {
-        return photos;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setPhotos(List<Byte[]> photos) {
-        this.photos = photos;
-    }
-
-    public List<Byte[]> getVideos() {
-        return videos;
-    }
-
-    public void setVideos(List<Byte[]> videos) {
-        this.videos = videos;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public Address getAddress() {

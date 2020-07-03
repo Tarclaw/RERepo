@@ -6,6 +6,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -27,6 +30,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -206,5 +210,65 @@ class ApartmentControllerTest {
         mockMvc.perform(get("/apartment/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/apartment"));
+    }
+
+    @Test
+    void apartmentImageUpload() throws Exception {
+        //given
+        Apartment apartment = new Apartment();
+        apartment.setId(1L);
+
+        when(apartmentService.getById(anyLong())).thenReturn(new Apartment());
+
+        ArgumentCaptor<Apartment> apartmentCaptor = ArgumentCaptor.forClass(Apartment.class);
+
+        //when
+        String viewName = controller.apartmentImageUpload("1", model);
+        assertEquals("apartment/apartmentImageUpload", viewName);
+
+        verify(apartmentService, times(1)).getById(anyLong());
+        verify(model, times(1)).addAttribute(eq("apartment"), apartmentCaptor.capture());
+
+        //then
+        mockMvc.perform(get("/apartment/1/image")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("apartment/apartmentImageUpload"));
+    }
+
+    @Test
+    void renderApartmentImage() throws Exception {
+        //given
+        FacilityCommand command = new FacilityCommand();
+        command.setId(1L);
+        command.setImage("ApartmentImageStub".getBytes());
+
+        when(apartmentService.findCommandById(anyLong())).thenReturn(command);
+
+        //when
+        MockHttpServletResponse response = mockMvc.perform(get("/apartment/1/apartmentimage"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        //then
+        assertEquals(command.getImage().length, response.getContentAsByteArray().length);
+    }
+
+    @Test
+    void saveApartmentImage() throws Exception {
+        //given
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt",
+                "text/plain", "ApartmentImage".getBytes());
+        //when
+        String viewName = controller.saveApartmentImage("1", multipartFile);
+
+        //then
+        assertEquals("redirect:/apartment/1/show", viewName);
+        verify(apartmentService, times(1)).saveImage(1L, multipartFile);
+
+        mockMvc.perform(multipart("/apartment/1/image").file(multipartFile))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/apartment/1/show"));
     }
 }

@@ -26,9 +26,22 @@
             <div class="pannel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title" th:text="${apartment.description}">Apartment Description</h1>
+                        <h1 class="panel-title">Apartment Description</h1>
                     </div>
                     <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Status:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${apartment.status}">Unknown</p>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../../static/images/apartment.jpg"
+                                     th:src="@{'/apartment/' + ${apartment.id} + '/apartmentimage'}"
+                                     width="300" height="200">
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <h5>Number of Rooms:</h5>
@@ -85,14 +98,6 @@
                                 <p th:text="${apartment.price}">1 000 000</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h5>Status:</h5>
-                            </div>
-                            <div class="col-md-3">
-                                <p th:text="${apartment.status}">Unknown</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -101,22 +106,16 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>District:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${apartment.address.district}">IL</p>
                             </div>
-                            <div class="col-md-2">
-                                <h5>Postcode:</h5>
-                            </div>
-                            <div class="col-md-2">
-                                <p th:text="${apartment.address.postcode}">99999</p>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>City:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${apartment.address.city}">Chicago</p>
                             </div>
                         </div>
@@ -132,6 +131,14 @@
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.address.facilityNumber}">665</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Postcode:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${apartment.address.postcode}">99999</p>
                             </div>
                         </div>
                     </div>

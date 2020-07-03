@@ -37,10 +37,10 @@ public class House extends Facility {
     }
 
     public House(Integer numberOfRooms, Integer totalArea, String description,
-                 LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
-                 Status status, List<Byte[]> photos, List<Byte[]> videos, Address address,
+                 LocalDateTime publishedDateTime, BigInteger monthRent,
+                 BigInteger price, Status status, byte[] image, Address address,
                  Integer numberOfStoreys, boolean hasBackyard, boolean hasGarden) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, image, address);
         this.numberOfStoreys = numberOfStoreys;
         this.hasBackyard = hasBackyard;
         this.hasGarden = hasGarden;

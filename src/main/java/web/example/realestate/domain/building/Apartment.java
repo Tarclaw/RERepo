@@ -34,9 +34,9 @@ public class Apartment extends Facility {
 
     public Apartment(Integer numberOfRooms, Integer totalArea, String description,
                      LocalDateTime publishedDateTime, BigInteger monthRent, BigInteger price,
-                     Status status, List<Byte[]> photos, List<Byte[]> videos, Address address,
+                     Status status, byte[] image, Address address,
                      Integer apartmentNumber, Integer floor) {
-        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, photos, videos, address);
+        super(numberOfRooms, totalArea, description, publishedDateTime, monthRent, price, status, image, address);
         this.apartmentNumber = apartmentNumber;
         this.floor = floor;
     }
