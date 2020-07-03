@@ -1,5 +1,6 @@
 package web.example.realestate.services;
 
+import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.House;
 
@@ -18,4 +19,6 @@ public interface HouseService {
     FacilityCommand saveAttached(FacilityCommand command);
 
     void deleteById(Long id);
+
+    void saveImage(Long id, MultipartFile multipartFile);
 }

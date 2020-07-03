@@ -31,6 +31,27 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
+                                <h5>Status:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${house.status}">Unknown</p>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../../static/images/house.jpg"
+                                     th:src="@{'/house/' + ${house.id} + '/houseimage'}"
+                                     width="300" height="200">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Garden:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${house.hasGarden}">yes</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
                                 <h5>Number of Rooms:</h5>
                             </div>
                             <div class="col-md-3">
@@ -55,20 +76,6 @@
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${house.hasBackyard}">yes</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h5>Garden:</h5>
-                            </div>
-                            <div class="col-md-3">
-                                <p th:text="${house.hasGarden}">yes</p>
-                            </div>
-                            <div class="col-md-3">
-                                <h5>Status:</h5>
-                            </div>
-                            <div class="col-md-3">
-                                <p th:text="${house.status}">Unknown</p>
                             </div>
                         </div>
                         <div class="row">
@@ -107,22 +114,16 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>District:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${house.address.district}">IL</p>
                             </div>
-                            <div class="col-md-2">
-                                <h5>Postcode:</h5>
-                            </div>
-                            <div class="col-md-2">
-                                <p th:text="${house.address.postcode}">99999</p>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <h5>City:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${house.address.city}">Chicago</p>
                             </div>
                         </div>
@@ -138,6 +139,14 @@
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${house.address.facilityNumber}">665</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Postcode:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${house.address.postcode}">99999</p>
                             </div>
                         </div>
                     </div>

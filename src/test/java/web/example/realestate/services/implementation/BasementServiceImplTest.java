@@ -113,8 +113,8 @@ class BasementServiceImplTest {
         Long id = 1L;
         Basement basement = new Basement();
         basement.setId(id);
-        Optional<Basement> basementOptional = Optional.of(basement);
-        when(basementRepository.findById(id)).thenReturn(basementOptional);
+
+        when(basementRepository.findById(id)).thenReturn(Optional.of(basement));
         MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt",
                 "text/plain", "BasementImageStub".getBytes());
         ArgumentCaptor<Basement> basementCaptor = ArgumentCaptor.forClass(Basement.class);

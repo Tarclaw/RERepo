@@ -1,14 +1,18 @@
 package web.example.realestate.controllers;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.HouseService;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Controller
 public class HouseController {
@@ -63,5 +67,28 @@ public class HouseController {
     public String deleteById(@PathVariable String id) {
         houseService.deleteById(Long.valueOf(id));
         return "redirect:/house";
+    }
+
+    @GetMapping("/house/{id}/image")
+    public String houseImageUpload(@PathVariable String id, Model model) {
+        model.addAttribute("house", houseService.getById(Long.valueOf(id)));
+        return "house/houseImageUpload";
+    }
+
+    @GetMapping("/house/{id}/houseimage")
+    public void renderHouseImage(@PathVariable String id, HttpServletResponse response) throws IOException {
+        FacilityCommand house = houseService.findCommandById(Long.valueOf(id));
+
+        if (house.getImage() != null) {
+            response.setContentType("image/jpeg");
+            InputStream inputStream = new ByteArrayInputStream(house.getImage());
+            IOUtils.copy(inputStream,response.getOutputStream());
+        }
+    }
+
+    @PostMapping("/house/{id}/image")
+    public String saveHouseImage(@PathVariable String id, @RequestParam("imagefile") MultipartFile file) {
+        houseService.saveImage(Long.valueOf(id), file);
+        return "redirect:/house/" + id + "/show";
     }
 }

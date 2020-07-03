@@ -218,7 +218,7 @@ class ApartmentControllerTest {
         Apartment apartment = new Apartment();
         apartment.setId(1L);
 
-        when(apartmentService.getById(anyLong())).thenReturn(new Apartment());
+        when(apartmentService.getById(anyLong())).thenReturn(apartment);
 
         ArgumentCaptor<Apartment> apartmentCaptor = ArgumentCaptor.forClass(Apartment.class);
 

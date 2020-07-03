@@ -111,9 +111,8 @@ class GarageServiceImplTest {
         Long id = 1L;
         Garage garage = new Garage();
         garage.setId(id);
-        Optional<Garage> optionalGarage = Optional.of(garage);
 
-        when(garageRepository.findById(id)).thenReturn(optionalGarage);
+        when(garageRepository.findById(id)).thenReturn(Optional.of(garage));
 
         ArgumentCaptor<Garage> garageCaptor = ArgumentCaptor.forClass(Garage.class);
         MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt",

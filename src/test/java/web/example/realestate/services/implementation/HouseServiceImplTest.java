@@ -2,8 +2,10 @@ package web.example.realestate.services.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.HouseCommandToHouse;
 import web.example.realestate.converters.HouseToHouseCommand;
@@ -12,6 +14,7 @@ import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.HouseRepository;
 import web.example.realestate.services.HouseService;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -101,5 +104,28 @@ class HouseServiceImplTest {
     void deleteById() {
         service.deleteById(anyLong());
         verify(houseRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void saveImage() throws IOException {
+        //given
+        Long id = 1L;
+        House house = new House();
+        house.setId(id);
+
+        when(houseRepository.findById(id)).thenReturn(Optional.of(house));
+
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "test.txt",
+                "text/plain", "HouseImageStub".getBytes());
+        ArgumentCaptor<House> houseCaptor = ArgumentCaptor.forClass(House.class);
+
+        //when
+        service.saveImage(id, multipartFile);
+
+        //then
+        verify(houseRepository, times(1)).save(houseCaptor.capture());
+
+        House saved = houseCaptor.getValue();
+        assertEquals(multipartFile.getBytes().length, saved.getImage().length);
     }
 }

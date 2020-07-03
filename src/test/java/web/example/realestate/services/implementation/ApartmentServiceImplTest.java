@@ -110,8 +110,9 @@ class ApartmentServiceImplTest {
         Long id = 1L;
         Apartment apartment = new Apartment();
         apartment.setId(id);
-        Optional<Apartment> apartmentOptional = Optional.of(apartment);
-        when(apartmentRepository.findById(id)).thenReturn(apartmentOptional);
+
+        when(apartmentRepository.findById(id)).thenReturn(Optional.of(apartment));
+
         MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt",
                 "text/plain", "ApartmentImage".getBytes());
         ArgumentCaptor<Apartment> apartmentCaptor = ArgumentCaptor.forClass(Apartment.class);
