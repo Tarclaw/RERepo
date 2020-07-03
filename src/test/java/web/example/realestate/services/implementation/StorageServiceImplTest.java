@@ -2,8 +2,10 @@ package web.example.realestate.services.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
@@ -12,6 +14,7 @@ import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -102,5 +105,29 @@ class StorageServiceImplTest {
     void deleteById() {
         service.deleteById(anyLong());
         verify(storageRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    void saveImage() throws IOException {
+        //given
+        Long id = 1L;
+        Storage storage = new Storage();
+        storage.setId(id);
+
+        when(storageRepository.findById(id)).thenReturn(Optional.of(storage));
+
+        ArgumentCaptor<Storage> storageCaptor = ArgumentCaptor.forClass(Storage.class);
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "test.txt",
+                "textplain", "StorageImageStub".getBytes());
+
+        //when
+        service.saveImage(id, multipartFile);
+
+        //then
+        verify(storageRepository, times(1)).save(storageCaptor.capture());
+
+        Storage saved = storageCaptor.getValue();
+        assertEquals(multipartFile.getBytes().length, saved.getImage().length);
+
     }
 }

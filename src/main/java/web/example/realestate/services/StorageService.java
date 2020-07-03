@@ -1,5 +1,6 @@
 package web.example.realestate.services;
 
+import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Storage;
 
@@ -19,4 +20,5 @@ public interface StorageService {
 
     void deleteById(Long id);
 
+    void saveImage(Long id, MultipartFile multipartFile);
 }

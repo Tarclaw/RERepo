@@ -6,6 +6,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -197,5 +200,66 @@ class StorageControllerTest {
         mockMvc.perform(get("/storage/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/storage"));
+    }
+
+    @Test
+    void uploadStorageImage() throws Exception {
+        //given
+        Storage storage = new Storage();
+        storage.setId(1L);
+
+        when(storageService.getById(anyLong())).thenReturn(storage);
+
+        ArgumentCaptor<Storage> storageCaptor = ArgumentCaptor.forClass(Storage.class);
+
+        //when
+        String viewName = controller.storageImageUpload("1", model);
+
+        //then
+        assertEquals("storage/storageImageUpload", viewName);
+        verify(storageService, times(1)).getById(anyLong());
+        verify(model, times(1)).addAttribute(eq("storage"), storageCaptor.capture());
+
+        mockMvc.perform(get("/storage/1/image")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("storage/storageImageUpload"));
+    }
+
+    @Test
+    void renderStorageImage() throws Exception {
+        //given
+        FacilityCommand storage = new FacilityCommand();
+        storage.setId(1L);
+        storage.setImage("StorageImageStub".getBytes());
+
+        when(storageService.findCommandById(anyLong())).thenReturn(storage);
+
+        //when
+        MockHttpServletResponse response = mockMvc.perform(get("/storage/1/storageimage"))
+                .andExpect(status().isOk()).andReturn().getResponse();
+
+        //then
+        assertEquals(storage.getImage().length, response.getContentAsByteArray().length);
+    }
+
+    @Test
+    void saveStorageImage() throws Exception {
+        //given
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "test.txt",
+                "text/plain", "StorageImageStub".getBytes());
+
+        //when
+        String viewName = controller.saveStorageImage("1", multipartFile);
+
+        //then
+        assertEquals("redirect:/storage/1/show", viewName);
+        verify(storageService, times(1)).saveImage(1L, multipartFile);
+
+        mockMvc.perform(multipart("/storage/1/image")
+                .file(multipartFile))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/storage/1/show"));
     }
 }

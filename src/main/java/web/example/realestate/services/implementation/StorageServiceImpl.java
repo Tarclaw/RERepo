@@ -1,6 +1,7 @@
 package web.example.realestate.services.implementation;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
@@ -11,6 +12,7 @@ import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -76,5 +78,17 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void deleteById(Long id) {
         storageRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void saveImage(Long id, MultipartFile multipartFile) {
+        try {
+            Storage storage = storageRepository.findById(id).get();
+            storage.setImage(multipartFile.getBytes());
+            storageRepository.save(storage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
