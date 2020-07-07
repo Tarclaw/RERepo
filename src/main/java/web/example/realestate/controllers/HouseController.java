@@ -82,7 +82,7 @@ public class HouseController {
         if (house.getImage() != null) {
             response.setContentType("image/jpeg");
             InputStream inputStream = new ByteArrayInputStream(house.getImage());
-            IOUtils.copy(inputStream,response.getOutputStream());
+            IOUtils.copy(inputStream, response.getOutputStream());
         }
     }
 
