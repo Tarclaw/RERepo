@@ -8,6 +8,7 @@ import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.converters.AddressCommandToAddress;
 import web.example.realestate.converters.AddressToAddressCommand;
 import web.example.realestate.domain.building.Address;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.AddressRepository;
 import web.example.realestate.services.AddressService;
 
@@ -58,8 +59,7 @@ class AddressServiceImplTest {
 
     @Test
     void getByIdWhenAddressDoesNotExist() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
-        verify(repository, times(1)).findById(anyLong());
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test

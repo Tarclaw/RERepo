@@ -8,6 +8,7 @@ import web.example.realestate.converters.ClientToClientCommand;
 import web.example.realestate.domain.building.*;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.*;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.FacilityService;
@@ -43,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
     public Client getById(final Long id) {
         return clientRepository.findClientByIdWithFacilitiesAndAgents(id)
                          .orElseThrow(
-                                      () -> new RuntimeException("We don't have client with id=" + id)
+                                      () -> new NotFoundException("We don't have client with id=" + id)
                          );
     }
 

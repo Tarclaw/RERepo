@@ -7,6 +7,8 @@ import web.example.realestate.converters.BasementCommandToBasement;
 import web.example.realestate.converters.BasementToBasementCommand;
 import web.example.realestate.domain.building.Basement;
 import web.example.realestate.domain.people.Client;
+import web.example.realestate.exceptions.ImageCorruptedException;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.BasementRepository;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.BasementService;
@@ -36,7 +38,7 @@ public class BasementServiceImpl implements BasementService {
     public Basement getById(final Long id) {
         return basementRepository.findBasementByIdWithClients(id)
                 .orElseThrow(
-                        () -> new RuntimeException("We don't have basement with id=" + id)
+                        () -> new NotFoundException("We don't have basement with id=" + id)
                 );
     }
 
@@ -88,7 +90,7 @@ public class BasementServiceImpl implements BasementService {
             basement.setImage(file.getBytes());
             basementRepository.save(basement);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ImageCorruptedException(e.getMessage());
         }
 
     }

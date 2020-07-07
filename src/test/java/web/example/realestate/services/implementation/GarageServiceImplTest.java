@@ -10,6 +10,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.GarageCommandToGarage;
 import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.GarageRepository;
 import web.example.realestate.services.GarageService;
@@ -67,7 +68,7 @@ class GarageServiceImplTest {
 
     @Test
     void getByIdExceptionHandling() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test

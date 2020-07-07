@@ -7,6 +7,8 @@ import web.example.realestate.converters.GarageCommandToGarage;
 import web.example.realestate.converters.GarageToGarageCommand;
 import web.example.realestate.domain.building.Garage;
 import web.example.realestate.domain.people.Client;
+import web.example.realestate.exceptions.ImageCorruptedException;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.GarageRepository;
 import web.example.realestate.services.GarageService;
@@ -36,7 +38,7 @@ public class GarageServiceImpl implements GarageService {
     public Garage getById(final Long id) {
         return garageRepository.findGaragesByIdWithClients(id)
                 .orElseThrow(
-                        () -> new RuntimeException("We don't have garage with id=" + id)
+                        () -> new NotFoundException("We don't have garage with id=" + id)
                 );
     }
 
@@ -88,7 +90,7 @@ public class GarageServiceImpl implements GarageService {
             garage.setImage(multipartFile.getBytes());
             garageRepository.save(garage);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ImageCorruptedException(e.getMessage());
         }
 
     }

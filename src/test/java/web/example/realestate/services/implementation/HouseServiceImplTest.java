@@ -10,6 +10,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.HouseCommandToHouse;
 import web.example.realestate.converters.HouseToHouseCommand;
 import web.example.realestate.domain.building.House;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.HouseRepository;
 import web.example.realestate.services.HouseService;
@@ -68,7 +69,7 @@ class HouseServiceImplTest {
 
     @Test
     void getByIdExceptionHandling() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test

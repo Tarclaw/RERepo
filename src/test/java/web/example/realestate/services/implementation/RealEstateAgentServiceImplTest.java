@@ -8,6 +8,7 @@ import web.example.realestate.commands.RealEstateAgentCommand;
 import web.example.realestate.converters.RealEstateAgentCommandToRealEstateAgent;
 import web.example.realestate.converters.RealEstateAgentToRealEstateAgentCommand;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.RealEstateAgentRepository;
 import web.example.realestate.services.RealEstateAgentService;
@@ -64,7 +65,7 @@ class RealEstateAgentServiceImplTest {
 
     @Test
     void getByIdExceptionHandling() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test

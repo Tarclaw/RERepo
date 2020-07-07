@@ -6,6 +6,7 @@ import web.example.realestate.converters.RealEstateAgentCommandToRealEstateAgent
 import web.example.realestate.converters.RealEstateAgentToRealEstateAgentCommand;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.RealEstateAgentRepository;
 import web.example.realestate.services.RealEstateAgentService;
@@ -35,7 +36,7 @@ public class RealEstateAgentServiceImpl implements RealEstateAgentService {
     public RealEstateAgent getById(final Long id) {
         return agentRepository.findRealEstateAgentsByIdWithEntities(id)
                          .orElseThrow(
-                                      () -> new RuntimeException("We don't have agent with id=" + id)
+                                      () -> new NotFoundException("We don't have agent with id=" + id)
                          );
     }
 

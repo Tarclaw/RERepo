@@ -14,6 +14,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.commands.MappingCommand;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.MappingService;
 import web.example.realestate.services.RealEstateAgentService;
@@ -54,7 +55,9 @@ class ClientControllerTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         controller = new ClientController(clientService, agentService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
@@ -75,6 +78,24 @@ class ClientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("client/show"))
                 .andExpect(model().attributeExists("client"));
+    }
+
+    @Test
+    void getClientByIdWhenThereIsNoThisClientInDB() throws Exception {
+
+        when(clientService.getById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/client/111/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
+
+    @Test
+    void getClientByIdWhenNumberFormatException() throws Exception {
+
+        mockMvc.perform(get("/client/abc/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 
     @Test

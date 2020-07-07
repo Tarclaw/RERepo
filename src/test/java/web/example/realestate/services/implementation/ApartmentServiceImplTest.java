@@ -11,10 +11,13 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.ApartmentCommandToApartment;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
 import web.example.realestate.domain.building.Apartment;
+import web.example.realestate.exceptions.ImageCorruptedException;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ApartmentRepository;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.ApartmentService;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -66,7 +69,7 @@ class ApartmentServiceImplTest {
 
     @Test
     void getByIdWhenThereIsNoApartmentInDB() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test
@@ -125,4 +128,5 @@ class ApartmentServiceImplTest {
         Apartment saved = apartmentCaptor.getValue();
         assertEquals(multipartFile.getBytes().length, saved.getImage().length);
     }
+
 }

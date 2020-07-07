@@ -1,11 +1,15 @@
 package web.example.realestate.controllers;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import web.example.realestate.commands.FacilityCommand;
+import web.example.realestate.exceptions.ImageCorruptedException;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.ApartmentService;
 import web.example.realestate.services.ClientService;
 

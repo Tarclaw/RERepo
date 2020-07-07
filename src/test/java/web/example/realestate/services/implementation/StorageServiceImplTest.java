@@ -10,6 +10,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
@@ -67,7 +68,7 @@ class StorageServiceImplTest {
 
     @Test
     void getByIdExceptionHandling() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test

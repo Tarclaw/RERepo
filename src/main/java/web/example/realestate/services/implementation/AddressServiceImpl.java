@@ -5,6 +5,7 @@ import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.converters.AddressCommandToAddress;
 import web.example.realestate.converters.AddressToAddressCommand;
 import web.example.realestate.domain.building.Address;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.AddressRepository;
 import web.example.realestate.services.AddressService;
 
@@ -31,7 +32,7 @@ public class AddressServiceImpl implements AddressService {
     public Address getById(final Long id) {
         return repository.findById(id)
                 .orElseThrow(
-                        () -> new RuntimeException("We don't have address with id="+id)
+                        () -> new NotFoundException("We don't have address with id=" + id)
                 );
     }
 

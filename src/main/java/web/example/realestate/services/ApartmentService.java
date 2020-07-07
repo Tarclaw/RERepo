@@ -3,6 +3,7 @@ package web.example.realestate.services;
 import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Apartment;
+import web.example.realestate.exceptions.ImageCorruptedException;
 
 import java.util.Set;
 

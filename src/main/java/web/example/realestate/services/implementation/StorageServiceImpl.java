@@ -7,6 +7,8 @@ import web.example.realestate.converters.StorageCommandToStorage;
 import web.example.realestate.converters.StorageToStorageCommand;
 import web.example.realestate.domain.building.Storage;
 import web.example.realestate.domain.people.Client;
+import web.example.realestate.exceptions.ImageCorruptedException;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.StorageRepository;
 import web.example.realestate.services.StorageService;
@@ -36,7 +38,7 @@ public class StorageServiceImpl implements StorageService {
     public Storage getById(final Long id) {
         return storageRepository.findStoragesByIdWithClients(id)
                 .orElseThrow(
-                        () -> new RuntimeException("We don't have storage with id=" + id)
+                        () -> new NotFoundException("We don't have storage with id=" + id)
                 );
     }
 
@@ -88,7 +90,7 @@ public class StorageServiceImpl implements StorageService {
             storage.setImage(multipartFile.getBytes());
             storageRepository.save(storage);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ImageCorruptedException(e.getMessage());
         }
     }
 }

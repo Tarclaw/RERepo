@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import web.example.realestate.commands.RealEstateAgentCommand;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.RealEstateAgentService;
 
@@ -51,7 +52,9 @@ class RealEstateAgentControllerTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         controller = new RealEstateAgentController(agentService, clientService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
@@ -72,6 +75,24 @@ class RealEstateAgentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("realEstateAgent/show"))
                 .andExpect(model().attributeExists("realEstateAgent"));
+    }
+
+    @Test
+    void getAgentByIdWhenThereIsNoThisAgentInDB() throws Exception {
+
+        when(agentService.getById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/realEstateAgent/111/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
+
+    @Test
+    void getAgentByIdWhenNumberFormatException() throws Exception {
+
+        mockMvc.perform(get("/realEstateAgent/abc/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 
     @Test

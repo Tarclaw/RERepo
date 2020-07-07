@@ -7,6 +7,8 @@ import web.example.realestate.converters.ApartmentCommandToApartment;
 import web.example.realestate.converters.ApartmentToApartmentCommand;
 import web.example.realestate.domain.building.Apartment;
 import web.example.realestate.domain.people.Client;
+import web.example.realestate.exceptions.ImageCorruptedException;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ApartmentRepository;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.ApartmentService;
@@ -38,7 +40,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     public Apartment getById(final Long id) {
         return apartmentRepository.findApartmentsByIdWithClients(id)
                 .orElseThrow(
-                        () -> new RuntimeException("We don't have apartment with id=" + id)
+                        () -> new NotFoundException("We don't have apartment with id=" + id)
                 );
     }
 
@@ -85,12 +87,13 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     @Transactional
     public void saveImage(Long id, MultipartFile multipartFile) {
+
         try {
             Apartment apartment = apartmentRepository.findById(id).get();
             apartment.setImage(multipartFile.getBytes());
             apartmentRepository.save(apartment);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ImageCorruptedException(e.getMessage());
         }
     }
 }

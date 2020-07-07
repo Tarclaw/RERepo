@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.domain.building.Address;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.AddressService;
 
 import java.util.ArrayList;
@@ -46,7 +47,9 @@ class AddressControllerTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         controller = new AddressController(service);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
@@ -56,6 +59,24 @@ class AddressControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("address/show"))
                 .andExpect(model().attributeExists("address"));
+    }
+
+    @Test
+    void getAddressByIdWhenThereIsNoThisAddressInDB() throws Exception {
+
+        when(service.getById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/address/111/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
+
+    @Test
+    void getAddressByIdWhenNumberFormatException() throws Exception {
+
+        mockMvc.perform(get("/address/abc/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 
     @Test

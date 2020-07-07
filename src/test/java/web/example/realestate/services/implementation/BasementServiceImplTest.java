@@ -10,6 +10,7 @@ import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.converters.BasementCommandToBasement;
 import web.example.realestate.converters.BasementToBasementCommand;
 import web.example.realestate.domain.building.Basement;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.BasementRepository;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.services.BasementService;
@@ -67,7 +68,7 @@ class BasementServiceImplTest {
 
     @Test
     void getByIdThrowException() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test

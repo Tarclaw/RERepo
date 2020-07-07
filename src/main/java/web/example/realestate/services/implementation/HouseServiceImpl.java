@@ -7,6 +7,8 @@ import web.example.realestate.converters.HouseCommandToHouse;
 import web.example.realestate.converters.HouseToHouseCommand;
 import web.example.realestate.domain.building.House;
 import web.example.realestate.domain.people.Client;
+import web.example.realestate.exceptions.ImageCorruptedException;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.HouseRepository;
 import web.example.realestate.services.HouseService;
@@ -36,7 +38,7 @@ public class HouseServiceImpl implements HouseService {
     public House getById(final Long id) {
         return houseRepository.findHousesByIdWithClients(id)
                 .orElseThrow(
-                        () -> new RuntimeException("We don't have house with id=" + id)
+                        () -> new NotFoundException("We don't have house with id=" + id)
                 );
     }
 
@@ -87,7 +89,7 @@ public class HouseServiceImpl implements HouseService {
             house.setImage(multipartFile.getBytes());
             houseRepository.save(house);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ImageCorruptedException(e.getMessage());
         }
     }
 }

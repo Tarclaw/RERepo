@@ -10,6 +10,7 @@ import web.example.realestate.converters.ClientToClientCommand;
 import web.example.realestate.domain.building.Facility;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
+import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.repositories.ClientRepository;
 import web.example.realestate.repositories.RealEstateAgentRepository;
 import web.example.realestate.services.ClientService;
@@ -70,7 +71,7 @@ class ClientServiceImplTest {
 
     @Test
     void getByIdExceptionHandling() {
-        assertThrows(RuntimeException.class, () -> service.getById(anyLong()));
+        assertThrows(NotFoundException.class, () -> service.getById(anyLong()));
     }
 
     @Test
