@@ -2,21 +2,43 @@ package web.example.realestate.commands;
 
 import web.example.realestate.domain.enums.Status;
 
+import javax.validation.constraints.*;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 public class FacilityCommand {
+
     private Long id;
     private Long clientId;
+
+    @NotNull(message = "Please enter value")
+    @Min(value = 1, message = "Impossible to have less then one room")
+    @Max(value = 100, message = "Sorry we don't work with such amount of rooms")
     private Integer numberOfRooms;
+
+    @NotNull(message = "Please enter value")
+    @Min(value = 20, message = "Can't be less then 20 square meters")
+    @Max(value = 1000, message = "Can't be bigger then 1000 square meters")
     private Integer totalArea;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 10, max = 1000, message = "Please provide description between 10 and 1000 characters")
     private String description;
+
+    @PastOrPresent
     private LocalDateTime publishedDateTime;
+
+    @FutureOrPresent
     private LocalDateTime closedDateTime;
+
+    @NotNull(message = "Please enter value")
     private BigInteger monthRent;
+
+    @NotNull(message = "Please enter value")
     private BigInteger price;
+
     private Status status;
-    private byte[] image;
+    protected byte[] image;
     private AddressCommand address;
     //Apartment
     private boolean itApartment = false;
