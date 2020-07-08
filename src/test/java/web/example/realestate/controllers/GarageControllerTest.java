@@ -11,6 +11,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Garage;
 import web.example.realestate.domain.people.Client;
@@ -18,6 +19,7 @@ import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.GarageService;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,6 +52,9 @@ class GarageControllerTest {
 
     @Mock
     private Model model;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @BeforeEach
     void setUp() {
@@ -174,10 +179,16 @@ class GarageControllerTest {
         //given
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
+        source.setNumberOfRooms(1);
+        source.setTotalArea(20);
+        source.setDescription("some description");
+        source.setMonthRent(BigInteger.valueOf(3000L));
+        source.setPrice(BigInteger.valueOf(300000L));
+
         when(garageService.saveDetached(any())).thenReturn(source);
 
         //when
-        String viewName = controller.saveNew(source);
+        String viewName = controller.saveNew(source, bindingResult);
 
         //then
         assertEquals("redirect:/garage/1/show", viewName);
@@ -185,7 +196,13 @@ class GarageControllerTest {
 
         mockMvc.perform(post("/garage/save")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .param("id", "1")
+                .param("numberOfRooms", "1")
+                .param("totalArea", "20")
+                .param("description", "some description")
+                .param("monthRent", "3000")
+                .param("price", "300000")
+        )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/garage/1/show"));
     }
@@ -195,10 +212,16 @@ class GarageControllerTest {
         //given
         FacilityCommand source = new FacilityCommand();
         source.setId(1L);
+        source.setNumberOfRooms(1);
+        source.setTotalArea(20);
+        source.setDescription("some description");
+        source.setMonthRent(BigInteger.valueOf(3000L));
+        source.setPrice(BigInteger.valueOf(300000L));
+
         when(garageService.saveAttached(any())).thenReturn(source);
 
         //when
-        String viewName = controller.updateExisting(source);
+        String viewName = controller.updateExisting(source, bindingResult);
 
         //then
         assertEquals("redirect:/garage/1/show", viewName);
@@ -206,9 +229,34 @@ class GarageControllerTest {
 
         mockMvc.perform(post("/garage/update")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .param("id", "1")
+                .param("id", "1")
+                .param("numberOfRooms", "1")
+                .param("totalArea", "20")
+                .param("description", "some description")
+                .param("monthRent", "3000")
+                .param("price", "300000")
+        )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/garage/1/show"));
+    }
+
+    @Test
+    void saveNewWhenCommandValuesAreNotValid() throws Exception {
+        mockMvc.perform(post("/garage/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("garage/garageEmptyForm"));
+    }
+
+    @Test
+    void updateExistingWhenCommandValuesAreNotValid() throws Exception {
+        mockMvc.perform(post("/garage/update")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("garage/garageForm"));
     }
 
     @Test
