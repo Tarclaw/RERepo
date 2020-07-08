@@ -3,6 +3,7 @@ package web.example.realestate.controllers;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.nio.ch.IOUtil;
@@ -11,6 +12,7 @@ import web.example.realestate.services.BasementService;
 import web.example.realestate.services.ClientService;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,13 +55,23 @@ public class BasementController {
     }
 
     @PostMapping("/basement/save")
-    public String saveNew(@ModelAttribute FacilityCommand command) {
+    public String saveNew(@Valid @ModelAttribute("basement") FacilityCommand command,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            return "basement/basementEmptyForm";
+        }
         FacilityCommand savedCommand = basementService.saveDetached(command);
         return "redirect:/basement/" + savedCommand.getId() + "/show";
     }
 
     @PostMapping("/basement/update")
-    public String updateExisting(@ModelAttribute FacilityCommand command) {
+    public String updateExisting(@Valid @ModelAttribute("basement") FacilityCommand command,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            return "basement/basementForm";
+        }
         FacilityCommand savedCommand = basementService.saveAttached(command);
         return "redirect:/basement/" + savedCommand.getId() + "/show";
     }

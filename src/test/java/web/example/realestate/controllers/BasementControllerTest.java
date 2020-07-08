@@ -11,6 +11,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Basement;
 import web.example.realestate.domain.people.Client;
@@ -18,6 +19,7 @@ import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.BasementService;
 import web.example.realestate.services.ClientService;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,6 +52,9 @@ class BasementControllerTest {
 
     @Mock
     private Model model;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @BeforeEach
     void setUp() {
@@ -167,14 +172,18 @@ class BasementControllerTest {
     @Test
     void saveNew() throws Exception {
         //given
-        FacilityCommand sourceCommand = new FacilityCommand();
-        sourceCommand.setId(1L);
+        FacilityCommand source = new FacilityCommand();
+        source.setId(1L);
+        source.setNumberOfRooms(1);
+        source.setTotalArea(20);
+        source.setDescription("some description");
+        source.setMonthRent(BigInteger.valueOf(3000L));
+        source.setPrice(BigInteger.valueOf(300000L));
 
-        when(basementService.saveDetached(any())).thenReturn(sourceCommand);
-        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        when(basementService.saveDetached(any())).thenReturn(source);
 
         //when
-        String viewName = controller.saveNew(sourceCommand);
+        String viewName = controller.saveNew(source, bindingResult);
 
         //then
         assertEquals("redirect:/basement/1/show", viewName);
@@ -182,7 +191,14 @@ class BasementControllerTest {
 
         mockMvc.perform(post("/basement/save")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .param("id", "1")
+                .param("id", "1")
+                .param("numberOfRooms", "1")
+                .param("totalArea", "20")
+                .param("description", "some description")
+                .param("monthRent", "3000")
+                .param("price", "300000")
+        )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/basement/1/show"));
 
@@ -191,14 +207,18 @@ class BasementControllerTest {
     @Test
     void updateExisting() throws Exception {
         //given
-        FacilityCommand sourceCommand = new FacilityCommand();
-        sourceCommand.setId(1L);
+        FacilityCommand source = new FacilityCommand();
+        source.setId(1L);
+        source.setNumberOfRooms(1);
+        source.setTotalArea(20);
+        source.setDescription("some description");
+        source.setMonthRent(BigInteger.valueOf(3000L));
+        source.setPrice(BigInteger.valueOf(300000L));
 
-        when(basementService.saveAttached(any())).thenReturn(sourceCommand);
-        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        when(basementService.saveAttached(any())).thenReturn(source);
 
         //when
-        String viewName = controller.updateExisting(sourceCommand);
+        String viewName = controller.updateExisting(source, bindingResult);
 
         //then
         assertEquals("redirect:/basement/1/show", viewName);
@@ -206,9 +226,36 @@ class BasementControllerTest {
 
         mockMvc.perform(post("/basement/update")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .param("id", "1")
+                .param("id", "1")
+                .param("numberOfRooms", "1")
+                .param("totalArea", "20")
+                .param("description", "some description")
+                .param("monthRent", "3000")
+                .param("price", "300000")
+        )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/basement/1/show"));
+
+    }
+
+    @Test
+    void saveNewWhenCommandValuesAreNotValid() throws Exception {
+        mockMvc.perform(post("/basement/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("basement/basementEmptyForm"));
+
+    }
+
+    @Test
+    void updateExistingWhenCommandValuesAreNotValid() throws Exception {
+        mockMvc.perform(post("/basement/update")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("basement/basementForm"));
 
     }
 

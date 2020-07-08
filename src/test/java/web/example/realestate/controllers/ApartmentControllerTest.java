@@ -188,7 +188,13 @@ class ApartmentControllerTest {
     @Test
     void saveNew() throws Exception {
         //given
-        FacilityCommand source = populateCommand(new FacilityCommand());
+        FacilityCommand source = new FacilityCommand();
+        source.setId(1L);
+        source.setNumberOfRooms(1);
+        source.setTotalArea(20);
+        source.setDescription("some description");
+        source.setMonthRent(BigInteger.valueOf(3000L));
+        source.setPrice(BigInteger.valueOf(300000L));
 
         when(apartmentService.saveDetached(any())).thenReturn(source);
 
@@ -215,7 +221,13 @@ class ApartmentControllerTest {
     @Test
     void updateExisting() throws Exception {
         //given
-        FacilityCommand source = populateCommand(new FacilityCommand());
+        FacilityCommand source = new FacilityCommand();
+        source.setId(1L);
+        source.setNumberOfRooms(1);
+        source.setTotalArea(20);
+        source.setDescription("some description");
+        source.setMonthRent(BigInteger.valueOf(3000L));
+        source.setPrice(BigInteger.valueOf(300000L));
 
         when(apartmentService.saveAttached(any())).thenReturn(source);
 
@@ -239,18 +251,8 @@ class ApartmentControllerTest {
                 .andExpect(view().name("redirect:/apartment/1/show"));
     }
 
-    private FacilityCommand populateCommand(FacilityCommand command) {
-        command.setId(1L);
-        command.setNumberOfRooms(1);
-        command.setTotalArea(20);
-        command.setDescription("some description");
-        command.setMonthRent(BigInteger.valueOf(3000L));
-        command.setPrice(BigInteger.valueOf(300000L));
-        return command;
-    }
-
     @Test
-    void saveNewWhenCommandValuesIsNotValid() throws Exception {
+    void saveNewWhenCommandValuesAreNotValid() throws Exception {
         mockMvc.perform(post("/apartment/save")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "1"))
@@ -259,7 +261,7 @@ class ApartmentControllerTest {
     }
 
     @Test
-    void updateExistingWhenCommandValuesIsNotValid() throws Exception {
+    void updateExistingWhenCommandValuesAreNotValid() throws Exception {
         mockMvc.perform(post("/apartment/update")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "1"))
