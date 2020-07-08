@@ -3,6 +3,7 @@ package web.example.realestate.controllers;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import web.example.realestate.commands.FacilityCommand;
@@ -10,6 +11,7 @@ import web.example.realestate.services.ClientService;
 import web.example.realestate.services.StorageService;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,13 +54,23 @@ public class StorageController {
     }
 
     @PostMapping("/storage/save")
-    public String saveNew(@ModelAttribute FacilityCommand command) {
+    public String saveNew(@Valid @ModelAttribute("storage") FacilityCommand command,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            return "storage/storageEmptyForm";
+        }
         FacilityCommand savedCommand = storageService.saveDetached(command);
         return "redirect:/storage/" + savedCommand.getId() + "/show";
     }
 
     @PostMapping("/storage/update")
-    public String updateExisting(@ModelAttribute FacilityCommand command) {
+    public String updateExisting(@Valid @ModelAttribute("storage") FacilityCommand command,
+                                 BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            return "storage/storageForm";
+        }
         FacilityCommand savedCommand = storageService.saveAttached(command);
         return "redirect:/storage/" + savedCommand.getId() + "/show";
     }
