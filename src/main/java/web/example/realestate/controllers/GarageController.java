@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.GarageService;
@@ -42,37 +43,62 @@ public class GarageController {
     @GetMapping("/garage/new")
     public String newGarage(Model model) {
         model.addAttribute("garage", new FacilityCommand());
+        model.addAttribute("address", new AddressCommand());
         model.addAttribute("clients", clientService.getClients());
         return "garage/garageEmptyForm";
     }
 
     @GetMapping("/garage/{id}/update")
     public String updateGarage(@PathVariable String id, Model model) {
-        model.addAttribute("garage", garageService.findCommandById(Long.valueOf(id)));
+        FacilityCommand garage = garageService.findCommandById(Long.valueOf(id));
+        model.addAttribute("garage", garage);
+        model.addAttribute("address", garage.getAddress());
         model.addAttribute("clients", clientService.getClients());
         return "garage/garageForm";
     }
 
     @PostMapping("/garage/save")
-    public String saveNew(@Valid @ModelAttribute("garage") FacilityCommand command,
-                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String saveNew(@Valid @ModelAttribute("garage") FacilityCommand garageCommand, BindingResult garageBinding,
+                          @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding,
+                          Model model) {
+        if (garageBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            garageBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("garage", garageCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "garage/garageEmptyForm";
         }
-        FacilityCommand savedCommand = garageService.saveDetached(command);
-        return "redirect:/garage/" + savedCommand.getId() + "/show";
+
+        garageCommand.setAddress(addressCommand);
+        FacilityCommand savedGarage = garageService.saveDetached(garageCommand);
+
+        return "redirect:/garage/" + savedGarage.getId() + "/show";
     }
 
     @PostMapping("/garage/update")
-    public String updateExisting(@Valid @ModelAttribute("garage") FacilityCommand command,
-                                 BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String updateExisting(@Valid @ModelAttribute("garage") FacilityCommand garageCommand, BindingResult garageBinding,
+                                 @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding,
+                                 Model model) {
+        if (garageBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            garageBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("garage", garageCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "garage/garageForm";
         }
-        FacilityCommand savedCommand = garageService.saveAttached(command);
-        return "redirect:/garage/" + savedCommand.getId() + "/show";
+
+        garageCommand.setAddress(addressCommand);
+        FacilityCommand savedGarage = garageService.saveAttached(garageCommand);
+
+        return "redirect:/garage/" + savedGarage.getId() + "/show";
     }
 
     @GetMapping("/garage/{id}/delete")

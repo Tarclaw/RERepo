@@ -24,14 +24,15 @@ public class BasementCommandToBasement implements Converter<FacilityCommand, Bas
         final Address address = toAddress.convert(command.getAddress());
         final Basement basement = new Basement();
         basement.setId(command.getId());
-        basement.setMonthRent(command.getMonthRent());
-        basement.setPrice(command.getPrice());
         basement.setNumberOfRooms(command.getNumberOfRooms());
         basement.setTotalArea(command.getTotalArea());
         basement.setDescription(command.getDescription());
         basement.setItCommercial(command.isItCommercial());
         basement.setPublishedDateTime(command.getPublishedDateTime());
         basement.setClosedDateTime(command.getClosedDateTime());
+        basement.setStatus(command.getStatus());
+        basement.setMonthRent(command.getMonthRent());
+        basement.setPrice(command.getPrice());
         address.setFacility(basement);
         basement.setAddress(address);
 

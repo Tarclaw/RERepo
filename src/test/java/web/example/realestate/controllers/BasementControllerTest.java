@@ -159,12 +159,12 @@ class BasementControllerTest {
     @Test
     void updateBasement() throws Exception {
         //given
+        when(basementService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
         when(clientService.getClients()).thenReturn(
                 new HashSet<>(
                         Collections.singletonList(new Client())
                 )
         );
-        when(basementService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
         ArgumentCaptor<FacilityCommand> basementCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
         ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientCaptor = ArgumentCaptor.forClass(Set.class);
@@ -320,12 +320,12 @@ class BasementControllerTest {
     @Test
     void deleteById() throws Exception {
         String viewName = controller.deleteById("1");
-        assertEquals("redirect:/basements", viewName);
+        assertEquals("redirect:/basement", viewName);
         verify(basementService, times(1)).deleteById(anyLong());
 
         mockMvc.perform(get("/basement/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/basements"));
+                .andExpect(view().name("redirect:/basement"));
 
     }
 

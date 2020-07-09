@@ -251,8 +251,7 @@ class ApartmentControllerTest {
         verify(clientService, times(1)).getClients();
 
         mockMvc.perform(post("/apartment/save")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andExpect(view().name("apartment/apartmentEmptyForm"));
     }

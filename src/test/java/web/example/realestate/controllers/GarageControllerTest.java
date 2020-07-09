@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Garage;
 import web.example.realestate.domain.people.Client;
@@ -19,12 +20,11 @@ import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.GarageService;
 
-import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -54,7 +54,10 @@ class GarageControllerTest {
     private Model model;
 
     @Mock
-    private BindingResult bindingResult;
+    private BindingResult garageBinding;
+
+    @Mock
+    private BindingResult addressBinding;
 
     @BeforeEach
     void setUp() {
@@ -133,7 +136,13 @@ class GarageControllerTest {
     @Test
     void newGarage() throws Exception {
         //given
-        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        when(clientService.getClients()).thenReturn(
+                new HashSet<>(
+                        Collections.singletonList(new Client())
+                )
+        );
+        ArgumentCaptor<FacilityCommand> garageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
@@ -141,7 +150,8 @@ class GarageControllerTest {
 
         //then
         assertEquals("garage/garageEmptyForm", viewName);
-        verify(model, times(1)).addAttribute(eq("garage"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("garage"), garageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
         verify(model, times(1)).addAttribute(eq("clients"), clientCaptor.capture());
 
         mockMvc.perform(get("/garage/new"))
@@ -155,7 +165,13 @@ class GarageControllerTest {
     void updateGarage() throws Exception {
         //given
         when(garageService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
-        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        when(clientService.getClients()).thenReturn(
+                new HashSet<>(
+                        Collections.singletonList(new Client())
+                )
+        );
+        ArgumentCaptor<FacilityCommand> garageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
@@ -164,7 +180,8 @@ class GarageControllerTest {
         //then
         assertEquals("garage/garageForm", viewName);
         verify(garageService, times(1)).findCommandById(anyLong());
-        verify(model, times(1)).addAttribute(eq("garage"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("garage"), garageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
         verify(model, times(1)).addAttribute(eq("clients"), clientCaptor.capture());
 
         mockMvc.perform(get("/garage/1/update"))
@@ -177,21 +194,21 @@ class GarageControllerTest {
     @Test
     void saveNew() throws Exception {
         //given
-        FacilityCommand source = new FacilityCommand();
-        source.setId(1L);
-        source.setNumberOfRooms(1);
-        source.setTotalArea(20);
-        source.setDescription("some description");
-        source.setMonthRent(BigInteger.valueOf(3000L));
-        source.setPrice(BigInteger.valueOf(300000L));
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setId(1L);
+        AddressCommand addressCommand = new AddressCommand();
 
-        when(garageService.saveDetached(any())).thenReturn(source);
+        when(garageBinding.hasErrors()).thenReturn(false);
+        when(addressBinding.hasErrors()).thenReturn(false);
+        when(garageService.saveDetached(any())).thenReturn(facilityCommand);
 
         //when
-        String viewName = controller.saveNew(source, bindingResult);
+        String viewName = controller.saveNew(facilityCommand, garageBinding, addressCommand, addressBinding, model);
 
         //then
         assertEquals("redirect:/garage/1/show", viewName);
+        verify(garageBinding, times(1)).hasErrors();
+        verify(addressBinding, times(1)).hasErrors();
         verify(garageService, times(1)).saveDetached(any());
 
         mockMvc.perform(post("/garage/save")
@@ -202,59 +219,102 @@ class GarageControllerTest {
                 .param("description", "some description")
                 .param("monthRent", "3000")
                 .param("price", "300000")
+                .param("postcode", "88550")
+                .param("facilityNumber", "33")
+                .param("city", "some city")
+                .param("district", "some district")
+                .param("street", "some street")
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/garage/1/show"));
     }
 
     @Test
-    void updateExisting() throws Exception {
+    void saveNewWhenCommandValuesAreNotValid() throws Exception {
         //given
-        FacilityCommand source = new FacilityCommand();
-        source.setId(1L);
-        source.setNumberOfRooms(1);
-        source.setTotalArea(20);
-        source.setDescription("some description");
-        source.setMonthRent(BigInteger.valueOf(3000L));
-        source.setPrice(BigInteger.valueOf(300000L));
+        when(garageBinding.hasErrors()).thenReturn(true);
 
-        when(garageService.saveAttached(any())).thenReturn(source);
+        ArgumentCaptor<FacilityCommand> garageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
-        String viewName = controller.updateExisting(source, bindingResult);
+        String viewName = controller.saveNew(new FacilityCommand(), garageBinding, new AddressCommand(), addressBinding, model);
+        assertEquals("garage/garageEmptyForm", viewName);
+        verify(garageBinding, times(1)).hasErrors();
+        verify(garageBinding, times(1)).getAllErrors();
+        verify(addressBinding, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("garage"), garageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        verify(clientService, times(1)).getClients();
+
+        mockMvc.perform(post("/garage/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(view().name("garage/garageEmptyForm"));
+    }
+
+    @Test
+    void updateExisting() throws Exception {
+        //given
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setId(1L);
+        AddressCommand addressCommand = new AddressCommand();
+
+        when(garageBinding.hasErrors()).thenReturn(false);
+        when(addressBinding.hasErrors()).thenReturn(false);
+        when(garageService.saveAttached(any())).thenReturn(facilityCommand);
+
+        //when
+        String viewName = controller.updateExisting(facilityCommand, garageBinding, addressCommand, addressBinding, model);
 
         //then
         assertEquals("redirect:/garage/1/show", viewName);
+        verify(garageBinding, times(1)).hasErrors();
+        verify(addressBinding, times(1)).hasErrors();
         verify(garageService, times(1)).saveAttached(any());
 
         mockMvc.perform(post("/garage/update")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1")
                 .param("id", "1")
                 .param("numberOfRooms", "1")
                 .param("totalArea", "20")
                 .param("description", "some description")
                 .param("monthRent", "3000")
                 .param("price", "300000")
+                .param("postcode", "88550")
+                .param("facilityNumber", "33")
+                .param("city", "some city")
+                .param("district", "some district")
+                .param("street", "some street")
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/garage/1/show"));
     }
 
     @Test
-    void saveNewWhenCommandValuesAreNotValid() throws Exception {
-        mockMvc.perform(post("/garage/save")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("garage/garageEmptyForm"));
-    }
-
-    @Test
     void updateExistingWhenCommandValuesAreNotValid() throws Exception {
+        //given
+        when(garageBinding.hasErrors()).thenReturn(true);
+
+        ArgumentCaptor<FacilityCommand> garageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
+
+        //when
+        String viewName = controller.updateExisting(new FacilityCommand(), garageBinding, new AddressCommand(), addressBinding, model);
+        assertEquals("garage/garageForm", viewName);
+        verify(garageBinding, times(1)).hasErrors();
+        verify(garageBinding, times(1)).getAllErrors();
+        verify(addressBinding, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("garage"), garageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        verify(clientService, times(1)).getClients();
+
         mockMvc.perform(post("/garage/update")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andExpect(view().name("garage/garageForm"));
     }

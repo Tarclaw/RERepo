@@ -31,6 +31,9 @@ public class GarageCommandToGarage implements Converter<FacilityCommand, Garage>
         garage.setClosedDateTime(command.getClosedDateTime());
         garage.setHasEquipment(command.isHasEquipment());
         garage.setHasPit(command.isHasPit());
+        garage.setStatus(command.getStatus());
+        garage.setMonthRent(command.getMonthRent());
+        garage.setPrice(command.getPrice());
         address.setFacility(garage);
         garage.setAddress(address);
 
