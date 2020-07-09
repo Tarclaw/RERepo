@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import web.example.realestate.commands.RealEstateAgentCommand;
 import web.example.realestate.domain.people.Client;
 import web.example.realestate.domain.people.RealEstateAgent;
@@ -47,6 +48,9 @@ class RealEstateAgentControllerTest {
 
     @Mock
     private Model model;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @BeforeEach
     void setUp() {
@@ -177,22 +181,58 @@ class RealEstateAgentControllerTest {
     @Test
     void saveOrUpdate() throws Exception {
         //given
-        RealEstateAgentCommand source = new RealEstateAgentCommand();
-        source.setId(1L);
-        when(agentService.saveRealEstateAgentCommand(any())).thenReturn(source);
+        RealEstateAgentCommand agentCommand = new RealEstateAgentCommand();
+        agentCommand.setId(1L);
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(agentService.saveRealEstateAgentCommand(any())).thenReturn(agentCommand);
 
         //when
-        String viewName = controller.saveOrUpdate(source);
+        String viewName = controller.saveOrUpdate(agentCommand, bindingResult, model);
 
         //then
         assertEquals("redirect:/realEstateAgent/1/show", viewName);
+        verify(bindingResult, times(1)).hasErrors();
         verify(agentService, times(1)).saveRealEstateAgentCommand(any());
 
         mockMvc.perform(post("/realEstateAgent")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .param("id", "1")
+                .param("firstName", "First Name")
+                .param("lastName", "Last Name")
+                .param("login", "login")
+                .param("password", "Password")
+                .param("email", "some@email.com")
+                .param("skype", "Skype")
+                .param("mobileNumber", "+1 078 777 88 99")
+                .param("salary", "1 000 000")
+        )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/realEstateAgent/1/show"));
+    }
+
+    @Test
+    void saveOrUpdateWhenCommandVariablesAreNotValid() throws Exception {
+        //given
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        ArgumentCaptor<RealEstateAgentCommand> agentCaptor = ArgumentCaptor.forClass(RealEstateAgentCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
+
+        //when
+        String viewName = controller.saveOrUpdate(new RealEstateAgentCommand(), bindingResult, model);
+
+        //then
+        assertEquals("realEstateAgent/realEstateAgentForm", viewName);
+        verify(bindingResult, times(1)).hasErrors();
+        verify(bindingResult, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("realEstateAgent"), agentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        verify(clientService, times(1)).getClients();
+
+        mockMvc.perform(post("/realEstateAgent")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(view().name("realEstateAgent/realEstateAgentForm"));
     }
 
     @Test

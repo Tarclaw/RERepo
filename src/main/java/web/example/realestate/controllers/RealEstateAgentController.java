@@ -2,10 +2,13 @@ package web.example.realestate.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.example.realestate.commands.RealEstateAgentCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.RealEstateAgentService;
+
+import javax.validation.Valid;
 
 @Controller
 public class RealEstateAgentController {
@@ -45,7 +48,14 @@ public class RealEstateAgentController {
     }
 
     @PostMapping("/realEstateAgent")
-    public String saveOrUpdate(@ModelAttribute RealEstateAgentCommand command) {
+    public String saveOrUpdate(@Valid @ModelAttribute("realEstateAgent") RealEstateAgentCommand command,
+                               BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            model.addAttribute("realEstateAgent", command);
+            model.addAttribute("clients", clientService.getClients());
+            return "realEstateAgent/realEstateAgentForm";
+        }
         RealEstateAgentCommand savedCommand = agentService.saveRealEstateAgentCommand(command);
         return "redirect:/realEstateAgent/" + savedCommand.getId() + "/show";
     }
