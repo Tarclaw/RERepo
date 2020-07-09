@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sun.nio.ch.IOUtil;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.BasementService;
 import web.example.realestate.services.ClientService;
@@ -43,43 +44,64 @@ public class BasementController {
     @GetMapping("/basement/new")
     public String newBasement(Model model) {
         model.addAttribute("basement", new FacilityCommand());
+        model.addAttribute("address", new AddressCommand());
         model.addAttribute("clients", clientService.getClients());
         return "basement/basementEmptyForm";
     }
 
     @GetMapping("/basement/{id}/update")
     public String updateBasement(@PathVariable String id, Model model) {
-        model.addAttribute("basement", basementService.findCommandById(Long.valueOf(id)));
+        FacilityCommand basement = basementService.findCommandById(Long.valueOf(id));
+        model.addAttribute("basement", basement);
+        model.addAttribute("address", basement.getAddress());
         model.addAttribute("clients", clientService.getClients());
         return "basement/basementForm";
     }
 
     @PostMapping("/basement/save")
-    public String saveNew(@Valid @ModelAttribute("basement") FacilityCommand command,
-                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String saveNew(@Valid @ModelAttribute("basement") FacilityCommand basementCommand, BindingResult basementBinding,
+                          @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding, Model model) {
+        if (basementBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            basementBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("basement", basementCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "basement/basementEmptyForm";
         }
-        FacilityCommand savedCommand = basementService.saveDetached(command);
-        return "redirect:/basement/" + savedCommand.getId() + "/show";
+
+        basementCommand.setAddress(addressCommand);
+        FacilityCommand savedBasement = basementService.saveDetached(basementCommand);
+        return "redirect:/basement/" + savedBasement.getId() + "/show";
     }
 
     @PostMapping("/basement/update")
-    public String updateExisting(@Valid @ModelAttribute("basement") FacilityCommand command,
-                                 BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String updateExisting(@Valid @ModelAttribute("basement") FacilityCommand basementCommand, BindingResult basementBinding,
+                                 @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding, Model model) {
+        if (basementBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            basementBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("basement", basementCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "basement/basementForm";
         }
-        FacilityCommand savedCommand = basementService.saveAttached(command);
-        return "redirect:/basement/" + savedCommand.getId() + "/show";
+
+        basementCommand.setAddress(addressCommand);
+        FacilityCommand savedBasement = basementService.saveAttached(basementCommand);
+        return "redirect:/basement/" + savedBasement.getId() + "/show";
     }
 
     @GetMapping("/basement/{id}/delete")
     public String deleteById(@PathVariable String id) {
         basementService.deleteById(Long.valueOf(id));
-        return "redirect:/basements";
+        return "redirect:/basement";
     }
 
     @GetMapping("/basement/{id}/image")

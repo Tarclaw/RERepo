@@ -24,6 +24,8 @@ public class BasementCommandToBasement implements Converter<FacilityCommand, Bas
         final Address address = toAddress.convert(command.getAddress());
         final Basement basement = new Basement();
         basement.setId(command.getId());
+        basement.setMonthRent(command.getMonthRent());
+        basement.setPrice(command.getPrice());
         basement.setNumberOfRooms(command.getNumberOfRooms());
         basement.setTotalArea(command.getTotalArea());
         basement.setDescription(command.getDescription());

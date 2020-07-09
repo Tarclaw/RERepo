@@ -134,33 +134,65 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h1 class="panel-title">Edit Address Information</h1>
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-3 form-group">
-                                    <label>District:</label>
-                                    <input type="text" class="form-control" th:field="*{address.district}" />
-                                </div>
-                                <div class="col-md-3 form-group">
-                                    <label>Postcode:</label>
-                                    <input type="text" class="form-control" th:field="*{address.postcode}" />
-                                </div>
-                                <div class="col-md-3 form-group">
-                                    <label>City:</label>
-                                    <input type="text" class="form-control" th:field="*{address.city}" />
-                                </div>
+                    <div th:object="${address}">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h1 class="panel-title">Edit Address Information</h1>
                             </div>
-                            <div class="row">
-                                <div class="col-md-3 form-group">
-                                    <label>Street:</label>
-                                    <input type="text" class="form-control" th:field="*{address.street}" />
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-3 form-group"
+                                         th:class="${#fields.hasErrors('district')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                        <label>District:</label>
+                                        <input type="text" class="form-control" th:field="*{district}" th:errorclass="has-error"/>
+                                        <span class="help-block" th:if="${#fields.hasErrors('district')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('district')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                    </div>
+                                    <div class="col-md-3 form-group"
+                                         th:class="${#fields.hasErrors('postcode')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                        <label>Postcode:</label>
+                                        <input type="text" class="form-control" th:field="*{postcode}" th:errorclass="has-error"/>
+                                        <span class="help-block" th:if="${#fields.hasErrors('postcode')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('postcode')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                    </div>
+                                    <div class="col-md-3 form-group"
+                                         th:class="${#fields.hasErrors('city')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                        <label>City:</label>
+                                        <input type="text" class="form-control" th:field="*{city}" th:errorclass="has-error"/>
+                                        <span class="help-block" th:if="${#fields.hasErrors('city')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('city')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                    </div>
                                 </div>
-                                <div class="col-md-3 form-group">
-                                    <label>House Number:</label>
-                                    <input type="text" class="form-control" th:field="*{address.facilityNumber}" />
+                                <div class="row">
+                                    <div class="col-md-3 form-group"
+                                         th:class="${#fields.hasErrors('street')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                        <label>Street:</label>
+                                        <input type="text" class="form-control" th:field="*{street}" th:errorclass="has-error"/>
+                                        <span class="help-block" th:if="${#fields.hasErrors('street')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('street')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                    </div>
+                                    <div class="col-md-3 form-group"
+                                         th:class="${#fields.hasErrors('facilityNumber')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                        <label>House Number:</label>
+                                        <input type="text" class="form-control" th:field="*{facilityNumber}" th:errorclass="has-error"/>
+                                        <span class="help-block" th:if="${#fields.hasErrors('facilityNumber')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('facilityNumber')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

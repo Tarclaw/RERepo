@@ -139,7 +139,8 @@ class ApartmentControllerTest {
                         Collections.singletonList(new Client())
                 )
         );
-        ArgumentCaptor<FacilityCommand> argumentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<FacilityCommand> apartmentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
@@ -148,7 +149,8 @@ class ApartmentControllerTest {
         //then
         assertEquals("apartment/apartmentEmptyForm", viewName);
         verify(clientService, times(1)).getClients();
-        verify(model, times(1)).addAttribute(eq("apartment"), argumentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("apartment"), apartmentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
         verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
 
         mockMvc.perform(get("/apartment/new"))
@@ -166,7 +168,8 @@ class ApartmentControllerTest {
         );
         when(apartmentService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
         when(clientService.getClients()).thenReturn(clients);
-        ArgumentCaptor<FacilityCommand> argumentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<FacilityCommand> apartmentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
@@ -176,7 +179,8 @@ class ApartmentControllerTest {
         assertEquals("apartment/apartmentForm", viewName);
         verify(apartmentService, times(1)).findCommandById(anyLong());
         verify(clientService, times(1)).getClients();
-        verify(model, times(1)).addAttribute(eq("apartment"), argumentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("apartment"), apartmentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
         verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
 
         mockMvc.perform(get("/apartment/1/update"))
@@ -184,7 +188,6 @@ class ApartmentControllerTest {
                 .andExpect(view().name("apartment/apartmentForm"))
                 .andExpect(model().attributeExists("apartment"))
                 .andExpect(model().attributeExists("clients"));
-
     }
 
     @Test
