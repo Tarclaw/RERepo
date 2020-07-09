@@ -1,5 +1,8 @@
 package web.example.realestate.commands;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,15 +10,38 @@ public class ClientCommand {
     //person
     private Long id;
     private Long agentId;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please enter value between 2 and 50 characters")
     private String firstName;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please enter value between 2 and 50 characters")
     private String lastName;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please enter value between 2 and 50 characters")
     private String login;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please enter value between 2 and 50 characters")
     private String password;
+
     //contact
+    @Email(message = "Please enter valid email address")
     private String email;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please enter value between 2 and 50 characters")
     private String skype;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 10, max = 17, message = "Please provide valid mobile")
     private String mobileNumber;
+
     //client
+    @NotNull(message = "Please enter value")
+    @Size(min = 10, max = 1000, message = "Please provide requirements between 10 and 1000 characters")
     private String customerRequirements;
 
     private Set<FacilityCommand> facilityCommands = new HashSet<>();

@@ -2,12 +2,16 @@ package web.example.realestate.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.ClientCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.commands.MappingCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.RealEstateAgentService;
+
+import javax.validation.Valid;
 
 @Controller
 public class ClientController {
@@ -36,6 +40,7 @@ public class ClientController {
     public String newClient(Model model) {
         model.addAttribute("client", new ClientCommand());
         model.addAttribute("facility", new FacilityCommand());
+        model.addAttribute("address", new AddressCommand());
         model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
         return "client/clientEmptyForm";
     }
@@ -46,16 +51,46 @@ public class ClientController {
         return "client/clientForm";
     }
 
-    @PostMapping("/client")
-    public String saveOrUpdate(@ModelAttribute ClientCommand command) {
-        ClientCommand savedCommand = clientService.saveAttached(command);
-        return "redirect:/client/" + savedCommand.getId() + "/show";
+    @PostMapping("/client/save")
+    public String saveNew(@Valid @ModelAttribute("client") ClientCommand clientCommand, BindingResult clientBindingResult,
+                          @Valid @ModelAttribute("facility") FacilityCommand facilityCommand, BindingResult facilityBindingResult,
+                          @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBindingResult, Model model) {
+        //todo junit
+        if (clientBindingResult.hasErrors() || facilityBindingResult.hasErrors() || addressBindingResult.hasErrors()) {
+            clientBindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            facilityBindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("client", clientCommand);
+            model.addAttribute("facility", facilityCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
+
+            return "client/clientEmptyForm";
+        }
+
+        clientService.saveDetached(clientCommand, facilityCommand);
+
+        return "redirect:/clients";
     }
 
-    @PostMapping("/client/save")
-    public String save(@ModelAttribute ClientCommand clientCommand, @ModelAttribute FacilityCommand facilityCommand) {
-        clientService.saveDetached(clientCommand, facilityCommand);
-        return "redirect:/clients";
+    @PostMapping("/client/update")
+    public String updateExisting(@Valid @ModelAttribute("client") ClientCommand clientCommand, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            ClientCommand clientWithAgentsAndFacilities = clientService.findCommandById(clientCommand.getId());
+            clientCommand.setRealEstateAgentCommands(clientWithAgentsAndFacilities.getRealEstateAgentCommands());
+            clientCommand.setFacilityCommands(clientWithAgentsAndFacilities.getFacilityCommands());
+
+            model.addAttribute("client", clientCommand);
+            return "client/clientForm";
+        }
+
+        ClientCommand savedCommand = clientService.saveAttached(clientCommand);
+
+        return "redirect:/client/" + savedCommand.getId() + "/show";
     }
 
     @GetMapping("/client/{id}/delete")
@@ -105,8 +140,18 @@ public class ClientController {
     }
 
     @PostMapping("/client/facility/save")
-    public String saveForFacility(@ModelAttribute ClientCommand clientCommand,
-                                  @ModelAttribute MappingCommand mappingCommand) {
+    public String saveForFacility(@Valid @ModelAttribute("client")
+                                  ClientCommand clientCommand, BindingResult bindingResult,
+                                  @ModelAttribute MappingCommand mappingCommand, Model model) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("client", clientCommand);
+            model.addAttribute("mapping", mappingCommand);
+            model.addAttribute("realEstateAgents", agentService.getRealEstateAgents());
+
+            return "client/clientForFacilityForm";
+        }
         clientService.saveAttached(clientCommand);
         return "redirect:/" + mappingCommand.getPageName() + "/new";
     }

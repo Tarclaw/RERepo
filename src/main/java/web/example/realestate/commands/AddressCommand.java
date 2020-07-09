@@ -1,12 +1,31 @@
 package web.example.realestate.commands;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class AddressCommand {
 
     private Long id;
+
+    @NotNull(message = "Please enter value")
+    @Digits(integer = 1000000, fraction = 0, message = "Please enter a number up to 1 000 000")
     private Integer postcode;
+
+    @NotNull(message = "Please enter value")
+    @Digits(integer = 1000000, fraction = 0, message = "Please enter a number up to 1 000 000")
     private Integer facilityNumber;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please provide city between 2 and 50 characters")
     private String city;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please provide district between 2 and 50 characters")
     private String district;
+
+    @NotNull(message = "Please enter value")
+    @Size(min = 2, max = 50, message = "Please provide street between 2 and 50 characters")
     private String street;
 
     public AddressCommand() {
