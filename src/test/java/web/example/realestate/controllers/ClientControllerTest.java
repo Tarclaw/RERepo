@@ -269,7 +269,6 @@ class ClientControllerTest {
         clientCommand.setId(1L);
         when(clientResult.hasErrors()).thenReturn(false);
         when(clientService.saveAttached(any())).thenReturn(clientCommand);
-        //when(savedCommand.getId()).thenReturn(1L);
 
         //when
         String viewName = controller.updateExisting(clientCommand, clientResult, model);

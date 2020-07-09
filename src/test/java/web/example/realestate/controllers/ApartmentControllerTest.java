@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Apartment;
 import web.example.realestate.domain.people.Client;
@@ -19,13 +20,11 @@ import web.example.realestate.exceptions.NotFoundException;
 import web.example.realestate.services.ApartmentService;
 import web.example.realestate.services.ClientService;
 
-import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -55,7 +54,10 @@ class ApartmentControllerTest {
     private Model model;
 
     @Mock
-    private BindingResult bindingResult;
+    private BindingResult apartmentBinding;
+
+    @Mock
+    private BindingResult addressBinding;
 
     @BeforeEach
     void setUp() {
@@ -188,21 +190,21 @@ class ApartmentControllerTest {
     @Test
     void saveNew() throws Exception {
         //given
-        FacilityCommand source = new FacilityCommand();
-        source.setId(1L);
-        source.setNumberOfRooms(1);
-        source.setTotalArea(20);
-        source.setDescription("some description");
-        source.setMonthRent(BigInteger.valueOf(3000L));
-        source.setPrice(BigInteger.valueOf(300000L));
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setId(1L);
+        AddressCommand addressCommand = new AddressCommand();
 
-        when(apartmentService.saveDetached(any())).thenReturn(source);
+        when(apartmentBinding.hasErrors()).thenReturn(false);
+        when(addressBinding.hasErrors()).thenReturn(false);
+        when(apartmentService.saveDetached(any())).thenReturn(facilityCommand);
 
         //when
-        String viewName = controller.saveNew(source, bindingResult);
+        String viewName = controller.saveNew(facilityCommand, apartmentBinding, addressCommand, addressBinding, model);
 
         //then
         assertEquals("redirect:/apartment/1/show", viewName);
+        verify(apartmentBinding, times(1)).hasErrors();
+        verify(addressBinding, times(1)).hasErrors();
         verify(apartmentService, times(1)).saveDetached(any());
 
         mockMvc.perform(post("/apartment/save")
@@ -213,29 +215,63 @@ class ApartmentControllerTest {
                 .param("description", "some description")
                 .param("monthRent", "3000")
                 .param("price", "300000")
+                .param("postcode", "88550")
+                .param("facilityNumber", "33")
+                .param("city", "some city")
+                .param("district", "some district")
+                .param("street", "some street")
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/apartment/1/show"));
     }
 
     @Test
-    void updateExisting() throws Exception {
+    void saveNewWhenCommandValuesAreNotValid() throws Exception {
         //given
-        FacilityCommand source = new FacilityCommand();
-        source.setId(1L);
-        source.setNumberOfRooms(1);
-        source.setTotalArea(20);
-        source.setDescription("some description");
-        source.setMonthRent(BigInteger.valueOf(3000L));
-        source.setPrice(BigInteger.valueOf(300000L));
+        when(apartmentBinding.hasErrors()).thenReturn(true);
 
-        when(apartmentService.saveAttached(any())).thenReturn(source);
+        ArgumentCaptor<FacilityCommand> apartmentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
-        String viewName = controller.updateExisting(source, bindingResult);
+        String viewName = controller.saveNew(new FacilityCommand(), apartmentBinding, new AddressCommand(), addressBinding, model);
+
+        //then
+        assertEquals("apartment/apartmentEmptyForm", viewName);
+        verify(apartmentBinding, times(1)).hasErrors();
+        verify(apartmentBinding, times(1)).getAllErrors();
+        verify(addressBinding, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("apartment"), apartmentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        verify(clientService, times(1)).getClients();
+
+        mockMvc.perform(post("/apartment/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("apartment/apartmentEmptyForm"));
+    }
+
+    @Test
+    void updateExisting() throws Exception {
+        //given
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setId(1L);
+        AddressCommand addressCommand = new AddressCommand();
+
+        when(apartmentBinding.hasErrors()).thenReturn(false);
+        when(addressBinding.hasErrors()).thenReturn(false);
+        when(apartmentService.saveAttached(any())).thenReturn(facilityCommand);
+
+        //when
+        String viewName = controller.updateExisting(facilityCommand, apartmentBinding, addressCommand, addressBinding, model);
 
         //then
         assertEquals("redirect:/apartment/1/show", viewName);
+        verify(apartmentBinding, times(1)).hasErrors();
+        verify(addressBinding, times(1)).hasErrors();
         verify(apartmentService, times(1)).saveAttached(any());
 
         mockMvc.perform(post("/apartment/update")
@@ -246,22 +282,38 @@ class ApartmentControllerTest {
                 .param("description", "some description")
                 .param("monthRent", "3000")
                 .param("price", "300000")
+                .param("postcode", "88550")
+                .param("facilityNumber", "33")
+                .param("city", "some city")
+                .param("district", "some district")
+                .param("street", "some street")
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/apartment/1/show"));
     }
 
     @Test
-    void saveNewWhenCommandValuesAreNotValid() throws Exception {
-        mockMvc.perform(post("/apartment/save")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("apartment/apartmentEmptyForm"));
-    }
-
-    @Test
     void updateExistingWhenCommandValuesAreNotValid() throws Exception {
+        //given
+        when(apartmentBinding.hasErrors()).thenReturn(true);
+
+        ArgumentCaptor<FacilityCommand> apartmentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
+
+        //when
+        String viewName = controller.updateExisting(new FacilityCommand(), apartmentBinding, new AddressCommand(), addressBinding, model);
+
+        //then
+        assertEquals("apartment/apartmentForm", viewName);
+        verify(apartmentBinding, times(1)).hasErrors();
+        verify(apartmentBinding, times(1)).getAllErrors();
+        verify(addressBinding, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("apartment"), apartmentCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        verify(clientService, times(1)).getClients();
+
         mockMvc.perform(post("/apartment/update")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "1"))
