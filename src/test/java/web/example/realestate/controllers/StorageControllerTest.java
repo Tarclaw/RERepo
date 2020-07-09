@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.domain.building.Storage;
 import web.example.realestate.domain.people.Client;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -54,7 +56,10 @@ class StorageControllerTest {
     private Model model;
 
     @Mock
-    private BindingResult bindingResult;
+    private BindingResult storageBinding;
+
+    @Mock
+    private BindingResult addressBinding;
 
     @BeforeEach
     void setUp() {
@@ -133,7 +138,13 @@ class StorageControllerTest {
     @Test
     void newStorage() throws Exception {
         //given
-        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        when(clientService.getClients()).thenReturn(
+                new HashSet<>(
+                        Collections.singletonList(new Client())
+                )
+        );
+        ArgumentCaptor<FacilityCommand> storageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
@@ -141,21 +152,31 @@ class StorageControllerTest {
 
         //then
         assertEquals("storage/storageEmptyForm", viewName);
-        verify(model, times(1)).addAttribute(eq("storage"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("storage"), storageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
         verify(model, times(1)).addAttribute(eq("clients"), clientCaptor.capture());
 
         mockMvc.perform(get("/storage/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("storage/storageEmptyForm"))
                 .andExpect(model().attributeExists("storage"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 
     @Test
     void updateStorage() throws Exception {
         //given
-        when(storageService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
-        ArgumentCaptor<FacilityCommand> commandCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setAddress(new AddressCommand());
+        when(storageService.findCommandById(anyLong())).thenReturn(facilityCommand);
+        when(clientService.getClients()).thenReturn(
+                new HashSet<>(
+                        Collections.singletonList(new Client())
+                )
+        );
+        ArgumentCaptor<FacilityCommand> storageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
@@ -164,34 +185,36 @@ class StorageControllerTest {
         //then
         assertEquals("storage/storageForm", viewName);
         verify(storageService, times(1)).findCommandById(anyLong());
-        verify(model, times(1)).addAttribute(eq("storage"), commandCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("storage"), storageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
         verify(model, times(1)).addAttribute(eq("clients"), clientCaptor.capture());
 
         mockMvc.perform(get("/storage/1/update"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("storage/storageForm"))
                 .andExpect(model().attributeExists("storage"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 
     @Test
     void saveNew() throws Exception {
         //given
-        FacilityCommand source = new FacilityCommand();
-        source.setId(1L);
-        source.setNumberOfRooms(1);
-        source.setTotalArea(20);
-        source.setDescription("some description");
-        source.setMonthRent(BigInteger.valueOf(3000L));
-        source.setPrice(BigInteger.valueOf(300000L));
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setId(1L);
+        AddressCommand addressCommand = new AddressCommand();
 
-        when(storageService.saveDetached(any())).thenReturn(source);
+        when(storageBinding.hasErrors()).thenReturn(false);
+        when(addressBinding.hasErrors()).thenReturn(false);
+        when(storageService.saveDetached(any())).thenReturn(facilityCommand);
 
         //when
-        String viewName = controller.saveNew(source, bindingResult);
+        String viewName = controller.saveNew(facilityCommand, storageBinding, addressCommand, addressBinding, model);
 
         //then
         assertEquals("redirect:/storage/1/show", viewName);
+        verify(storageBinding, times(1)).hasErrors();
+        verify(addressBinding, times(1)).hasErrors();
         verify(storageService, times(1)).saveDetached(any());
 
         mockMvc.perform(post("/storage/save")
@@ -202,29 +225,60 @@ class StorageControllerTest {
                 .param("description", "some description")
                 .param("monthRent", "3000")
                 .param("price", "300000")
+                .param("postcode", "88550")
+                .param("facilityNumber", "33")
+                .param("city", "some city")
+                .param("district", "some district")
+                .param("street", "some street")
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/storage/1/show"));
     }
 
     @Test
-    void updateExisting() throws Exception {
+    void saveNewWhenCommandValuesAreNotValid() throws Exception {
         //given
-        FacilityCommand source = new FacilityCommand();
-        source.setId(1L);
-        source.setNumberOfRooms(1);
-        source.setTotalArea(20);
-        source.setDescription("some description");
-        source.setMonthRent(BigInteger.valueOf(3000L));
-        source.setPrice(BigInteger.valueOf(300000L));
+        when(storageBinding.hasErrors()).thenReturn(true);
 
-        when(storageService.saveAttached(any())).thenReturn(source);
+        ArgumentCaptor<FacilityCommand> storageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
 
         //when
-        String viewName = controller.updateExisting(source, bindingResult);
+        String viewName = controller.saveNew(new FacilityCommand(), storageBinding, new AddressCommand(), addressBinding, model);
+        assertEquals("storage/storageEmptyForm", viewName);
+        verify(storageBinding, times(1)).hasErrors();
+        verify(storageBinding, times(1)).getAllErrors();
+        verify(addressBinding, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("storage"), storageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        verify(clientService, times(1)).getClients();
+
+        mockMvc.perform(post("/storage/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(view().name("storage/storageEmptyForm"));
+    }
+
+    @Test
+    void updateExisting() throws Exception {
+        //given
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setId(1L);
+        AddressCommand addressCommand = new AddressCommand();
+
+        when(storageBinding.hasErrors()).thenReturn(false);
+        when(addressBinding.hasErrors()).thenReturn(false);
+        when(storageService.saveAttached(any())).thenReturn(facilityCommand);
+
+        //when
+        String viewName = controller.updateExisting(facilityCommand, storageBinding, addressCommand, addressBinding, model);
 
         //then
         assertEquals("redirect:/storage/1/show", viewName);
+        verify(storageBinding, times(1)).hasErrors();
+        verify(addressBinding, times(1)).hasErrors();
         verify(storageService, times(1)).saveAttached(any());
 
         mockMvc.perform(post("/storage/update")
@@ -235,25 +289,38 @@ class StorageControllerTest {
                 .param("description", "some description")
                 .param("monthRent", "3000")
                 .param("price", "300000")
+                .param("postcode", "88550")
+                .param("facilityNumber", "33")
+                .param("city", "some city")
+                .param("district", "some district")
+                .param("street", "some street")
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/storage/1/show"));
     }
 
     @Test
-    void saveNewWhenCommandValuesAreNotValid() throws Exception {
-        mockMvc.perform(post("/storage/save")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("storage/storageEmptyForm"));
-    }
-
-    @Test
     void updateExistingWhenCommandValuesAreNotValid() throws Exception {
+        //given
+        when(storageBinding.hasErrors()).thenReturn(true);
+
+        ArgumentCaptor<FacilityCommand> storageCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
+        ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
+
+        //when
+        String viewName = controller.updateExisting(new FacilityCommand(), storageBinding, new AddressCommand(), addressBinding, model);
+        assertEquals("storage/storageForm", viewName);
+        verify(storageBinding, times(1)).hasErrors();
+        verify(storageBinding, times(1)).getAllErrors();
+        verify(addressBinding, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("storage"), storageCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
+        verify(model, times(1)).addAttribute(eq("clients"), clientsCaptor.capture());
+        verify(clientService, times(1)).getClients();
+
         mockMvc.perform(post("/storage/update")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "1"))
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andExpect(view().name("storage/storageForm"));
     }

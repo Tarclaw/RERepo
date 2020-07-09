@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.StorageService;
@@ -42,37 +43,62 @@ public class StorageController {
     @GetMapping("/storage/new")
     public String newStorage(Model model) {
         model.addAttribute("storage", new FacilityCommand());
+        model.addAttribute("address", new AddressCommand());
         model.addAttribute("clients", clientService.getClients());
         return "storage/storageEmptyForm";
     }
 
     @GetMapping("/storage/{id}/update")
     public String updateStorage(@PathVariable String id, Model model) {
-        model.addAttribute("storage", storageService.findCommandById(Long.valueOf(id)));
+        FacilityCommand storage = storageService.findCommandById(Long.valueOf(id));
+        model.addAttribute("storage", storage);
+        model.addAttribute("address", storage.getAddress());
         model.addAttribute("clients", clientService.getClients());
         return "storage/storageForm";
     }
 
     @PostMapping("/storage/save")
-    public String saveNew(@Valid @ModelAttribute("storage") FacilityCommand command,
-                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String saveNew(@Valid @ModelAttribute("storage") FacilityCommand storageCommand, BindingResult storageBinding,
+                          @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding,
+                          Model model) {
+        if (storageBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            storageBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("storage", storageCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "storage/storageEmptyForm";
         }
-        FacilityCommand savedCommand = storageService.saveDetached(command);
-        return "redirect:/storage/" + savedCommand.getId() + "/show";
+
+        storageCommand.setAddress(addressCommand);
+        FacilityCommand savedStorage = storageService.saveDetached(storageCommand);
+
+        return "redirect:/storage/" + savedStorage.getId() + "/show";
     }
 
     @PostMapping("/storage/update")
-    public String updateExisting(@Valid @ModelAttribute("storage") FacilityCommand command,
-                                 BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String updateExisting(@Valid @ModelAttribute("storage") FacilityCommand storageCommand, BindingResult storageBinding,
+                                 @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding,
+                                 Model model) {
+        if (storageBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            storageBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("storage", storageCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "storage/storageForm";
         }
-        FacilityCommand savedCommand = storageService.saveAttached(command);
-        return "redirect:/storage/" + savedCommand.getId() + "/show";
+
+        storageCommand.setAddress(addressCommand);
+        FacilityCommand savedStorage = storageService.saveAttached(storageCommand);
+
+        return "redirect:/storage/" + savedStorage.getId() + "/show";
     }
 
     @GetMapping("/storage/{id}/delete")
