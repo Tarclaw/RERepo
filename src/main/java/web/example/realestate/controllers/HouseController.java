@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.commands.FacilityCommand;
 import web.example.realestate.services.ClientService;
 import web.example.realestate.services.HouseService;
@@ -42,37 +43,62 @@ public class HouseController {
     @GetMapping("/house/new")
     public String newHouse(Model model) {
         model.addAttribute("house", new FacilityCommand());
+        model.addAttribute("address", new AddressCommand());
         model.addAttribute("clients", clientService.getClients());
         return "house/houseEmptyForm";
     }
 
     @GetMapping("/house/{id}/update")
     public String updateHouse(@PathVariable String id, Model model) {
-        model.addAttribute("house", houseService.findCommandById(Long.valueOf(id)));
+        FacilityCommand house = houseService.findCommandById(Long.valueOf(id));
+        model.addAttribute("house", house);
+        model.addAttribute("address", house.getAddress());
         model.addAttribute("clients", clientService.getClients());
         return "house/houseForm";
     }
 
     @PostMapping("/house/save")
-    public String saveNew(@Valid @ModelAttribute("house") FacilityCommand command,
-                          BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String saveNew(@Valid @ModelAttribute("house") FacilityCommand houseCommand, BindingResult houseBinding,
+                          @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding,
+                          Model model) {
+        if (houseBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            houseBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("house", houseCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "house/houseEmptyForm";
         }
-        FacilityCommand savedCommand = houseService.saveDetached(command);
-        return "redirect:/house/" + savedCommand.getId() + "/show";
+
+        houseCommand.setAddress(addressCommand);
+        FacilityCommand savedHouse = houseService.saveDetached(houseCommand);
+
+        return "redirect:/house/" + savedHouse.getId() + "/show";
     }
 
     @PostMapping("/house/update")
-    public String updateExisting(@Valid @ModelAttribute("house") FacilityCommand command,
-                                 BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+    public String updateExisting(@Valid @ModelAttribute("house") FacilityCommand houseCommand, BindingResult houseBinding,
+                                 @Valid @ModelAttribute("address") AddressCommand addressCommand, BindingResult addressBinding,
+                                 Model model) {
+        if (houseBinding.hasErrors() || addressBinding.hasErrors()) {
+
+            houseBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            addressBinding.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+
+            model.addAttribute("house", houseCommand);
+            model.addAttribute("address", addressCommand);
+            model.addAttribute("clients", clientService.getClients());
+
             return "house/houseForm";
         }
-        FacilityCommand savedCommand = houseService.saveAttached(command);
-        return "redirect:/house/" + savedCommand.getId() + "/show";
+
+        houseCommand.setAddress(addressCommand);
+        FacilityCommand savedHouse = houseService.saveDetached(houseCommand);
+
+        return "redirect:/house/" + savedHouse.getId() + "/show";
     }
 
     @GetMapping("/house/{id}/delete")

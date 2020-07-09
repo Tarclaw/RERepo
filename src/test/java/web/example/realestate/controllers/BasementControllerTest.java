@@ -153,13 +153,16 @@ class BasementControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("basement/basementEmptyForm"))
                 .andExpect(model().attributeExists("basement"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 
     @Test
     void updateBasement() throws Exception {
         //given
-        when(basementService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setAddress(new AddressCommand());
+        when(basementService.findCommandById(anyLong())).thenReturn(facilityCommand);
         when(clientService.getClients()).thenReturn(
                 new HashSet<>(
                         Collections.singletonList(new Client())
@@ -183,6 +186,7 @@ class BasementControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("basement/basementForm"))
                 .andExpect(model().attributeExists("basement"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 

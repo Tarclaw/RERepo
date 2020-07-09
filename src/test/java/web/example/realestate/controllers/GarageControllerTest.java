@@ -158,13 +158,16 @@ class GarageControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("garage/garageEmptyForm"))
                 .andExpect(model().attributeExists("garage"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 
     @Test
     void updateGarage() throws Exception {
         //given
-        when(garageService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setAddress(new AddressCommand());
+        when(garageService.findCommandById(anyLong())).thenReturn(facilityCommand);
         when(clientService.getClients()).thenReturn(
                 new HashSet<>(
                         Collections.singletonList(new Client())
@@ -188,6 +191,7 @@ class GarageControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("garage/garageForm"))
                 .andExpect(model().attributeExists("garage"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 

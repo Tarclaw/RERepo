@@ -157,17 +157,20 @@ class ApartmentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("apartment/apartmentEmptyForm"))
                 .andExpect(model().attributeExists("apartment"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 
     @Test
     void updateApartment() throws Exception {
         //given
-        Set<Client> clients = new HashSet<>(
+        FacilityCommand facilityCommand = new FacilityCommand();
+        facilityCommand.setAddress(new AddressCommand());
+        when(apartmentService.findCommandById(anyLong())).thenReturn(facilityCommand);
+        when(clientService.getClients()).thenReturn(new HashSet<>(
                 Collections.singletonList(new Client())
+                )
         );
-        when(apartmentService.findCommandById(anyLong())).thenReturn(new FacilityCommand());
-        when(clientService.getClients()).thenReturn(clients);
         ArgumentCaptor<FacilityCommand> apartmentCaptor = ArgumentCaptor.forClass(FacilityCommand.class);
         ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
         ArgumentCaptor<Set<Client>> clientsCaptor = ArgumentCaptor.forClass(Set.class);
@@ -187,6 +190,7 @@ class ApartmentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("apartment/apartmentForm"))
                 .andExpect(model().attributeExists("apartment"))
+                .andExpect(model().attributeExists("address"))
                 .andExpect(model().attributeExists("clients"));
     }
 
