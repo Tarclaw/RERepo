@@ -26,20 +26,21 @@
             <form th:object="${realEstateAgent}" th:action="@{/realEstateAgent/}" method="post">
 
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-                    <p>Please Correct Input Errors Below</p>
+                    <p th:text="#{message.error.correct}">Please Correct Input Errors Below</p>
                 </div>
 
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Edit Agent Information</h1>
+                            <h1 class="panel-title"
+                                th:text="#{message.agent.edit}">Edit Agent Information</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('firstName')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>First Name:</label>
+                                    <label th:text="#{message.agent.firstName}">First Name:</label>
                                     <input type="text" class="form-control" th:field="*{firstName}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('firstName')}">
                                         <ul>
@@ -49,7 +50,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('lastName')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Last Name:</label>
+                                    <label th:text="#{message.agent.lastName}">Last Name:</label>
                                     <input type="text" class="form-control" th:field="*{lastName}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('lastName')}">
                                         <ul>
@@ -59,7 +60,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('login')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Login:</label>
+                                    <label th:text="#{message.agent.login}">Login:</label>
                                     <input type="text" class="form-control" th:field="*{login}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('login')}">
                                         <ul>
@@ -69,7 +70,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('password')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Password:</label>
+                                    <label th:text="#{message.agent.password}">Password:</label>
                                     <input type="text" class="form-control" th:field="*{password}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('password')}">
                                         <ul>
@@ -81,7 +82,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('email')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Email:</label>
+                                    <label th:text="#{message.agent.email}">Email:</label>
                                     <input type="text" class="form-control" th:field="*{email}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('email')}">
                                         <ul>
@@ -91,7 +92,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('skype')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Skype:</label>
+                                    <label th:text="#{message.agent.skype}">Skype:</label>
                                     <input type="text" class="form-control" th:field="*{skype}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('skype')}">
                                         <ul>
@@ -101,7 +102,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('mobileNumber')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Mobile:</label>
+                                    <label th:text="#{message.agent.mobileNumber}">Mobile:</label>
                                     <input type="text" class="form-control" th:field="*{mobileNumber}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('mobileNumber')}">
                                         <ul>
@@ -113,7 +114,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('salary')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Salary:</label>
+                                    <label th:text="#{message.agent.salary}">Salary:</label>
                                     <input type="text" class="form-control" th:field="*{salary}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('salary')}">
                                         <ul>
@@ -123,7 +124,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('hiredDate')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Hired Date:</label>
+                                    <label th:text="#{message.agent.hiredDate}">Hired Date:</label>
                                     <input type="text" class="form-control" th:field="*{hiredDate}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('hiredDate')}">
                                         <ul>
@@ -133,7 +134,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('quitDate')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Quit Date:</label>
+                                    <label th:text="#{message.agent.quitDate}">Quit Date:</label>
                                     <input type="text" class="form-control" th:field="*{quitDate}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('quitDate')}">
                                         <ul>
@@ -149,7 +150,8 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-md-11 ">
-                                    <h1 class="panel-title">Clients</h1>
+                                    <h1 class="panel-title"
+                                        th:text="#{message.clients}">Clients</h1>
                                 </div>
                             </div>
                         </div>
@@ -166,7 +168,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" th:text="#{message.submit.button}">Submit</button>
                 </div>
             </form>
         </div>

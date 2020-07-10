@@ -26,12 +26,13 @@
             <div class="pannel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Apartment Description</h1>
+                        <h1 class="panel-title"
+                            th:text="#{message.apartment.description}">Apartment Description</h1>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Status:</h5>
+                                <h5 th:text="#{message.facility.status}">Status:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.status}">Unknown</p>
@@ -44,13 +45,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Number of Rooms:</h5>
+                                <h5 th:text="#{message.facility.numberOfRooms}">Number of Rooms:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.numberOfRooms}">3</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Total Area:</h5>
+                                <h5 th:text="#{message.facility.totalArea}">Total Area:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.totalArea}">70</p>
@@ -58,13 +59,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Apartment Number:</h5>
+                                <h5 th:text="#{message.facility.apartmentNumber}">Apartment Number:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.apartmentNumber}">76</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Floor:</h5>
+                                <h5 th:text="#{message.facility.floor}">Floor:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.floor}">9</p>
@@ -72,13 +73,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Published Date Time:</h5>
+                                <h5 th:text="#{message.facility.publishedDateTime}">Published Date Time:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.publishedDateTime}">01.01.2020 00:00</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Closed Date Time:</h5>
+                                <h5 th:text="#{message.facility.closedDateTime}">Closed Date Time:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.closedDateTime}">Not yet</p>
@@ -86,13 +87,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Month Rent:</h5>
+                                <h5 th:text="#{message.facility.monthRent}">Month Rent:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.monthRent}">1 000</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Price:</h5>
+                                <h5 th:text="#{message.facility.price}">Price:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.price}">1 000 000</p>
@@ -102,18 +103,19 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h5 class="panel-title">Address</h5>
+                        <h5 class="panel-title"
+                            th:text="#{message.facility.address}">Address</h5>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>District:</h5>
+                                <h5 th:text="#{message.address.district}">District:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.address.district}">IL</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>City:</h5>
+                                <h5 th:text="#{message.address.city}">City:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.address.city}">Chicago</p>
@@ -121,13 +123,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Street:</h5>
+                                <h5 th:text="#{message.address.street}">Street:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.address.street}">Some Street</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>House Number:</h5>
+                                <h5 th:text="#{message.address.facilityNumber}">House Number:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.address.facilityNumber}">665</p>
@@ -135,7 +137,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Postcode:</h5>
+                                <h5 th:text="#{message.address.postcode}">Postcode:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${apartment.address.postcode}">99999</p>
@@ -147,10 +149,12 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-11 ">
-                                <h1 class="panel-title">Client</h1>
+                                <h1 class="panel-title"
+                                    th:text="#{message.client}">Client</h1>
                             </div>
                             <div class="col-md-1">
                                 <a class="btn btn-default" role="button"
+                                   th:text="#{message.view}"
                                    th:href="${'/client/' + apartment.client.id + '/show'}">View</a>
                             </div>
                         </div>

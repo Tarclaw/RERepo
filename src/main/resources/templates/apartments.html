@@ -27,10 +27,13 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11">
-                            <h1 class="panel-title">Apartments</h1>
+                            <h1 class="panel-title"
+                                th:text="#{message.apartments}">Apartments</h1>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/apartment/new'}" role="button">Create</a>
+                            <a class="btn btn-default" href="#" role="button"
+                               th:href="@{'/apartment/new'}"
+                               th:text="#{message.create}">Create</a>
                         </div>
                     </div>
                 </div>
@@ -39,19 +42,22 @@
                         <table class="table table-hover">
                             <thead class="thead-inverse">
                             <tr>
-                                <th>Description</th>
-                                <th>Number of Rooms</th>
-                                <th>View</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th th:text="#{message.facility.description}">Description</th>
+                                <th th:text="#{message.facility.numberOfRooms}">Number of Rooms</th>
+                                <th th:text="#{message.view}">View</th>
+                                <th th:text="#{message.update}">Update</th>
+                                <th th:text="#{message.delete}">Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="apartment : ${apartments}">
                                 <td th:text="${apartment.getDescription()}">Some awesome Description</td>
                                 <td th:text="${apartment.getNumberOfRooms()}">3</td>
-                                <td><a href="#" th:href="@{'/apartment/' + ${apartment.getId()} + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{'/apartment/' + ${apartment.getId()} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/apartment/' + ${apartment.getId()} + '/delete'}">Delete</a></td>
+                                <td><a href="#" th:text="#{message.view}"
+                                       th:href="@{'/apartment/' + ${apartment.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:text="#{message.update}"
+                                       th:href="@{'/apartment/' + ${apartment.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:text="#{message.delete}"
+                                       th:href="@{'/apartment/' + ${apartment.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

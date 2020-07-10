@@ -23,12 +23,13 @@
             <div class="pannel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title" th:text="${storage.description}">Storage Description</h1>
+                        <h1 class="panel-title"
+                            th:text="#{message.storage.description}">Storage Description</h1>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Status:</h5>
+                                <h5 th:text="#{message.facility.status}">Status:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.status}">Unknown</p>
@@ -41,13 +42,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Number of Rooms:</h5>
+                                <h5 th:text="#{message.facility.numberOfRooms}">Number of Rooms:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.numberOfRooms}">3</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Total Area:</h5>
+                                <h5 th:text="#{message.facility.totalArea}">Total Area:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.totalArea}">70</p>
@@ -55,13 +56,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Commercial Capacity:</h5>
+                                <h5 th:text="#{message.facility.commercialCapacity}">Commercial Capacity:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.commercialCapacity}">76</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Cargo Equipment:</h5>
+                                <h5 th:text="#{message.facility.hasCargoEquipment}">Cargo Equipment:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.hasCargoEquipment}">9</p>
@@ -69,13 +70,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Month Rent:</h5>
+                                <h5 th:text="#{message.facility.monthRent}">Month Rent:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.monthRent}">1 000</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Price:</h5>
+                                <h5 th:text="#{message.facility.price}">Price:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.price}">1 000 000</p>
@@ -83,13 +84,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Published Date Time:</h5>
+                                <h5 th:text="#{message.facility.publishedDateTime}">Published Date Time:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.publishedDateTime}">01.01.2020 00:00</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Closed Date Time:</h5>
+                                <h5 th:text="#{message.facility.closedDateTime}">Closed Date Time:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.closedDateTime}">Not yet</p>
@@ -99,18 +100,19 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h5 class="panel-title">Address</h5>
+                        <h5 class="panel-title"
+                            th:text="#{message.facility.address}">Address</h5>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>District:</h5>
+                                <h5 th:text="#{message.address.district}">District:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.address.district}">IL</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>City:</h5>
+                                <h5 th:text="#{message.address.city}">City:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.address.city}">Chicago</p>
@@ -118,13 +120,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Street:</h5>
+                                <h5 th:text="#{message.address.street}">Street:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.address.street}">Some Street</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>House Number:</h5>
+                                <h5 th:text="#{message.address.facilityNumber}">House Number:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.address.facilityNumber}">665</p>
@@ -132,7 +134,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Postcode:</h5>
+                                <h5 th:text="#{message.address.postcode}">Postcode:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${storage.address.postcode}">99999</p>
@@ -144,10 +146,12 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-11 ">
-                                <h1 class="panel-title">Client</h1>
+                                <h1 class="panel-title"
+                                    th:text="#{message.client}">Client</h1>
                             </div>
                             <div class="col-md-1">
                                 <a class="btn btn-default" role="button"
+                                   th:text="#{message.view}"
                                    th:href="${'/client/' + storage.client.id + '/show'}">View</a>
                             </div>
                         </div>

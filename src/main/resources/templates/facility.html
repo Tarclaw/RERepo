@@ -23,7 +23,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11">
-                            <h1 class="panel-title">Facilities</h1>
+                            <h1 class="panel-title" th:text="#{message.facilities}">Facilities</h1>
                         </div>
                     </div>
                 </div>
@@ -32,23 +32,26 @@
                         <table class="table table-hover">
                             <thead class="thead-inverse">
                             <tr>
-                                <th>ID</th>
-                                <th>Description</th>
-                                <th>View</th>
-                                <th>Create</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                                <th>See All</th>
+                                <th th:text="#{message.facility.description}">Description</th>
+                                <th th:text="#{message.view}">View</th>
+                                <th th:text="#{message.create}">Create</th>
+                                <th th:text="#{message.update}">Update</th>
+                                <th th:text="#{message.delete}">Delete</th>
+                                <th th:text="#{message.all}">See All</th>
                             </tr>
                             </thead>
                             <tr th:each="facility : ${facilities}">
-                                <td th:text="${facility.getId()}">ID</td>
                                 <td th:text="${facility.getDescription()}">Description</td>
-                                <td><a href="#" th:href="@{${mappings.get(facility.getId())} + '/' + ${facility.getId()}  + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{${mappings.get(facility.getId())} + '/new'}">Create</a></td>
-                                <td><a href="#" th:href="@{${mappings.get(facility.getId())} + '/' + ${facility.getId()} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/facility/' + ${facility.getId()} + '/delete'}">Delete</a></td>
-                                <td><a href="#" th:href="@{${mappings.get(facility.getId())}}">See All</a></td>
+                                <td><a href="#" th:text="#{message.view}"
+                                       th:href="@{${mappings.get(facility.getId())} + '/' + ${facility.getId()}  + '/show'}">View</a></td>
+                                <td><a href="#" th:text="#{message.create}"
+                                       th:href="@{${mappings.get(facility.getId())} + '/new'}">Create</a></td>
+                                <td><a href="#" th:text="#{message.update}"
+                                       th:href="@{${mappings.get(facility.getId())} + '/' + ${facility.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:text="#{message.delete}"
+                                       th:href="@{'/facility/' + ${facility.getId()} + '/delete'}">Delete</a></td>
+                                <td><a href="#" th:text="#{message.all}"
+                                       th:href="@{${mappings.get(facility.getId())}}">See All</a></td>
                             </tr>
                         </table>
 

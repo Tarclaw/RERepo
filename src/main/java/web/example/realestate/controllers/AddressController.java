@@ -2,9 +2,12 @@ package web.example.realestate.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.services.AddressService;
+
+import javax.validation.Valid;
 
 @Controller
 public class AddressController {
@@ -27,12 +30,6 @@ public class AddressController {
         return "address";
     }
 
-    @GetMapping("/address/new")
-    public String newAddress(Model model) {
-        model.addAttribute("address", new AddressCommand());
-        return "address/addressForm";
-    }
-
     @GetMapping("/address/{id}/update")
     public String updateAddress(@PathVariable String id, Model model) {
         model.addAttribute("address", service.findCommandById(Long.valueOf(id)));
@@ -40,14 +37,20 @@ public class AddressController {
     }
 
     @PostMapping("/address")
-    public String saveOrUpdate(@ModelAttribute AddressCommand command) {
-        AddressCommand savedCommand = service.saveAddressCommand(command);
+    public String saveOrUpdate(@Valid @ModelAttribute("address") AddressCommand addressCommand,
+                               BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> System.out.println(objectError.toString()));
+            model.addAttribute("address", addressCommand);
+            return "address/addressForm";
+        }
+        AddressCommand savedCommand = service.saveAddressCommand(addressCommand);
         return "redirect:/address/" + savedCommand.getId() + "/show";
     }
 
     @GetMapping("/address/{id}/delete")
     public String deleteById(@PathVariable String id) {
         service.deleteById(Long.valueOf(id));
-        return "redirect:/";
+        return "redirect:/addresses";
     }
 }

@@ -24,10 +24,13 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11">
-                            <h1 class="panel-title">Garages</h1>
+                            <h1 class="panel-title"
+                                th:text="#{message.garages}">Garages</h1>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/garage/new'}" role="button">Create</a>
+                            <a class="btn btn-default" href="#" role="button"
+                               th:href="@{'/garage/new'}"
+                               th:text="#{message.create}">Create</a>
                         </div>
                     </div>
                 </div>
@@ -36,19 +39,20 @@
                         <table class="table table-hover">
                             <thead class="thead-inverse">
                             <tr>
-                                <th>ID</th>
-                                <th>Description</th>
-                                <th>View</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th th:text="#{message.facility.description}">Description</th>
+                                <th th:text="#{message.view}">View</th>
+                                <th th:text="#{message.update}">Update</th>
+                                <th th:text="#{message.delete}">Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="garage : ${garages}">
-                                <td th:text="${garage.getId()}">ID</td>
                                 <td th:text="${garage.getDescription()}">Description</td>
-                                <td><a href="#" th:href="@{'/garage/' + ${garage.getId()} + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{'/garage/' + ${garage.getId()} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/garage/' + ${garage.getId()} + '/delete'}">Delete</a></td>
+                                <td><a href="#" th:text="#{message.view}"
+                                       th:href="@{'/garage/' + ${garage.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:text="#{message.update}"
+                                       th:href="@{'/garage/' + ${garage.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:text="#{message.delete}"
+                                       th:href="@{'/garage/' + ${garage.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

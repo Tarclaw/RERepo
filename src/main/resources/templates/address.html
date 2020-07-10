@@ -27,10 +27,8 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11">
-                            <h1 class="panel-title">Addresses</h1>
-                        </div>
-                        <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/address/new'}" role="button">Create</a>
+                            <h1 class="panel-title"
+                                th:text="#{message.addresses}">Addresses</h1>
                         </div>
                     </div>
                 </div>
@@ -39,27 +37,28 @@
                         <table class="table table-hover">
                             <thead class="thead-inverse">
                             <tr>
-                                <th>ID</th>
-                                <th>City</th>
-                                <th>District</th>
-                                <th>Street</th>
-                                <th>Postcode</th>
-                                <th>Facility Number</th>
-                                <th>View</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th th:text="#{message.address.city}">City</th>
+                                <th th:text="#{message.address.district}">District</th>
+                                <th th:text="#{message.address.street}">Street</th>
+                                <th th:text="#{message.address.postcode}">Postcode</th>
+                                <th th:text="#{message.address.facilityNumber}">Facility Number</th>
+                                <th th:text="#{message.view}">View</th>
+                                <th th:text="#{message.update}">Update</th>
+                                <th th:text="#{message.delete}" >Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="address : ${addresses}">
-                                <td th:text="${address.getFacility().getId()}">ID</td>
                                 <td th:text="${address.getCity()}">City</td>
                                 <td th:text="${address.getDistrict()}">District</td>
                                 <td th:text="${address.getStreet()}">Street</td>
                                 <td th:text="${address.getPostcode()}">Postcode</td>
                                 <td th:text="${address.getFacilityNumber()}">Facility Number</td>
-                                <td><a href="#" th:href="@{'/address/' + ${address.getId()} + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{'/address/' + ${address.getId()} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/address/' + ${address.getId()} + '/delete'}">Delete</a></td>
+                                <td><a href="#" th:text="#{message.view}"
+                                       th:href="@{'/address/' + ${address.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:text="#{message.update}"
+                                       th:href="@{'/address/' + ${address.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:text="#{message.delete}"
+                                       th:href="@{'/address/' + ${address.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

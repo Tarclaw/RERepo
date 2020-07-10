@@ -22,10 +22,13 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11">
-                            <h1 class="panel-title">Basements</h1>
+                            <h1 class="panel-title"
+                                th:text="#{message.basements}">Basements</h1>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/basement/new'}" role="button">Create</a>
+                            <a class="btn btn-default" href="#" role="button"
+                               th:href="@{'/basement/new'}"
+                               th:text="#{message.create}">Create</a>
                         </div>
                     </div>
                 </div>
@@ -34,23 +37,22 @@
                         <table class="table table-hover">
                             <thead class="thead-inverse">
                             <tr>
-                                <th>ID</th>
-                                <th>Description</th>
-                                <th>Number of Rooms</th>
-                                <th>Published</th>
-                                <th>View</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th th:text="#{message.facility.description}">Description</th>
+                                <th th:text="#{message.facility.numberOfRooms}">Number of Rooms</th>
+                                <th th:text="#{message.view}">View</th>
+                                <th th:text="#{message.update}">Update</th>
+                                <th th:text="#{message.delete}">Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="basement : ${basements}">
-                                <td th:text="${basement.getId()}">ID</td>
                                 <td th:text="${basement.getDescription()}">UNKNOWN</td>
                                 <td th:text="${basement.getNumberOfRooms()}">UNKNOWN</td>
-                                <td th:text="${basement.getPublishedDateTime()}">UNKNOWN</td>
-                                <td><a href="#" th:href="@{'/basement/' + ${basement.getId()} + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{'/basement/' + ${basement.getId()} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/basement/' + ${basement.getId()} + '/delete'}">Delete</a></td>
+                                <td><a href="#" th:text="#{message.view}"
+                                       th:href="@{'/basement/' + ${basement.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:text="#{message.update}"
+                                       th:href="@{'/basement/' + ${basement.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:text="#{message.delete}"
+                                       th:href="@{'/basement/' + ${basement.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

@@ -23,10 +23,12 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11">
-                            <h1 class="panel-title">Agents List</h1>
+                            <h1 class="panel-title" th:text="#{message.agents}">Agents List</h1>
                         </div>
                         <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/realEstateAgent/new'}" role="button">Create</a>
+                            <a class="btn btn-default" href="#" role="button"
+                               th:href="@{'/realEstateAgent/new'}"
+                               th:text="#{message.agents}">Create</a>
                         </div>
                     </div>
                 </div>
@@ -35,23 +37,24 @@
                         <table class="table table-hover">
                             <thead class="thead-inverse">
                             <tr>
-                                <th>ID</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Email</th>
-                                <th>View</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th th:text="#{message.agent.firstName}">First Name</th>
+                                <th th:text="#{message.agent.lastName}">Last Name</th>
+                                <th th:text="#{message.agent.email}">Email</th>
+                                <th th:text="#{message.view}">View</th>
+                                <th th:text="#{message.update}">Update</th>
+                                <th th:text="#{message.delete}">Delete</th>
                             </tr>
                             </thead>
                             <tr th:each="agent : ${realEstateAgents}">
-                                <td th:text="${agent.getId()}">ID</td>
                                 <td th:text="${agent.getFirstName()}">Joe</td>
                                 <td th:text="${agent.getLastName()}">Doe</td>
                                 <td th:text="${agent.getContact().getEmail()}">email@host.com</td>
-                                <td><a href="#" th:href="@{'/realEstateAgent/' + ${agent.getId()} + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{'/realEstateAgent/' + ${agent.getId()} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/realEstateAgent/' + ${agent.getId()} + '/delete'}">Delete</a></td>
+                                <td><a href="#" th:text="#{message.view}"
+                                       th:href="@{'/realEstateAgent/' + ${agent.getId()} + '/show'}">View</a></td>
+                                <td><a href="#" th:text="#{message.update}"
+                                       th:href="@{'/realEstateAgent/' + ${agent.getId()} + '/update'}">Update</a></td>
+                                <td><a href="#" th:text="#{message.delete}"
+                                       th:href="@{'/realEstateAgent/' + ${agent.getId()} + '/delete'}">Delete</a></td>
                             </tr>
                         </table>
                     </div>

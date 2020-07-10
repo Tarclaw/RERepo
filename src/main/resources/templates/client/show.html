@@ -26,18 +26,19 @@
             <div class="pannel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Client</h1>
+                        <h1 class="panel-title"
+                            th:text="#{message.client}">Client</h1>
                     </div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>First Name:</h5>
+                                <h5 th:text="#{message.client.firstName}">First Name:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.firstName}">UNKNOWN</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Last Name:</h5>
+                                <h5 th:text="#{message.client.lastName}">Last Name:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.lastName}">UNKNOWN</p>
@@ -45,13 +46,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Login:</h5>
+                                <h5 th:text="#{message.client.login}">Login:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.login}">UNKNOWN</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Password:</h5>
+                                <h5 th:text="#{message.client.password}">Password:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.password}">UNKNOWN</p>
@@ -59,13 +60,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Requirements for customer:</h5>
+                                <h5 th:text="#{message.client.customerRequirements}">Requirements for customer:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.customerRequirements}">UNKNOWN</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Phone:</h5>
+                                <h5 th:text="#{message.client.mobileNumber}">Phone:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.contact.mobileNumber}">UNKNOWN</p>
@@ -73,13 +74,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Skype:</h5>
+                                <h5 th:text="#{message.client.skype}">Skype:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.contact.skype}">UNKNOWN</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>Email:</h5>
+                                <h5 th:text="#{message.client.email}">Email:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${client.contact.email}">UNKNOWN</p>
@@ -91,10 +92,12 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-11 ">
-                                <h1 class="panel-title">Facilities</h1>
+                                <h1 class="panel-title" th:text="#{message.facilities}">Facilities</h1>
                             </div>
                             <div class="col-md-1">
-                                <a class="btn btn-default" href="#" th:href="@{'/facilities'}" role="button">View</a>
+                                <a class="btn btn-default" href="#" role="button"
+                                   th:href="@{'/facilities'}"
+                                   th:text="#{message.view}">View</a>
                             </div>
                         </div>
                     </div>
@@ -115,10 +118,12 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-md-11 ">
-                                <h1 class="panel-title">Agent</h1>
+                                <h1 class="panel-title" th:text="#{message.agent}">Agent</h1>
                             </div>
                             <div class="col-md-1">
-                                <a class="btn btn-default" href="#" th:href="@{'/realEstateAgents'}" role="button">View</a>
+                                <a class="btn btn-default" href="#" role="button"
+                                   th:href="@{'/realEstateAgents'}"
+                                   th:text="#{message.view}">View</a>
                             </div>
                         </div>
                     </div>

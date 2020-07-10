@@ -26,41 +26,44 @@
             <div class="pannel-group">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h5 class="panel-title">Address Description</h5>
+                        <h5 class="panel-title"
+                            th:text="#{message.facility.address}">Address</h5>
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-2">
-                                <h5>District:</h5>
+                            <div class="col-md-3">
+                                <h5 th:text="#{message.address.district}">District:</h5>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${address.district}">IL</p>
                             </div>
-                            <div class="col-md-2">
-                                <h5>Postcode:</h5>
+                            <div class="col-md-3">
+                                <h5 th:text="#{message.address.city}">City:</h5>
                             </div>
-                            <div class="col-md-2">
-                                <p th:text="${address.postcode}">99999</p>
-                            </div>
-                            <div class="col-md-2">
-                                <h5>City:</h5>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <p th:text="${address.city}">Chicago</p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <h5>Street:</h5>
+                                <h5 th:text="#{message.address.street}">Street:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${address.street}">Some Street</p>
                             </div>
                             <div class="col-md-3">
-                                <h5>House Number:</h5>
+                                <h5 th:text="#{message.address.facilityNumber}">House Number:</h5>
                             </div>
                             <div class="col-md-3">
                                 <p th:text="${address.facilityNumber}">665</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5 th:text="#{message.address.postcode}">Postcode:</h5>
+                            </div>
+                            <div class="col-md-3">
+                                <p th:text="${address.postcode}">99999</p>
                             </div>
                         </div>
                     </div>

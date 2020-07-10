@@ -25,20 +25,21 @@
             <form th:object="${client}" th:ob th:action="@{'/client/save'}" method="post">
 
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-                    <p>Please Correct Input Errors Below</p>
+                    <p th:text="#{message.error.correct}">Please Correct Input Errors Below</p>
                 </div>
 
                 <input type="hidden" th:field="*{id}"/>
                 <div class="panel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Create new Client</h1>
+                            <h1 class="panel-title"
+                                th:text="#{message.client.create}">Create new Client</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('firstName')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>First Name:</label>
+                                    <label th:text="#{message.client.firstName}">First Name:</label>
                                     <input type="text" class="form-control" th:field="*{firstName}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('firstName')}">
                                         <ul>
@@ -48,7 +49,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('lastName')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Last Name:</label>
+                                    <label th:text="#{message.client.lastName}">Last Name:</label>
                                     <input type="text" class="form-control" th:field="*{lastName}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('lastName')}">
                                         <ul>
@@ -58,7 +59,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('login')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Login:</label>
+                                    <label th:text="#{message.client.login}">Login:</label>
                                     <input type="text" class="form-control" th:field="*{login}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('login')}">
                                         <ul>
@@ -68,7 +69,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('password')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Password:</label>
+                                    <label th:text="#{message.client.password}">Password:</label>
                                     <input type="text" class="form-control" th:field="*{password}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('password')}">
                                         <ul>
@@ -80,7 +81,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('customerRequirements')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Requirements for Customer:</label>
+                                    <label th:text="#{message.client.customerRequirements}">Requirements for Customer:</label>
                                     <input type="text" class="form-control" th:field="*{customerRequirements}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('customerRequirements')}">
                                         <ul>
@@ -90,7 +91,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('mobileNumber')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Phone:</label>
+                                    <label th:text="#{message.client.mobileNumber}">Phone:</label>
                                     <input type="text" class="form-control" th:field="*{mobileNumber}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('mobileNumber')}">
                                         <ul>
@@ -100,7 +101,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('skype')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Skype:</label>
+                                    <label th:text="#{message.client.skype}">Skype:</label>
                                     <input type="text" class="form-control" th:field="*{skype}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('skype')}">
                                         <ul>
@@ -110,7 +111,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('email')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Email:</label>
+                                    <label th:text="#{message.client.email}">Email:</label>
                                     <input type="text" class="form-control" th:field="*{email}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('email')}">
                                         <ul>
@@ -124,13 +125,13 @@
                     <div th:object="${facility}">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Add Facility</h1>
+                            <h1 class="panel-title" th:text="#{message.facility.add}">Add Facility</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('description')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Description:</label>
+                                    <label th:text="#{message.facility.description}">Description:</label>
                                     <input type="text" class="form-control" th:field="*{description}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('description')}">
                                         <ul>
@@ -140,7 +141,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('monthRent')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Month Rent:</label>
+                                    <label th:text="#{message.facility.monthRent}">Month Rent:</label>
                                     <input type="text" class="form-control" th:field="*{monthRent}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('monthRent')}">
                                         <ul>
@@ -150,7 +151,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('price')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Price:</label>
+                                    <label th:text="#{message.facility.price}">Price:</label>
                                     <input type="text" class="form-control" th:field="*{price}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('price')}">
                                         <ul>
@@ -159,7 +160,7 @@
                                     </span>
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Status:</label>
+                                    <label th:text="#{message.facility.status}">Status:</label>
                                     <select class="form-control" th:field="*{status}">
                                         <option th:each="statusValue : ${T(web.example.realestate.domain.enums.Status).values()}"
                                                 th:value="${statusValue.name()}"
@@ -170,7 +171,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('numberOfRooms')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Number of Rooms:</label>
+                                    <label th:text="#{message.facility.numberOfRooms}">Number of Rooms:</label>
                                     <input type="text" class="form-control" th:field="*{numberOfRooms}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('numberOfRooms')}">
                                         <ul>
@@ -180,7 +181,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('totalArea')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Total Area:</label>
+                                    <label th:text="#{message.facility.totalArea}">Total Area:</label>
                                     <input type="text" class="form-control" th:field="*{totalArea}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('totalArea')}">
                                         <ul>
@@ -190,7 +191,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('publishedDateTime')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Published Date Time:</label>
+                                    <label th:text="#{message.facility.publishedDateTime}">Published Date Time:</label>
                                     <input type="text" class="form-control" th:field="*{publishedDateTime}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('publishedDateTime')}">
                                         <ul>
@@ -200,7 +201,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('closedDateTime')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Closed Date Time:</label>
+                                    <label th:text="#{message.facility.closedDateTime}">Closed Date Time:</label>
                                     <input type="text" class="form-control" th:field="*{closedDateTime}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('closedDateTime')}">
                                         <ul>
@@ -211,71 +212,71 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Number Of Storeys:</label>
+                                    <label th:text="#{message.facility.numberOfStoreys}">Number Of Storeys:</label>
                                     <input type="text" class="form-control" th:field="*{numberOfStoreys}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Has Backyard:</label>
+                                    <label th:text="#{message.facility.hasBackyard}">Has Backyard:</label>
                                     <input type="text" class="form-control" th:field="*{hasBackyard}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Has Garden:</label>
+                                    <label th:text="#{message.facility.hasGarden}">Has Garden:</label>
                                     <input type="text" class="form-control" th:field="*{hasGarden}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Chose House:</label>
+                                    <label th:text="#{message.facility.itHouse}">Chose House:</label>
                                     <input type="text" class="form-control" th:field="*{itHouse}" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Floor:</label>
+                                    <label th:text="#{message.facility.floor}">Floor:</label>
                                     <input type="text" class="form-control" th:field="*{floor}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Apartment Number:</label>
+                                    <label th:text="#{message.facility.apartmentNumber}">Apartment Number:</label>
                                     <input type="text" class="form-control" th:field="*{apartmentNumber}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Chose Apartment:</label>
+                                    <label th:text="#{message.facility.itApartment}">Chose Apartment:</label>
                                     <input type="text" class="form-control" th:field="*{itApartment}" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Has Pit:</label>
+                                    <label th:text="#{message.facility.hasPit}">Has Pit:</label>
                                     <input type="text" class="form-control" th:field="*{hasPit}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Has Equipment:</label>
+                                    <label th:text="#{message.facility.hasEquipment}">Has Equipment:</label>
                                     <input type="text" class="form-control" th:field="*{hasEquipment}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Chose Garage:</label>
+                                    <label th:text="#{message.facility.itGarage}">Chose Garage:</label>
                                     <input type="text" class="form-control" th:field="*{itGarage}" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Commercial Capacity:</label>
+                                    <label th:text="#{message.facility.commercialCapacity}">Commercial Capacity:</label>
                                     <input type="text" class="form-control" th:field="*{commercialCapacity}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Has Cargo Equipment:</label>
+                                    <label th:text="#{message.facility.hasCargoEquipment}">Has Cargo Equipment:</label>
                                     <input type="text" class="form-control" th:field="*{hasCargoEquipment}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Chose Storage:</label>
+                                    <label th:text="#{message.facility.itStorage}">Chose Storage:</label>
                                     <input type="text" class="form-control" th:field="*{itStorage}" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Commercial:</label>
+                                    <label th:text="#{message.facility.itCommercial}">Commercial:</label>
                                     <input type="text" class="form-control" th:field="*{itCommercial}" />
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label>Chose Basement:</label>
+                                    <label th:text="#{message.facility.itBasement}">Chose Basement:</label>
                                     <input type="text" class="form-control" th:field="*{itBasement}" />
                                 </div>
                             </div>
@@ -284,13 +285,13 @@
                     <div th:object="${address}">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Add Address Information</h1>
+                            <h1 class="panel-title" th:text="#{message.facility.add.address}">Add Address Information</h1>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('district')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>District:</label>
+                                    <label th:text="#{message.address.district}">District:</label>
                                     <input type="text" class="form-control" th:field="*{district}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('district')}">
                                         <ul>
@@ -300,7 +301,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('postcode')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Postcode:</label>
+                                    <label th:text="#{message.address.postcode}">Postcode:</label>
                                     <input type="text" class="form-control" th:field="*{postcode}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('postcode')}">
                                         <ul>
@@ -310,7 +311,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('city')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>City:</label>
+                                    <label th:text="#{message.address.city}">City:</label>
                                     <input type="text" class="form-control" th:field="*{city}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('city')}">
                                         <ul>
@@ -322,7 +323,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('street')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Street:</label>
+                                    <label th:text="#{message.address.street}">Street:</label>
                                     <input type="text" class="form-control" th:field="*{street}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('street')}">
                                         <ul>
@@ -332,7 +333,7 @@
                                 </div>
                                 <div class="col-md-3 form-group"
                                      th:class="${#fields.hasErrors('facilityNumber')} ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>House Number:</label>
+                                    <label th:text="#{message.address.facilityNumber}">House Number:</label>
                                     <input type="text" class="form-control" th:field="*{facilityNumber}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('facilityNumber')}">
                                         <ul>
@@ -349,14 +350,14 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-md-11 ">
-                                    <h1 class="panel-title">Agents</h1>
+                                    <h1 class="panel-title" th:text="#{message.agents}">Agents</h1>
                                 </div>
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-3 form-group">
-                                    <label>Select Your Agent:</label>
+                                    <label th:text="#{message.agent.select}">Select Your Agent:</label>
                                     <select class="form-control" name="agentId">
                                         <option th:each="agent : ${realEstateAgents}"
                                                 th:value="${agent.id}"
@@ -367,7 +368,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" th:text="#{message.submit.button}">Submit</button>
                 </div>
             </form>
         </div>

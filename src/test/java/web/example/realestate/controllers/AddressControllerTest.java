@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import web.example.realestate.commands.AddressCommand;
 import web.example.realestate.domain.building.Address;
 import web.example.realestate.exceptions.NotFoundException;
@@ -42,6 +43,9 @@ class AddressControllerTest {
 
     @Mock
     private Model model;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @BeforeEach
     void setUp() {
@@ -106,14 +110,6 @@ class AddressControllerTest {
     }
 
     @Test
-    void newAddress() throws Exception {
-        mockMvc.perform(get("/address/new"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("address/addressForm"))
-                .andExpect(model().attributeExists("address"));
-    }
-
-    @Test
     void updateAddress() throws Exception {
         when(service.findCommandById(anyLong())).thenReturn(new AddressCommand());
         mockMvc.perform(get("/address/1/update"))
@@ -124,15 +120,57 @@ class AddressControllerTest {
 
     @Test
     void saveOrUpdate() throws Exception {
-        AddressCommand sourceCommand = new AddressCommand();
-        sourceCommand.setId(1L);
-        when(service.saveAddressCommand(any())).thenReturn(sourceCommand);
+        //given
+        AddressCommand addressCommand = new AddressCommand();
+        addressCommand.setId(1L);
+
+        when(bindingResult.hasErrors()).thenReturn(false);
+        when(service.saveAddressCommand(any())).thenReturn(addressCommand);
+
+        //when
+        String viewName = controller.saveOrUpdate(addressCommand, bindingResult, model);
+
+        //then
+        assertEquals("redirect:/address/1/show", viewName);
+        verify(bindingResult, times(1)).hasErrors();
+        verify(service, times(1)).saveAddressCommand(any());
+
         mockMvc.perform(post("/address")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "")
-                .param("postCode", "some integer")
+                .param("id", "1")
+                .param("postcode", "88550")
+                .param("facilityNumber", "33")
+                .param("city", "some city")
+                .param("district", "some district")
+                .param("street", "some street")
         ).andExpect(status().is3xxRedirection())
          .andExpect(view().name("redirect:/address/1/show"));
+
+    }
+
+    @Test
+    void saveOrUpdateWhenCommandVariablesAreNotValid() throws Exception {
+        //given
+        AddressCommand addressCommand = new AddressCommand();
+        addressCommand.setId(1L);
+
+        when(bindingResult.hasErrors()).thenReturn(true);
+
+        ArgumentCaptor<AddressCommand> addressCaptor = ArgumentCaptor.forClass(AddressCommand.class);
+
+        //when
+        String viewName = controller.saveOrUpdate(addressCommand, bindingResult, model);
+
+        //then
+        assertEquals("address/addressForm", viewName);
+        verify(bindingResult, times(1)).hasErrors();
+        verify(bindingResult, times(1)).getAllErrors();
+        verify(model, times(1)).addAttribute(eq("address"), addressCaptor.capture());
+
+        mockMvc.perform(post("/address")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andExpect(view().name("address/addressForm"));
 
     }
 
@@ -140,7 +178,7 @@ class AddressControllerTest {
     void deleteById() throws Exception {
         mockMvc.perform(get("/address/1/delete"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/addresses"));
         verify(service, times(1)).deleteById(anyLong());
     }
 }
