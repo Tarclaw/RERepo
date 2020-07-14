@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 @Profile("dev")
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
-    private static final String APARTMENT_PATH = "/home/andrew/IdeaProjects/realestate/src/main/resources/static/images/IL/apartment.jpg";
-    private static final String BASEMENT_PATH = "/home/andrew/IdeaProjects/realestate/src/main/resources/static/images/IL/basement.jpg";
-    private static final String GARAGE_PATH = "/home/andrew/IdeaProjects/realestate/src/main/resources/static/images/IL/garage.jpg";
-    private static final String HOUSE_PATH = "/home/andrew/IdeaProjects/realestate/src/main/resources/static/images/IL/house.jpg";
-    private static final String STORAGE_PATH = "/home/andrew/IdeaProjects/realestate/src/main/resources/static/images/IL/storage.jpg";
+    private static final String APARTMENT_PATH = "classpath:static/images/IL/apartment.jpg";
+    private static final String BASEMENT_PATH = "classpath:static/images/IL/basement.jpg";
+    private static final String GARAGE_PATH = "classpath:static/images/IL/garage.jpg";
+    private static final String HOUSE_PATH = "classpath:static/images/IL/house.jpg";
+    private static final String STORAGE_PATH = "classpath:static/images/IL/storage.jpg";
 
     private final FacilityImageBootstrap facilityImageBootstrap;
 
