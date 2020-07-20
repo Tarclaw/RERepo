@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -11,13 +13,18 @@ public class GarageCommandToGarage implements Converter<FacilityCommand, Garage>
 
     private final AddressCommandToAddress toAddress;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GarageCommandToGarage.class);
+
     public GarageCommandToGarage(AddressCommandToAddress toAddress) {
         this.toAddress = toAddress;
+        LOGGER.info("New instance of GarageCommandToGarage created.");
     }
 
     @Override
     public Garage convert(final FacilityCommand command) {
+        LOGGER.trace("Enter in 'GarageCommandToGarage.convert' method");
         if (command == null) {
+            LOGGER.debug("FacilityCommand is null");
             return null;
         }
 
@@ -37,10 +44,13 @@ public class GarageCommandToGarage implements Converter<FacilityCommand, Garage>
         address.setFacility(garage);
         garage.setAddress(address);
 
+        LOGGER.trace("'GarageCommandToGarage.convert' executed successfully.");
         return garage;
     }
 
     public Garage convertWhenAttached(Garage garage, FacilityCommand command) {
+        LOGGER.trace("Enter in 'GarageCommandToGarage.convertWhenAttached' method");
+
         garage.setNumberOfRooms(command.getNumberOfRooms());
         garage.setTotalArea(command.getTotalArea());
         garage.setDescription(command.getDescription());
@@ -58,6 +68,7 @@ public class GarageCommandToGarage implements Converter<FacilityCommand, Garage>
         garage.getAddress().setDistrict(command.getAddress().getDistrict());
         garage.getAddress().setStreet(command.getAddress().getStreet());
 
+        LOGGER.trace("'GarageCommandToGarage.convertWhenAttached' executed successfully.");
         return garage;
     }
 }

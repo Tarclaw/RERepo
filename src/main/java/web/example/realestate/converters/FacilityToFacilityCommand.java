@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -10,13 +12,19 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
 
     private final AddressToAddressCommand toAddressCommand;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(FacilityToFacilityCommand.class);
+
     public FacilityToFacilityCommand(AddressToAddressCommand toAddressCommand) {
         this.toAddressCommand = toAddressCommand;
+        LOGGER.info("New instance of FacilityToFacilityCommand created.");
     }
 
     @Override
     public FacilityCommand convert(Facility facility) {
+        LOGGER.trace("Enter in 'FacilityToFacilityCommand.convert' method");
+
         if (facility == null) {
+            LOGGER.debug("Facility is null");
             return null;
         }
 
@@ -37,6 +45,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
             command.setItApartment(true);
             command.setApartmentNumber(apartment.getApartmentNumber());
             command.setFloor(apartment.getFloor());
+            LOGGER.trace("'FacilityCommandToFacility.convert' executed successfully. Converted to Apartment.");
             return command;
         }
 
@@ -44,6 +53,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
             Basement basement = (Basement) facility;
             command.setItBasement(true);
             command.setItCommercial(basement.isItCommercial());
+            LOGGER.trace("'FacilityCommandToFacility.convert' executed successfully. Converted to Basement.");
             return command;
         }
 
@@ -52,6 +62,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
             command.setItGarage(true);
             command.setHasPit(garage.isHasPit());
             command.setHasEquipment(garage.isHasEquipment());
+            LOGGER.trace("'FacilityCommandToFacility.convert' executed successfully. Converted to Garage.");
             return command;
         }
 
@@ -61,6 +72,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
             command.setNumberOfStoreys(house.getNumberOfStoreys());
             command.setHasBackyard(house.isHasBackyard());
             command.setHasGarden(house.isHasGarden());
+            LOGGER.trace("'FacilityCommandToFacility.convert' executed successfully. Converted to House.");
             return command;
         }
 
@@ -71,6 +83,7 @@ public class FacilityToFacilityCommand implements Converter<Facility, FacilityCo
             command.setHasCargoEquipment(storage.isHasCargoEquipment());
         }
 
+        LOGGER.trace("'FacilityCommandToFacility.convert' executed successfully. Converted to Storage.");
         return command;
     }
 }

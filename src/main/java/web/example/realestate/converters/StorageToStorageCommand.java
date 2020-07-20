@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -10,13 +12,19 @@ public class StorageToStorageCommand implements Converter<Storage, FacilityComma
 
     private final AddressToAddressCommand toAddressCommand;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageToStorageCommand.class);
+
     public StorageToStorageCommand(AddressToAddressCommand toAddressCommand) {
         this.toAddressCommand = toAddressCommand;
+        LOGGER.info("New instance of StorageToStorageCommand created.");
     }
 
     @Override
     public FacilityCommand convert(final Storage storage) {
+        LOGGER.trace("Enter in 'StorageToStorageCommand.convert' method");
+
         if (storage == null) {
+            LOGGER.debug("Storage is null");
             return null;
         }
 
@@ -37,6 +45,7 @@ public class StorageToStorageCommand implements Converter<Storage, FacilityComma
         command.setAddress(toAddressCommand.convert(storage.getAddress()));
         command.setItStorage(true);
 
+        LOGGER.trace("'StorageToStorageCommand.convert' executed successfully.");
         return command;
     }
 }

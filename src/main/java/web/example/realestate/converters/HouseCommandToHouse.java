@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -11,13 +13,19 @@ public class HouseCommandToHouse implements Converter<FacilityCommand, House> {
 
     private final AddressCommandToAddress toAddress;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HouseCommandToHouse.class);
+
     public HouseCommandToHouse(AddressCommandToAddress toAddress) {
         this.toAddress = toAddress;
+        LOGGER.info("New instance of HouseCommandToHouse created.");
     }
 
     @Override
     public House convert(final FacilityCommand command) {
+        LOGGER.trace("Enter in 'HouseCommandToHouse.convert' method");
+
         if (command == null) {
+            LOGGER.debug("FacilityCommand is null");
             return null;
         }
 
@@ -38,10 +46,13 @@ public class HouseCommandToHouse implements Converter<FacilityCommand, House> {
         address.setFacility(house);
         house.setAddress(address);
 
+        LOGGER.trace("'HouseCommandToHouse.convert' executed successfully.");
         return house;
     }
 
     public House convertWhenAttached(House house, FacilityCommand command) {
+        LOGGER.trace("Enter in 'HouseCommandToHouse.convertWhenAttached' method");
+
         house.setNumberOfRooms(command.getNumberOfRooms());
         house.setTotalArea(command.getTotalArea());
         house.setDescription(command.getDescription());
@@ -60,6 +71,7 @@ public class HouseCommandToHouse implements Converter<FacilityCommand, House> {
         house.getAddress().setDistrict(command.getAddress().getDistrict());
         house.getAddress().setStreet(command.getAddress().getStreet());
 
+        LOGGER.trace("'HouseCommandToHouse.convertWhenAttached' executed successfully.");
         return house;
     }
 }

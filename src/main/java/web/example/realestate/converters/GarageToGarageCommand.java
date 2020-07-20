@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -10,13 +12,19 @@ public class GarageToGarageCommand implements Converter<Garage, FacilityCommand>
 
     private final AddressToAddressCommand toAddressCommand;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GarageToGarageCommand.class);
+
     public GarageToGarageCommand(AddressToAddressCommand toAddressCommand) {
         this.toAddressCommand = toAddressCommand;
+        LOGGER.info("New instance of GarageToGarageCommand created.");
     }
 
     @Override
     public FacilityCommand convert(final Garage garage) {
+        LOGGER.trace("Enter in 'GarageToGarageCommand.convert' method");
+
         if (garage == null) {
+            LOGGER.debug("Garage is null");
             return null;
         }
 
@@ -37,6 +45,7 @@ public class GarageToGarageCommand implements Converter<Garage, FacilityCommand>
         command.setAddress(toAddressCommand.convert(garage.getAddress()));
         command.setItGarage(true);
 
+        LOGGER.trace("'GarageToGarageCommand.convert' executed successfully.");
         return command;
     }
 }

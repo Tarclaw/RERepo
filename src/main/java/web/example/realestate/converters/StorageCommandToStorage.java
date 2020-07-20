@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -11,13 +13,19 @@ public class StorageCommandToStorage implements Converter<FacilityCommand, Stora
 
     private final AddressCommandToAddress toAddress;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageCommandToStorage.class);
+
     public StorageCommandToStorage(AddressCommandToAddress toAddress) {
         this.toAddress = toAddress;
+        LOGGER.info("New instance of StorageCommandToStorage created.");
     }
 
     @Override
     public Storage convert(final FacilityCommand command) {
+        LOGGER.trace("Enter in 'StorageCommandToStorage.convert' method");
+
         if (command == null) {
+            LOGGER.debug("FacilityCommand is null");
             return null;
         }
 
@@ -37,10 +45,13 @@ public class StorageCommandToStorage implements Converter<FacilityCommand, Stora
         address.setFacility(storage);
         storage.setAddress(address);
 
+        LOGGER.trace("'StorageCommandToStorage.convert' executed successfully.");
         return storage;
     }
 
     public Storage convertWhenAttached(Storage storage, FacilityCommand command) {
+        LOGGER.trace("Enter in 'StorageCommandToStorage.convertWhenAttached' method");
+
         storage.setNumberOfRooms(command.getNumberOfRooms());
         storage.setTotalArea(command.getTotalArea());
         storage.setDescription(command.getDescription());
@@ -58,6 +69,7 @@ public class StorageCommandToStorage implements Converter<FacilityCommand, Stora
         storage.getAddress().setDistrict(command.getAddress().getDistrict());
         storage.getAddress().setStreet(command.getAddress().getStreet());
 
+        LOGGER.trace("'StorageCommandToStorage.convertWhenAttached' executed successfully.");
         return storage;
     }
 }

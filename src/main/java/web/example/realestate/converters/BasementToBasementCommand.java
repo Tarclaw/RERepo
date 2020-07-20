@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -10,13 +12,19 @@ public class BasementToBasementCommand implements Converter<Basement, FacilityCo
 
     private final AddressToAddressCommand toAddressCommand;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasementToBasementCommand.class);
+
     public BasementToBasementCommand(AddressToAddressCommand toAddressCommand) {
         this.toAddressCommand = toAddressCommand;
+        LOGGER.info("New instance of BasementToBasementCommand created.");
     }
 
     @Override
     public FacilityCommand convert(Basement basement) {
+        LOGGER.trace("Enter in 'BasementToBasementCommand.convert' method");
+
         if (basement == null) {
+            LOGGER.debug("Basement is null");
             return null;
         }
 
@@ -36,6 +44,7 @@ public class BasementToBasementCommand implements Converter<Basement, FacilityCo
         command.setAddress(toAddressCommand.convert(basement.getAddress()));
         command.setItBasement(true);
 
+        LOGGER.trace("'BasementToBasementCommand.convert' executed successfully.");
         return command;
     }
 }

@@ -1,5 +1,7 @@
 package web.example.realestate.converters;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import web.example.realestate.commands.FacilityCommand;
@@ -11,13 +13,19 @@ public class ApartmentCommandToApartment implements Converter<FacilityCommand, A
 
     private final AddressCommandToAddress toAddress;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddressCommandToAddress.class);
+
     public ApartmentCommandToApartment(AddressCommandToAddress toAddress) {
         this.toAddress = toAddress;
+        LOGGER.info("New instance of ApartmentCommandToApartment created.");
     }
 
     @Override
     public Apartment convert(final FacilityCommand command) {
+        LOGGER.trace("Enter in 'ApartmentCommandToApartment.convert' method");
+
         if (command == null) {
+            LOGGER.debug("FacilityCommand is null");
             return null;
         }
 
@@ -37,10 +45,18 @@ public class ApartmentCommandToApartment implements Converter<FacilityCommand, A
         address.setFacility(apartment);
         apartment.setAddress(address);
 
+        LOGGER.trace("'ApartmentCommandToApartment.convert' executed successfully.");
         return apartment;
     }
 
     public Apartment convertWhenAttached(Apartment apartment, final FacilityCommand command) {
+        LOGGER.trace("Enter in 'ApartmentCommandToApartment.convertWhenAttached' method");
+
+        if (apartment == null || command == null) {
+            LOGGER.debug("Apartment or FacilityCommand is null");
+            return null;
+        }
+
         apartment.setNumberOfRooms(command.getNumberOfRooms());
         apartment.setTotalArea(command.getTotalArea());
         apartment.setFloor(command.getFloor());
@@ -58,6 +74,7 @@ public class ApartmentCommandToApartment implements Converter<FacilityCommand, A
         apartment.getAddress().setDistrict(command.getAddress().getDistrict());
         apartment.getAddress().setStreet(command.getAddress().getStreet());
 
+        LOGGER.trace("'ApartmentCommandToApartment.convertWhenAttached' executed successfully.");
         return apartment;
     }
 }
